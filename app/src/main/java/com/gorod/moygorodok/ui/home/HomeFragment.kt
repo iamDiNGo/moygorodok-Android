@@ -55,6 +55,9 @@ class HomeFragment : Fragment() {
             },
             onAdminClick = {
                 findNavController().navigate(R.id.navigation_delivery_admin)
+            },
+            onEmergencyClick = {
+                findNavController().navigate(R.id.navigation_emergency)
             }
         )
 

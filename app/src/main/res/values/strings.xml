@@ -155,4 +155,12 @@
     <string name="admin_delivery_discount">Скидка на доставку</string>
     <string name="admin_free_delivery_from">Бесплатная доставка от</string>
     <string name="admin_save_settings">Сохранить настройки</string>
+
+    <!-- Emergency -->
+    <string name="emergency_title">Экстренная помощь</string>
+    <string name="emergency_widget_title">Экстренная помощь</string>
+    <string name="emergency_widget_subtitle">Важные номера вашего региона</string>
+    <string name="emergency_warning">Звоните только в экстренных ситуациях. Ложные вызовы наказываются по закону.</string>
+    <string name="emergency_main_services">Основные службы</string>
+    <string name="emergency_other_services">Другие службы</string>
 </resources>

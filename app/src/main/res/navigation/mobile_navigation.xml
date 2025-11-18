@@ -135,4 +135,10 @@
         android:label="@string/title_delivery_admin"
         tools:layout="@layout/fragment_delivery_admin" />
 
+    <fragment
+        android:id="@+id/navigation_emergency"
+        android:name="com.gorod.moygorodok.ui.emergency.EmergencyFragment"
+        android:label="@string/emergency_title"
+        tools:layout="@layout/fragment_emergency" />
+
 </navigation>

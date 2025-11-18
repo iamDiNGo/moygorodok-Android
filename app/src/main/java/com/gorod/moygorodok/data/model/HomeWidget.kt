@@ -47,6 +47,11 @@ sealed class HomeWidget {
         val todayRevenue: String,
         val isOpen: Boolean
     ) : HomeWidget()
+
+    data class EmergencyWidget(
+        val title: String,
+        val mainNumbers: List<String>
+    ) : HomeWidget()
 }
 
 data class QuickAction(
@@ -66,6 +71,10 @@ object MockHomeWidgets {
         val admin = MockDeliveryAdmin.getDeliveryAdmin()
 
         return listOf(
+            HomeWidget.EmergencyWidget(
+                title = "Экстренная помощь",
+                mainNumbers = listOf("112", "101", "102", "103")
+            ),
             HomeWidget.AdminWidget(
                 deliveryName = admin.delivery.name,
                 todayOrders = 12,
