@@ -57,6 +57,11 @@ sealed class HomeWidget {
         val title: String,
         val subtitle: String
     ) : HomeWidget()
+
+    data class NotificationsWidget(
+        val unreadCount: Int,
+        val latestTypes: List<String>
+    ) : HomeWidget()
 }
 
 data class QuickAction(
@@ -76,6 +81,10 @@ object MockHomeWidgets {
         val admin = MockDeliveryAdmin.getDeliveryAdmin()
 
         return listOf(
+            HomeWidget.NotificationsWidget(
+                unreadCount = MockNotifications.getUnreadCount(),
+                latestTypes = listOf("⚠️", "🍕", "🎉")
+            ),
             HomeWidget.EmergencyWidget(
                 title = "Экстренная помощь",
                 mainNumbers = listOf("112", "101", "102", "103")

@@ -147,4 +147,10 @@
         android:label="@string/complaint_title"
         tools:layout="@layout/fragment_complaint" />
 
+    <fragment
+        android:id="@+id/navigation_notification_list"
+        android:name="com.gorod.moygorodok.ui.notification_list.NotificationListFragment"
+        android:label="@string/notifications_title"
+        tools:layout="@layout/fragment_notification_list" />
+
 </navigation>

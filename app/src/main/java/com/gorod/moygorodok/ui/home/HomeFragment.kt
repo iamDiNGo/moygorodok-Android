@@ -61,6 +61,9 @@ class HomeFragment : Fragment() {
             },
             onComplaintClick = {
                 findNavController().navigate(R.id.navigation_complaint)
+            },
+            onNotificationsClick = {
+                findNavController().navigate(R.id.navigation_notification_list)
             }
         )
 

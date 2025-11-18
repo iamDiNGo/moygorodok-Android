@@ -178,4 +178,12 @@
     <string name="complaint_hint_name">Ваше имя (необязательно)</string>
     <string name="complaint_hint_phone">Телефон для связи (необязательно)</string>
     <string name="complaint_submit">Отправить обращение</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">Уведомления</string>
+    <string name="notifications_widget_title">Уведомления</string>
+    <string name="notifications_widget_subtitle">Новые события и обновления</string>
+    <string name="notifications_empty">Уведомлений пока нет</string>
+    <string name="notifications_mark_all_read">Прочитать все</string>
+    <string name="delete">Удалить</string>
 </resources>
