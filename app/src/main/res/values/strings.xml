@@ -3,4 +3,45 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <!-- Auth -->
+    <string name="title_login">Авторизация</string>
+    <string name="title_pin">Введите PIN</string>
+    <string name="title_register">Регистрация</string>
+    <string name="title_profile">Профиль</string>
+    <string name="title_avatar">Аватар</string>
+
+    <!-- Login -->
+    <string name="login_title">Добро пожаловать</string>
+    <string name="login_subtitle">Войдите по номеру телефона</string>
+    <string name="hint_phone">Номер телефона</string>
+    <string name="button_login">Войти</string>
+    <string name="button_register">Создать аккаунт</string>
+
+    <!-- PIN -->
+    <string name="pin_title">Введите PIN-код</string>
+
+    <!-- Register -->
+    <string name="register_title">Создание аккаунта</string>
+    <string name="register_subtitle">Заполните данные для регистрации</string>
+    <string name="hint_first_name">Имя</string>
+    <string name="hint_last_name">Фамилия</string>
+    <string name="hint_email">Email (необязательно)</string>
+    <string name="hint_pin">PIN-код (4 цифры)</string>
+    <string name="hint_pin_confirm">Подтвердите PIN-код</string>
+    <string name="button_create_account">Зарегистрироваться</string>
+    <string name="button_back_to_login">Уже есть аккаунт? Войти</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Мой профиль</string>
+    <string name="button_save">Сохранить</string>
+    <string name="button_logout">Выйти</string>
+    <string name="button_change_avatar">Изменить фото</string>
+
+    <!-- Avatar -->
+    <string name="avatar_title">Добавьте фото</string>
+    <string name="avatar_subtitle">Выберите фото для вашего профиля</string>
+    <string name="button_select_image">Выбрать изображение</string>
+    <string name="button_remove">Удалить</string>
+    <string name="button_skip">Пропустить</string>
 </resources>

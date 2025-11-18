@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_navigation"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.gorod.moygorodok.ui.auth.login.LoginFragment"
+        android:label="@string/title_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_pin"
+            app:destination="@id/pinFragment" />
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/registerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pinFragment"
+        android:name="com.gorod.moygorodok.ui.auth.pin.PinFragment"
+        android:label="@string/title_pin"
+        tools:layout="@layout/fragment_pin">
+        <action
+            android:id="@+id/action_pin_to_profile"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/auth_navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.gorod.moygorodok.ui.auth.register.RegisterFragment"
+        android:label="@string/title_register"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_register_to_avatar"
+            app:destination="@id/avatarFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.gorod.moygorodok.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profile_to_avatar"
+            app:destination="@id/avatarFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/avatarFragment"
+        android:name="com.gorod.moygorodok.ui.avatar.AvatarFragment"
+        android:label="@string/title_avatar"
+        tools:layout="@layout/fragment_avatar" />
+
+</navigation>
