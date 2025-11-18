@@ -75,6 +75,25 @@
     <string name="label_description">Описание</string>
     <string name="label_seller">Продавец</string>
 
+    <!-- Weather -->
+    <string name="title_weather">Погода</string>
+    <string name="weather_hourly_forecast">Почасовой прогноз</string>
+    <string name="weather_daily_forecast">Прогноз на 10 дней</string>
+    <string name="weather_feels_like">Ощущается</string>
+    <string name="weather_humidity">Влажность</string>
+    <string name="weather_wind">Ветер</string>
+    <string name="weather_pressure">Давление</string>
+    <string name="weather_visibility">Видимость</string>
+    <string name="weather_uv_index">УФ-индекс</string>
+    <string name="weather_sunrise">Восход</string>
+    <string name="weather_sunset">Закат</string>
+
+    <!-- Home Widgets -->
+    <string name="widget_weather">Погода</string>
+    <string name="widget_news">Новости</string>
+    <string name="widget_ads">Объявления</string>
+    <string name="widget_profile">Профиль</string>
+
     <!-- Ad Categories -->
     <string name="ad_category_transport">Транспорт</string>
     <string name="ad_category_realty">Недвижимость</string>

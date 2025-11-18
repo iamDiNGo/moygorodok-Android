@@ -1,0 +1,66 @@
+package com.gorod.moygorodok.data.model
+
+sealed class HomeWidget {
+    data class WeatherWidget(
+        val location: String,
+        val currentTemp: Int,
+        val condition: WeatherCondition,
+        val highTemp: Int,
+        val lowTemp: Int
+    ) : HomeWidget()
+
+    data class NewsWidget(
+        val title: String,
+        val newsCount: Int,
+        val latestNews: List<News>
+    ) : HomeWidget()
+
+    data class AdsWidget(
+        val title: String,
+        val adsCount: Int,
+        val latestAds: List<Ad>
+    ) : HomeWidget()
+
+    data class ProfileWidget(
+        val user: User?
+    ) : HomeWidget()
+
+    data class QuickActionsWidget(
+        val actions: List<QuickAction>
+    ) : HomeWidget()
+}
+
+data class QuickAction(
+    val id: String,
+    val title: String,
+    val icon: Int
+)
+
+object MockHomeWidgets {
+
+    fun getWidgets(): List<HomeWidget> {
+        val weather = MockWeather.getCurrentWeather()
+        val news = MockNews.getAll()
+        val ads = MockAds.getAll()
+
+        return listOf(
+            HomeWidget.WeatherWidget(
+                location = weather.location,
+                currentTemp = weather.currentTemp,
+                condition = weather.condition,
+                highTemp = weather.highTemp,
+                lowTemp = weather.lowTemp
+            ),
+            HomeWidget.NewsWidget(
+                title = "Последние новости",
+                newsCount = news.size,
+                latestNews = news.take(3)
+            ),
+            HomeWidget.AdsWidget(
+                title = "Новые объявления",
+                adsCount = ads.size,
+                latestAds = ads.take(3)
+            )
+        )
+    }
+}
