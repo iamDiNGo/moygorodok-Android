@@ -44,4 +44,18 @@
     <string name="button_select_image">Выбрать изображение</string>
     <string name="button_remove">Удалить</string>
     <string name="button_skip">Пропустить</string>
+
+    <!-- News -->
+    <string name="title_news">Новости</string>
+    <string name="title_news_detail">Новость</string>
+    <string name="news_empty">Новостей пока нет</string>
+
+    <!-- Categories -->
+    <string name="category_all">Все</string>
+    <string name="category_city">Город</string>
+    <string name="category_events">События</string>
+    <string name="category_transport">Транспорт</string>
+    <string name="category_culture">Культура</string>
+    <string name="category_sport">Спорт</string>
+    <string name="category_society">Общество</string>
 </resources>

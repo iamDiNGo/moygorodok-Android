@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_news_list">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -22,4 +22,25 @@
         android:name="com.gorod.moygorodok.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_news_list"
+        android:name="com.gorod.moygorodok.ui.news.NewsListFragment"
+        android:label="@string/title_news"
+        tools:layout="@layout/fragment_news_list">
+        <action
+            android:id="@+id/action_newsList_to_newsDetail"
+            app:destination="@id/navigation_news_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_news_detail"
+        android:name="com.gorod.moygorodok.ui.news.NewsDetailFragment"
+        android:label="@string/title_news_detail"
+        tools:layout="@layout/fragment_news_detail">
+        <argument
+            android:name="newsId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
