@@ -58,4 +58,32 @@
     <string name="category_culture">Культура</string>
     <string name="category_sport">Спорт</string>
     <string name="category_society">Общество</string>
+
+    <!-- Ads -->
+    <string name="title_ads">Объявления</string>
+    <string name="title_ad_detail">Объявление</string>
+    <string name="ads_empty">Объявлений не найдено</string>
+    <string name="search_hint">Поиск объявлений</string>
+    <string name="button_sort">Сортировка</string>
+    <string name="button_filter">Фильтр</string>
+    <string name="button_favorite">В избранное</string>
+    <string name="button_share">Поделиться</string>
+    <string name="button_call">Позвонить</string>
+    <string name="button_message">Написать</string>
+    <string name="hint_min_price">Цена от</string>
+    <string name="hint_max_price">Цена до</string>
+    <string name="label_description">Описание</string>
+    <string name="label_seller">Продавец</string>
+
+    <!-- Ad Categories -->
+    <string name="ad_category_transport">Транспорт</string>
+    <string name="ad_category_realty">Недвижимость</string>
+    <string name="ad_category_electronics">Электроника</string>
+    <string name="ad_category_clothing">Одежда</string>
+    <string name="ad_category_home">Дом и сад</string>
+    <string name="ad_category_services">Услуги</string>
+    <string name="ad_category_animals">Животные</string>
+    <string name="ad_category_hobbies">Хобби</string>
+    <string name="ad_category_children">Детские товары</string>
+    <string name="ad_category_other">Другое</string>
 </resources>

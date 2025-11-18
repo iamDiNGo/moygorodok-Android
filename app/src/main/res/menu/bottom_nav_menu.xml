@@ -7,6 +7,11 @@
         android:title="@string/title_news" />
 
     <item
+        android:id="@+id/navigation_ad_list"
+        android:icon="@drawable/ic_ads"
+        android:title="@string/title_ads" />
+
+    <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home" />

@@ -43,4 +43,24 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_ad_list"
+        android:name="com.gorod.moygorodok.ui.ads.AdListFragment"
+        android:label="@string/title_ads"
+        tools:layout="@layout/fragment_ad_list">
+        <action
+            android:id="@+id/action_adList_to_adDetail"
+            app:destination="@id/navigation_ad_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_ad_detail"
+        android:name="com.gorod.moygorodok.ui.ads.AdDetailFragment"
+        android:label="@string/title_ad_detail"
+        tools:layout="@layout/fragment_ad_detail">
+        <argument
+            android:name="adId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
