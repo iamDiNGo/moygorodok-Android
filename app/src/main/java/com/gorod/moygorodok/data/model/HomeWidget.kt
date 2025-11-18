@@ -52,6 +52,11 @@ sealed class HomeWidget {
         val title: String,
         val mainNumbers: List<String>
     ) : HomeWidget()
+
+    data class ComplaintWidget(
+        val title: String,
+        val subtitle: String
+    ) : HomeWidget()
 }
 
 data class QuickAction(
@@ -74,6 +79,10 @@ object MockHomeWidgets {
             HomeWidget.EmergencyWidget(
                 title = "Экстренная помощь",
                 mainNumbers = listOf("112", "101", "102", "103")
+            ),
+            HomeWidget.ComplaintWidget(
+                title = "Обращения",
+                subtitle = "Сообщите о проблеме в городе"
             ),
             HomeWidget.AdminWidget(
                 deliveryName = admin.delivery.name,

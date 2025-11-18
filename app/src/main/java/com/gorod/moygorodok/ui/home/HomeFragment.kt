@@ -58,6 +58,9 @@ class HomeFragment : Fragment() {
             },
             onEmergencyClick = {
                 findNavController().navigate(R.id.navigation_emergency)
+            },
+            onComplaintClick = {
+                findNavController().navigate(R.id.navigation_complaint)
             }
         )
 

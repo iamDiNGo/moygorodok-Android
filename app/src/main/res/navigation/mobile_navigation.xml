@@ -141,4 +141,10 @@
         android:label="@string/emergency_title"
         tools:layout="@layout/fragment_emergency" />
 
+    <fragment
+        android:id="@+id/navigation_complaint"
+        android:name="com.gorod.moygorodok.ui.complaint.ComplaintFragment"
+        android:label="@string/complaint_title"
+        tools:layout="@layout/fragment_complaint" />
+
 </navigation>

@@ -9,6 +9,7 @@ import com.gorod.moygorodok.data.model.HomeWidget
 import com.gorod.moygorodok.data.model.TaskPriceType
 import com.gorod.moygorodok.databinding.ItemWidgetAdminBinding
 import com.gorod.moygorodok.databinding.ItemWidgetAdsBinding
+import com.gorod.moygorodok.databinding.ItemWidgetComplaintBinding
 import com.gorod.moygorodok.databinding.ItemWidgetDeliveryBinding
 import com.gorod.moygorodok.databinding.ItemWidgetEmergencyBinding
 import com.gorod.moygorodok.databinding.ItemWidgetNewsBinding
@@ -24,7 +25,8 @@ class HomeWidgetAdapter(
     private val onDeliveryClick: () -> Unit,
     private val onTasksClick: () -> Unit,
     private val onAdminClick: () -> Unit,
-    private val onEmergencyClick: () -> Unit
+    private val onEmergencyClick: () -> Unit,
+    private val onComplaintClick: () -> Unit
 ) : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
@@ -35,6 +37,7 @@ class HomeWidgetAdapter(
         private const val TYPE_TASKS = 4
         private const val TYPE_ADMIN = 5
         private const val TYPE_EMERGENCY = 6
+        private const val TYPE_COMPLAINT = 7
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -46,6 +49,7 @@ class HomeWidgetAdapter(
             is HomeWidget.TasksWidget -> TYPE_TASKS
             is HomeWidget.AdminWidget -> TYPE_ADMIN
             is HomeWidget.EmergencyWidget -> TYPE_EMERGENCY
+            is HomeWidget.ComplaintWidget -> TYPE_COMPLAINT
             else -> throw IllegalArgumentException("Unknown widget type")
         }
     }
@@ -108,6 +112,14 @@ class HomeWidgetAdapter(
                 ),
                 onEmergencyClick
             )
+            TYPE_COMPLAINT -> ComplaintViewHolder(
+                ItemWidgetComplaintBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
+                onComplaintClick
+            )
             else -> throw IllegalArgumentException("Unknown view type")
         }
     }
@@ -121,6 +133,7 @@ class HomeWidgetAdapter(
             is HomeWidget.TasksWidget -> (holder as TasksViewHolder).bind(item)
             is HomeWidget.AdminWidget -> (holder as AdminViewHolder).bind(item)
             is HomeWidget.EmergencyWidget -> (holder as EmergencyViewHolder).bind(item)
+            is HomeWidget.ComplaintWidget -> (holder as ComplaintViewHolder).bind(item)
             else -> {}
         }
     }
@@ -325,6 +338,16 @@ class HomeWidgetAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: HomeWidget.EmergencyWidget) {
+            binding.root.setOnClickListener { onClick() }
+        }
+    }
+
+    class ComplaintViewHolder(
+        private val binding: ItemWidgetComplaintBinding,
+        private val onClick: () -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: HomeWidget.ComplaintWidget) {
             binding.root.setOnClickListener { onClick() }
         }
     }

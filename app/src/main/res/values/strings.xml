@@ -163,4 +163,19 @@
     <string name="emergency_warning">Звоните только в экстренных ситуациях. Ложные вызовы наказываются по закону.</string>
     <string name="emergency_main_services">Основные службы</string>
     <string name="emergency_other_services">Другие службы</string>
+
+    <!-- Complaint -->
+    <string name="complaint_title">Обращение</string>
+    <string name="complaint_widget_title">Обращения</string>
+    <string name="complaint_widget_subtitle">Сообщите о проблеме в городе</string>
+    <string name="complaint_select_category">Выберите категорию</string>
+    <string name="complaint_hint_title">Заголовок обращения</string>
+    <string name="complaint_hint_description">Опишите проблему подробнее</string>
+    <string name="complaint_hint_address">Адрес</string>
+    <string name="complaint_add_photos">Прикрепите фото</string>
+    <string name="complaint_select_image">Добавить изображение</string>
+    <string name="complaint_contact_info">Контактные данные</string>
+    <string name="complaint_hint_name">Ваше имя (необязательно)</string>
+    <string name="complaint_hint_phone">Телефон для связи (необязательно)</string>
+    <string name="complaint_submit">Отправить обращение</string>
 </resources>
