@@ -139,4 +139,20 @@
     <string name="task_respond">Откликнуться</string>
     <string name="task_urgent">Срочно</string>
     <string name="task_executor_found">Исполнитель найден</string>
+
+    <!-- Delivery Admin -->
+    <string name="title_delivery_admin">Панель управления</string>
+    <string name="admin_today_orders">Заказов сегодня</string>
+    <string name="admin_revenue">Выручка</string>
+    <string name="admin_rating">Рейтинг</string>
+    <string name="admin_categories">Категории меню</string>
+    <string name="admin_promotions">Акции</string>
+    <string name="admin_delivery_settings">Настройки доставки</string>
+    <string name="admin_delivery_zone">Зона доставки</string>
+    <string name="admin_add_category">Добавить категорию</string>
+    <string name="admin_add_promotion">Создать акцию</string>
+    <string name="admin_manage_products">Управление товарами</string>
+    <string name="admin_delivery_discount">Скидка на доставку</string>
+    <string name="admin_free_delivery_from">Бесплатная доставка от</string>
+    <string name="admin_save_settings">Сохранить настройки</string>
 </resources>

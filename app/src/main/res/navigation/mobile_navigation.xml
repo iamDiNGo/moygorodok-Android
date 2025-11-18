@@ -129,4 +129,10 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_delivery_admin"
+        android:name="com.gorod.moygorodok.ui.delivery_admin.DeliveryAdminFragment"
+        android:label="@string/title_delivery_admin"
+        tools:layout="@layout/fragment_delivery_admin" />
+
 </navigation>

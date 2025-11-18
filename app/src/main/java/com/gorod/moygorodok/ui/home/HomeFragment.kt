@@ -52,6 +52,9 @@ class HomeFragment : Fragment() {
             },
             onTasksClick = {
                 findNavController().navigate(R.id.navigation_task_list)
+            },
+            onAdminClick = {
+                findNavController().navigate(R.id.navigation_delivery_admin)
             }
         )
 

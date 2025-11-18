@@ -40,6 +40,13 @@ sealed class HomeWidget {
         val taskCount: Int,
         val latestTasks: List<Task>
     ) : HomeWidget()
+
+    data class AdminWidget(
+        val deliveryName: String,
+        val todayOrders: Int,
+        val todayRevenue: String,
+        val isOpen: Boolean
+    ) : HomeWidget()
 }
 
 data class QuickAction(
@@ -56,8 +63,15 @@ object MockHomeWidgets {
         val ads = MockAds.getAll()
         val deliveries = MockDeliveries.getAll()
         val tasks = MockTasks.getTasks()
+        val admin = MockDeliveryAdmin.getDeliveryAdmin()
 
         return listOf(
+            HomeWidget.AdminWidget(
+                deliveryName = admin.delivery.name,
+                todayOrders = 12,
+                todayRevenue = "15 600 ₽",
+                isOpen = admin.isOpen
+            ),
             HomeWidget.WeatherWidget(
                 location = weather.location,
                 currentTemp = weather.currentTemp,
