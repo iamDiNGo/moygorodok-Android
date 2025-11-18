@@ -130,4 +130,13 @@
     <string name="delivery_menu">Меню</string>
     <string name="delivery_info">Информация</string>
     <string name="delivery_reviews">Отзывы</string>
+
+    <!-- Tasks -->
+    <string name="title_tasks">Задания</string>
+    <string name="title_task_detail">Задание</string>
+    <string name="tasks_empty">Заданий не найдено</string>
+    <string name="search_tasks_hint">Поиск заданий</string>
+    <string name="task_respond">Откликнуться</string>
+    <string name="task_urgent">Срочно</string>
+    <string name="task_executor_found">Исполнитель найден</string>
 </resources>

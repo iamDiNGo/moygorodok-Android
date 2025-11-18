@@ -109,4 +109,24 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_task_list"
+        android:name="com.gorod.moygorodok.ui.tasks.TaskListFragment"
+        android:label="@string/title_tasks"
+        tools:layout="@layout/fragment_task_list">
+        <action
+            android:id="@+id/action_taskList_to_taskDetail"
+            app:destination="@id/navigation_task_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_task_detail"
+        android:name="com.gorod.moygorodok.ui.tasks.TaskDetailFragment"
+        android:label="@string/title_task_detail"
+        tools:layout="@layout/fragment_task_detail">
+        <argument
+            android:name="taskId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

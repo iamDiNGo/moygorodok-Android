@@ -49,6 +49,9 @@ class HomeFragment : Fragment() {
             },
             onDeliveryClick = {
                 findNavController().navigate(R.id.navigation_delivery_list)
+            },
+            onTasksClick = {
+                findNavController().navigate(R.id.navigation_task_list)
             }
         )
 

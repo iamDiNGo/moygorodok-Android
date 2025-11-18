@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.gorod.moygorodok.data.model.HomeWidget
+import com.gorod.moygorodok.data.model.TaskPriceType
 import com.gorod.moygorodok.databinding.ItemWidgetAdsBinding
 import com.gorod.moygorodok.databinding.ItemWidgetDeliveryBinding
 import com.gorod.moygorodok.databinding.ItemWidgetNewsBinding
+import com.gorod.moygorodok.databinding.ItemWidgetTasksBinding
 import com.gorod.moygorodok.databinding.ItemWidgetWeatherBinding
 import java.text.NumberFormat
 import java.util.Locale
@@ -17,7 +19,8 @@ class HomeWidgetAdapter(
     private val onWeatherClick: () -> Unit,
     private val onNewsClick: () -> Unit,
     private val onAdsClick: () -> Unit,
-    private val onDeliveryClick: () -> Unit
+    private val onDeliveryClick: () -> Unit,
+    private val onTasksClick: () -> Unit
 ) : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
@@ -25,6 +28,7 @@ class HomeWidgetAdapter(
         private const val TYPE_NEWS = 1
         private const val TYPE_ADS = 2
         private const val TYPE_DELIVERY = 3
+        private const val TYPE_TASKS = 4
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -33,6 +37,7 @@ class HomeWidgetAdapter(
             is HomeWidget.NewsWidget -> TYPE_NEWS
             is HomeWidget.AdsWidget -> TYPE_ADS
             is HomeWidget.DeliveryWidget -> TYPE_DELIVERY
+            is HomeWidget.TasksWidget -> TYPE_TASKS
             else -> throw IllegalArgumentException("Unknown widget type")
         }
     }
@@ -71,6 +76,14 @@ class HomeWidgetAdapter(
                 ),
                 onDeliveryClick
             )
+            TYPE_TASKS -> TasksViewHolder(
+                ItemWidgetTasksBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
+                onTasksClick
+            )
             else -> throw IllegalArgumentException("Unknown view type")
         }
     }
@@ -81,6 +94,7 @@ class HomeWidgetAdapter(
             is HomeWidget.NewsWidget -> (holder as NewsViewHolder).bind(item)
             is HomeWidget.AdsWidget -> (holder as AdsViewHolder).bind(item)
             is HomeWidget.DeliveryWidget -> (holder as DeliveryViewHolder).bind(item)
+            is HomeWidget.TasksWidget -> (holder as TasksViewHolder).bind(item)
             else -> {}
         }
     }
@@ -207,6 +221,53 @@ class HomeWidgetAdapter(
                 }
 
                 root.setOnClickListener { onClick() }
+            }
+        }
+    }
+
+    class TasksViewHolder(
+        private val binding: ItemWidgetTasksBinding,
+        private val onClick: () -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: HomeWidget.TasksWidget) {
+            binding.apply {
+                textTitle.text = item.title
+                textCount.text = "${item.taskCount}"
+
+                // Show latest tasks
+                if (item.latestTasks.isNotEmpty()) {
+                    val t1 = item.latestTasks[0]
+                    task1Title.text = t1.title
+                    task1Price.text = formatTaskPrice(t1)
+                    task1Urgent.visibility = if (t1.isUrgent) android.view.View.VISIBLE else android.view.View.GONE
+                    task1.visibility = android.view.View.VISIBLE
+                }
+                if (item.latestTasks.size > 1) {
+                    val t2 = item.latestTasks[1]
+                    task2Title.text = t2.title
+                    task2Price.text = formatTaskPrice(t2)
+                    task2Urgent.visibility = if (t2.isUrgent) android.view.View.VISIBLE else android.view.View.GONE
+                    task2.visibility = android.view.View.VISIBLE
+                }
+                if (item.latestTasks.size > 2) {
+                    val t3 = item.latestTasks[2]
+                    task3Title.text = t3.title
+                    task3Price.text = formatTaskPrice(t3)
+                    task3Urgent.visibility = if (t3.isUrgent) android.view.View.VISIBLE else android.view.View.GONE
+                    task3.visibility = android.view.View.VISIBLE
+                }
+
+                root.setOnClickListener { onClick() }
+            }
+        }
+
+        private fun formatTaskPrice(task: com.gorod.moygorodok.data.model.Task): String {
+            return when (task.price.type) {
+                TaskPriceType.FIXED -> "${task.price.amount?.toInt()} ₽"
+                TaskPriceType.NEGOTIABLE -> "Договорная"
+                TaskPriceType.HOURLY -> "${task.price.amount?.toInt()} ₽/час"
+                TaskPriceType.RANGE -> "${task.price.amount?.toInt()} - ${task.price.maxAmount?.toInt()} ₽"
             }
         }
     }
