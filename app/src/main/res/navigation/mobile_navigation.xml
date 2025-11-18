@@ -153,4 +153,10 @@
         android:label="@string/notifications_title"
         tools:layout="@layout/fragment_notification_list" />
 
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="com.gorod.moygorodok.ui.chat.ChatFragment"
+        android:label="@string/chat_title"
+        tools:layout="@layout/fragment_chat" />
+
 </navigation>

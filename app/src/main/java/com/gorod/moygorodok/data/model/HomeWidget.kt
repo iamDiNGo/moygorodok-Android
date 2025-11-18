@@ -62,6 +62,11 @@ sealed class HomeWidget {
         val unreadCount: Int,
         val latestTypes: List<String>
     ) : HomeWidget()
+
+    data class ChatWidget(
+        val onlineCount: Int,
+        val membersCount: Int
+    ) : HomeWidget()
 }
 
 data class QuickAction(
@@ -84,6 +89,10 @@ object MockHomeWidgets {
             HomeWidget.NotificationsWidget(
                 unreadCount = MockNotifications.getUnreadCount(),
                 latestTypes = listOf("⚠️", "🍕", "🎉")
+            ),
+            HomeWidget.ChatWidget(
+                onlineCount = MockChat.getOnlineCount(),
+                membersCount = MockChat.getMembersCount()
             ),
             HomeWidget.EmergencyWidget(
                 title = "Экстренная помощь",

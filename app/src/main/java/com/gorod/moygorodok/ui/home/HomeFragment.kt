@@ -64,6 +64,9 @@ class HomeFragment : Fragment() {
             },
             onNotificationsClick = {
                 findNavController().navigate(R.id.navigation_notification_list)
+            },
+            onChatClick = {
+                findNavController().navigate(R.id.navigation_chat)
             }
         )
 

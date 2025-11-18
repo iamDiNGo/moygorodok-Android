@@ -11,6 +11,7 @@ import com.gorod.moygorodok.databinding.ItemWidgetAdminBinding
 import com.gorod.moygorodok.databinding.ItemWidgetAdsBinding
 import com.gorod.moygorodok.databinding.ItemWidgetComplaintBinding
 import com.gorod.moygorodok.databinding.ItemWidgetDeliveryBinding
+import com.gorod.moygorodok.databinding.ItemWidgetChatBinding
 import com.gorod.moygorodok.databinding.ItemWidgetEmergencyBinding
 import com.gorod.moygorodok.databinding.ItemWidgetNewsBinding
 import com.gorod.moygorodok.databinding.ItemWidgetNotificationsBinding
@@ -28,7 +29,8 @@ class HomeWidgetAdapter(
     private val onAdminClick: () -> Unit,
     private val onEmergencyClick: () -> Unit,
     private val onComplaintClick: () -> Unit,
-    private val onNotificationsClick: () -> Unit
+    private val onNotificationsClick: () -> Unit,
+    private val onChatClick: () -> Unit
 ) : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
@@ -41,6 +43,7 @@ class HomeWidgetAdapter(
         private const val TYPE_EMERGENCY = 6
         private const val TYPE_COMPLAINT = 7
         private const val TYPE_NOTIFICATIONS = 8
+        private const val TYPE_CHAT = 9
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -54,6 +57,7 @@ class HomeWidgetAdapter(
             is HomeWidget.EmergencyWidget -> TYPE_EMERGENCY
             is HomeWidget.ComplaintWidget -> TYPE_COMPLAINT
             is HomeWidget.NotificationsWidget -> TYPE_NOTIFICATIONS
+            is HomeWidget.ChatWidget -> TYPE_CHAT
             else -> throw IllegalArgumentException("Unknown widget type")
         }
     }
@@ -132,6 +136,14 @@ class HomeWidgetAdapter(
                 ),
                 onNotificationsClick
             )
+            TYPE_CHAT -> ChatViewHolder(
+                ItemWidgetChatBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
+                onChatClick
+            )
             else -> throw IllegalArgumentException("Unknown view type")
         }
     }
@@ -147,6 +159,7 @@ class HomeWidgetAdapter(
             is HomeWidget.EmergencyWidget -> (holder as EmergencyViewHolder).bind(item)
             is HomeWidget.ComplaintWidget -> (holder as ComplaintViewHolder).bind(item)
             is HomeWidget.NotificationsWidget -> (holder as NotificationsViewHolder).bind(item)
+            is HomeWidget.ChatWidget -> (holder as ChatViewHolder).bind(item)
             else -> {}
         }
     }
@@ -374,6 +387,19 @@ class HomeWidgetAdapter(
             binding.apply {
                 textBadge.text = item.unreadCount.toString()
                 textBadge.visibility = if (item.unreadCount > 0) android.view.View.VISIBLE else android.view.View.GONE
+                root.setOnClickListener { onClick() }
+            }
+        }
+    }
+
+    class ChatViewHolder(
+        private val binding: ItemWidgetChatBinding,
+        private val onClick: () -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: HomeWidget.ChatWidget) {
+            binding.apply {
+                textOnline.text = "${item.onlineCount} онлайн"
                 root.setOnClickListener { onClick() }
             }
         }

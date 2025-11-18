@@ -186,4 +186,10 @@
     <string name="notifications_empty">Уведомлений пока нет</string>
     <string name="notifications_mark_all_read">Прочитать все</string>
     <string name="delete">Удалить</string>
+
+    <!-- Chat -->
+    <string name="chat_title">Городской чат</string>
+    <string name="chat_widget_title">Городской чат</string>
+    <string name="chat_widget_subtitle">Общайтесь с жителями города</string>
+    <string name="chat_message_hint">Сообщение…</string>
 </resources>
