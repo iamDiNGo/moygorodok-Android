@@ -159,4 +159,24 @@
         android:label="@string/chat_title"
         tools:layout="@layout/fragment_chat" />
 
+    <fragment
+        android:id="@+id/navigation_cinema_list"
+        android:name="com.gorod.moygorodok.ui.cinema.CinemaListFragment"
+        android:label="@string/cinema_title"
+        tools:layout="@layout/fragment_cinema_list">
+        <action
+            android:id="@+id/action_cinemaList_to_movieDetail"
+            app:destination="@id/navigation_movie_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_movie_detail"
+        android:name="com.gorod.moygorodok.ui.cinema.MovieDetailFragment"
+        android:label="@string/movie_detail_title"
+        tools:layout="@layout/fragment_movie_detail">
+        <argument
+            android:name="movieId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

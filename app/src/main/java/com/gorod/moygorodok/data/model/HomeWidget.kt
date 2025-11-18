@@ -67,6 +67,12 @@ sealed class HomeWidget {
         val onlineCount: Int,
         val membersCount: Int
     ) : HomeWidget()
+
+    data class CinemaWidget(
+        val nowPlayingCount: Int,
+        val cinemasCount: Int,
+        val upcomingMovies: List<String>
+    ) : HomeWidget()
 }
 
 data class QuickAction(
@@ -93,6 +99,11 @@ object MockHomeWidgets {
             HomeWidget.ChatWidget(
                 onlineCount = MockChat.getOnlineCount(),
                 membersCount = MockChat.getMembersCount()
+            ),
+            HomeWidget.CinemaWidget(
+                nowPlayingCount = MockCinemas.getNowPlayingCount(),
+                cinemasCount = MockCinemas.getCinemas().size,
+                upcomingMovies = MockCinemas.getUpcomingMovies()
             ),
             HomeWidget.EmergencyWidget(
                 title = "Экстренная помощь",

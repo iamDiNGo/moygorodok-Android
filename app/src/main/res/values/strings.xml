@@ -192,4 +192,14 @@
     <string name="chat_widget_title">Городской чат</string>
     <string name="chat_widget_subtitle">Общайтесь с жителями города</string>
     <string name="chat_message_hint">Сообщение…</string>
+
+    <!-- Cinema -->
+    <string name="cinema_title">Кинотеатры</string>
+    <string name="movie_detail_title">Фильм</string>
+    <string name="cinema_widget_title">Кинотеатры</string>
+    <string name="cinema_widget_subtitle">Фильмы и сеансы в вашем городе</string>
+    <string name="cinema_now_playing">В прокате</string>
+    <string name="cinema_upcoming">Скоро в кино</string>
+    <string name="cinema_showtimes">Сеансы</string>
+    <string name="cinema_buy_ticket">Купить билет</string>
 </resources>

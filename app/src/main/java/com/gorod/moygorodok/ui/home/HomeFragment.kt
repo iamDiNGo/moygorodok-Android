@@ -67,6 +67,9 @@ class HomeFragment : Fragment() {
             },
             onChatClick = {
                 findNavController().navigate(R.id.navigation_chat)
+            },
+            onCinemaClick = {
+                findNavController().navigate(R.id.navigation_cinema_list)
             }
         )
 
