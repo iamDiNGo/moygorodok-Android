@@ -69,4 +69,24 @@
         android:label="@string/title_weather"
         tools:layout="@layout/fragment_weather" />
 
+    <fragment
+        android:id="@+id/navigation_event_list"
+        android:name="com.gorod.moygorodok.ui.events.EventListFragment"
+        android:label="@string/title_events"
+        tools:layout="@layout/fragment_event_list">
+        <action
+            android:id="@+id/action_eventList_to_eventDetail"
+            app:destination="@id/navigation_event_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_event_detail"
+        android:name="com.gorod.moygorodok.ui.events.EventDetailFragment"
+        android:label="@string/title_event_detail"
+        tools:layout="@layout/fragment_event_detail">
+        <argument
+            android:name="eventId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

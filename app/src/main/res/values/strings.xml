@@ -105,4 +105,15 @@
     <string name="ad_category_hobbies">Хобби</string>
     <string name="ad_category_children">Детские товары</string>
     <string name="ad_category_other">Другое</string>
+
+    <!-- Events -->
+    <string name="title_events">События</string>
+    <string name="title_event_detail">Событие</string>
+    <string name="events_empty">Событий не найдено</string>
+    <string name="search_events_hint">Поиск событий</string>
+    <string name="event_featured">Рекомендуем</string>
+    <string name="event_about">О событии</string>
+    <string name="event_organizer">Организатор</string>
+    <string name="event_website">Сайт</string>
+    <string name="event_buy_tickets">Купить билеты</string>
 </resources>

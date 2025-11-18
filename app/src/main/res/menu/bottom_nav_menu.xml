@@ -12,14 +12,14 @@
         android:title="@string/title_ads" />
 
     <item
+        android:id="@+id/navigation_event_list"
+        android:icon="@drawable/ic_events"
+        android:title="@string/title_events" />
+
+    <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home" />
-
-    <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard" />
 
     <item
         android:id="@+id/navigation_notifications"
