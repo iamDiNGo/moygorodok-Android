@@ -116,4 +116,18 @@
     <string name="event_organizer">Организатор</string>
     <string name="event_website">Сайт</string>
     <string name="event_buy_tickets">Купить билеты</string>
+
+    <!-- Delivery -->
+    <string name="title_delivery">Доставка</string>
+    <string name="title_delivery_detail">Заведение</string>
+    <string name="delivery_empty">Доставок не найдено</string>
+    <string name="search_delivery_hint">Поиск доставок</string>
+    <string name="delivery_closed">Закрыто</string>
+    <string name="delivery_min_order">Мин. заказ</string>
+    <string name="delivery_time">Время доставки</string>
+    <string name="delivery_free">Бесплатно</string>
+    <string name="delivery_add_to_cart">В корзину</string>
+    <string name="delivery_menu">Меню</string>
+    <string name="delivery_info">Информация</string>
+    <string name="delivery_reviews">Отзывы</string>
 </resources>

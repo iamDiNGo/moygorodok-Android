@@ -89,4 +89,24 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_delivery_list"
+        android:name="com.gorod.moygorodok.ui.delivery.DeliveryListFragment"
+        android:label="@string/title_delivery"
+        tools:layout="@layout/fragment_delivery_list">
+        <action
+            android:id="@+id/action_deliveryList_to_deliveryDetail"
+            app:destination="@id/navigation_delivery_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_delivery_detail"
+        android:name="com.gorod.moygorodok.ui.delivery.DeliveryDetailFragment"
+        android:label="@string/title_delivery_detail"
+        tools:layout="@layout/fragment_delivery_detail">
+        <argument
+            android:name="deliveryId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

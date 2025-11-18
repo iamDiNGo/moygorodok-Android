@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.gorod.moygorodok.data.model.HomeWidget
 import com.gorod.moygorodok.databinding.ItemWidgetAdsBinding
+import com.gorod.moygorodok.databinding.ItemWidgetDeliveryBinding
 import com.gorod.moygorodok.databinding.ItemWidgetNewsBinding
 import com.gorod.moygorodok.databinding.ItemWidgetWeatherBinding
 import java.text.NumberFormat
@@ -15,13 +16,15 @@ import java.util.Locale
 class HomeWidgetAdapter(
     private val onWeatherClick: () -> Unit,
     private val onNewsClick: () -> Unit,
-    private val onAdsClick: () -> Unit
+    private val onAdsClick: () -> Unit,
+    private val onDeliveryClick: () -> Unit
 ) : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
         private const val TYPE_WEATHER = 0
         private const val TYPE_NEWS = 1
         private const val TYPE_ADS = 2
+        private const val TYPE_DELIVERY = 3
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -29,6 +32,7 @@ class HomeWidgetAdapter(
             is HomeWidget.WeatherWidget -> TYPE_WEATHER
             is HomeWidget.NewsWidget -> TYPE_NEWS
             is HomeWidget.AdsWidget -> TYPE_ADS
+            is HomeWidget.DeliveryWidget -> TYPE_DELIVERY
             else -> throw IllegalArgumentException("Unknown widget type")
         }
     }
@@ -59,6 +63,14 @@ class HomeWidgetAdapter(
                 ),
                 onAdsClick
             )
+            TYPE_DELIVERY -> DeliveryViewHolder(
+                ItemWidgetDeliveryBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
+                onDeliveryClick
+            )
             else -> throw IllegalArgumentException("Unknown view type")
         }
     }
@@ -68,6 +80,7 @@ class HomeWidgetAdapter(
             is HomeWidget.WeatherWidget -> (holder as WeatherViewHolder).bind(item)
             is HomeWidget.NewsWidget -> (holder as NewsViewHolder).bind(item)
             is HomeWidget.AdsWidget -> (holder as AdsViewHolder).bind(item)
+            is HomeWidget.DeliveryWidget -> (holder as DeliveryViewHolder).bind(item)
             else -> {}
         }
     }
@@ -159,6 +172,41 @@ class HomeWidgetAdapter(
                 "${format.format(price)} ₽"
             } else {
                 "Бесплатно"
+            }
+        }
+    }
+
+    class DeliveryViewHolder(
+        private val binding: ItemWidgetDeliveryBinding,
+        private val onClick: () -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: HomeWidget.DeliveryWidget) {
+            binding.apply {
+                textTitle.text = item.title
+                textCount.text = "${item.deliveryCount} заведений"
+
+                // Show latest deliveries
+                if (item.latestDeliveries.isNotEmpty()) {
+                    val d1 = item.latestDeliveries[0]
+                    textDelivery1Name.text = d1.name
+                    textDelivery1Rating.text = "★ ${d1.rating}"
+                    layoutDelivery1.visibility = android.view.View.VISIBLE
+                }
+                if (item.latestDeliveries.size > 1) {
+                    val d2 = item.latestDeliveries[1]
+                    textDelivery2Name.text = d2.name
+                    textDelivery2Rating.text = "★ ${d2.rating}"
+                    layoutDelivery2.visibility = android.view.View.VISIBLE
+                }
+                if (item.latestDeliveries.size > 2) {
+                    val d3 = item.latestDeliveries[2]
+                    textDelivery3Name.text = d3.name
+                    textDelivery3Rating.text = "★ ${d3.rating}"
+                    layoutDelivery3.visibility = android.view.View.VISIBLE
+                }
+
+                root.setOnClickListener { onClick() }
             }
         }
     }

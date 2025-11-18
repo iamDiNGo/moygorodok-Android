@@ -46,6 +46,9 @@ class HomeFragment : Fragment() {
             },
             onAdsClick = {
                 findNavController().navigate(R.id.navigation_ad_list)
+            },
+            onDeliveryClick = {
+                findNavController().navigate(R.id.navigation_delivery_list)
             }
         )
 

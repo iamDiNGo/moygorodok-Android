@@ -28,6 +28,12 @@ sealed class HomeWidget {
     data class QuickActionsWidget(
         val actions: List<QuickAction>
     ) : HomeWidget()
+
+    data class DeliveryWidget(
+        val title: String,
+        val deliveryCount: Int,
+        val latestDeliveries: List<Delivery>
+    ) : HomeWidget()
 }
 
 data class QuickAction(
@@ -42,6 +48,7 @@ object MockHomeWidgets {
         val weather = MockWeather.getCurrentWeather()
         val news = MockNews.getAll()
         val ads = MockAds.getAll()
+        val deliveries = MockDeliveries.getAll()
 
         return listOf(
             HomeWidget.WeatherWidget(
@@ -50,6 +57,11 @@ object MockHomeWidgets {
                 condition = weather.condition,
                 highTemp = weather.highTemp,
                 lowTemp = weather.lowTemp
+            ),
+            HomeWidget.DeliveryWidget(
+                title = "Доставка еды",
+                deliveryCount = deliveries.size,
+                latestDeliveries = deliveries.take(3)
             ),
             HomeWidget.NewsWidget(
                 title = "Последние новости",
