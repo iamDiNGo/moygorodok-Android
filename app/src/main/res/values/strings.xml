@@ -210,4 +210,15 @@
     <string name="currency_buy">Покупка</string>
     <string name="currency_sell">Продажа</string>
     <string name="currency_cb">ЦБ РФ</string>
+
+    <!-- Company -->
+    <string name="company_title">Компании</string>
+    <string name="company_detail_title">Компания</string>
+    <string name="company_widget_title">Компании</string>
+    <string name="company_widget_subtitle">Каталог компаний города</string>
+    <string name="company_all_categories">Все категории</string>
+    <string name="company_verified">Проверено</string>
+    <string name="company_services">Услуги</string>
+    <string name="company_contacts">Контакты</string>
+    <string name="company_about">О компании</string>
 </resources>

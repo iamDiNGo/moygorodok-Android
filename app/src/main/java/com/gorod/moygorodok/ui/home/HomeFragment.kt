@@ -73,6 +73,9 @@ class HomeFragment : Fragment() {
             },
             onCurrencyClick = {
                 findNavController().navigate(R.id.navigation_currency_list)
+            },
+            onCompanyClick = {
+                findNavController().navigate(R.id.navigation_company_list)
             }
         )
 

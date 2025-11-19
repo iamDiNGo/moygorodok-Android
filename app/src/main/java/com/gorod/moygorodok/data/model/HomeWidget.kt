@@ -81,6 +81,12 @@ sealed class HomeWidget {
         val jpyRate: Double,
         val lastUpdate: String
     ) : HomeWidget()
+
+    data class CompanyWidget(
+        val totalCount: Int,
+        val verifiedCount: Int,
+        val categoriesCount: Int
+    ) : HomeWidget()
 }
 
 data class QuickAction(
@@ -119,6 +125,11 @@ object MockHomeWidgets {
                 cnyRate = MockCurrencies.getCurrencyByCode("CNY")?.cbRate ?: 12.85,
                 jpyRate = MockCurrencies.getCurrencyByCode("JPY")?.cbRate ?: 0.625,
                 lastUpdate = MockCurrencies.getLastUpdate()
+            ),
+            HomeWidget.CompanyWidget(
+                totalCount = MockCompanies.getTotalCount(),
+                verifiedCount = MockCompanies.getVerifiedCount(),
+                categoriesCount = MockCompanies.getCategories().size
             ),
             HomeWidget.EmergencyWidget(
                 title = "Экстренная помощь",

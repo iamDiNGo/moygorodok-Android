@@ -185,4 +185,24 @@
         android:label="@string/currency_title"
         tools:layout="@layout/fragment_currency_list" />
 
+    <fragment
+        android:id="@+id/navigation_company_list"
+        android:name="com.gorod.moygorodok.ui.company.CompanyListFragment"
+        android:label="@string/company_title"
+        tools:layout="@layout/fragment_company_list">
+        <action
+            android:id="@+id/action_companyList_to_companyDetail"
+            app:destination="@id/navigation_company_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_company_detail"
+        android:name="com.gorod.moygorodok.ui.company.CompanyDetailFragment"
+        android:label="@string/company_detail_title"
+        tools:layout="@layout/fragment_company_detail">
+        <argument
+            android:name="companyId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

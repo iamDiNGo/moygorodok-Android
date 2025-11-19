@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3F51B5"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🏢"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:text="Компании"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_forward"
+                app:tint="@android:color/white" />
+
+        </LinearLayout>
+
+        <!-- Stats -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <!-- Total companies -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="компаний"
+                    android:textColor="#DDFFFFFF"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <!-- Verified -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_verified"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="проверенных"
+                    android:textColor="#DDFFFFFF"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <!-- Categories -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_categories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="категорий"
+                    android:textColor="#DDFFFFFF"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Top rated hint -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="⭐ Найдите лучшие компании города"
+            android:textColor="#DDFFFFFF"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
