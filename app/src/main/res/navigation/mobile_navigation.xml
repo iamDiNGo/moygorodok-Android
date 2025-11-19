@@ -179,4 +179,10 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_currency_list"
+        android:name="com.gorod.moygorodok.ui.currency.CurrencyListFragment"
+        android:label="@string/currency_title"
+        tools:layout="@layout/fragment_currency_list" />
+
 </navigation>

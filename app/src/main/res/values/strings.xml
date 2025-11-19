@@ -202,4 +202,12 @@
     <string name="cinema_upcoming">Скоро в кино</string>
     <string name="cinema_showtimes">Сеансы</string>
     <string name="cinema_buy_ticket">Купить билет</string>
+
+    <!-- Currency -->
+    <string name="currency_title">Курсы валют</string>
+    <string name="currency_widget_title">Курсы валют</string>
+    <string name="currency_widget_subtitle">Актуальные курсы валют ЦБ РФ</string>
+    <string name="currency_buy">Покупка</string>
+    <string name="currency_sell">Продажа</string>
+    <string name="currency_cb">ЦБ РФ</string>
 </resources>

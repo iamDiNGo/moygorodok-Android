@@ -73,6 +73,14 @@ sealed class HomeWidget {
         val cinemasCount: Int,
         val upcomingMovies: List<String>
     ) : HomeWidget()
+
+    data class CurrencyWidget(
+        val usdRate: Double,
+        val eurRate: Double,
+        val cnyRate: Double,
+        val jpyRate: Double,
+        val lastUpdate: String
+    ) : HomeWidget()
 }
 
 data class QuickAction(
@@ -104,6 +112,13 @@ object MockHomeWidgets {
                 nowPlayingCount = MockCinemas.getNowPlayingCount(),
                 cinemasCount = MockCinemas.getCinemas().size,
                 upcomingMovies = MockCinemas.getUpcomingMovies()
+            ),
+            HomeWidget.CurrencyWidget(
+                usdRate = MockCurrencies.getCurrencyByCode("USD")?.cbRate ?: 92.35,
+                eurRate = MockCurrencies.getCurrencyByCode("EUR")?.cbRate ?: 100.65,
+                cnyRate = MockCurrencies.getCurrencyByCode("CNY")?.cbRate ?: 12.85,
+                jpyRate = MockCurrencies.getCurrencyByCode("JPY")?.cbRate ?: 0.625,
+                lastUpdate = MockCurrencies.getLastUpdate()
             ),
             HomeWidget.EmergencyWidget(
                 title = "Экстренная помощь",

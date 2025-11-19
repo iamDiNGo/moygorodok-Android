@@ -70,6 +70,9 @@ class HomeFragment : Fragment() {
             },
             onCinemaClick = {
                 findNavController().navigate(R.id.navigation_cinema_list)
+            },
+            onCurrencyClick = {
+                findNavController().navigate(R.id.navigation_currency_list)
             }
         )
 

@@ -13,6 +13,7 @@ import com.gorod.moygorodok.databinding.ItemWidgetComplaintBinding
 import com.gorod.moygorodok.databinding.ItemWidgetDeliveryBinding
 import com.gorod.moygorodok.databinding.ItemWidgetChatBinding
 import com.gorod.moygorodok.databinding.ItemWidgetCinemaBinding
+import com.gorod.moygorodok.databinding.ItemWidgetCurrencyBinding
 import com.gorod.moygorodok.databinding.ItemWidgetEmergencyBinding
 import com.gorod.moygorodok.databinding.ItemWidgetNewsBinding
 import com.gorod.moygorodok.databinding.ItemWidgetNotificationsBinding
@@ -32,7 +33,8 @@ class HomeWidgetAdapter(
     private val onComplaintClick: () -> Unit,
     private val onNotificationsClick: () -> Unit,
     private val onChatClick: () -> Unit,
-    private val onCinemaClick: () -> Unit
+    private val onCinemaClick: () -> Unit,
+    private val onCurrencyClick: () -> Unit
 ) : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
@@ -47,6 +49,7 @@ class HomeWidgetAdapter(
         private const val TYPE_NOTIFICATIONS = 8
         private const val TYPE_CHAT = 9
         private const val TYPE_CINEMA = 10
+        private const val TYPE_CURRENCY = 11
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -62,6 +65,7 @@ class HomeWidgetAdapter(
             is HomeWidget.NotificationsWidget -> TYPE_NOTIFICATIONS
             is HomeWidget.ChatWidget -> TYPE_CHAT
             is HomeWidget.CinemaWidget -> TYPE_CINEMA
+            is HomeWidget.CurrencyWidget -> TYPE_CURRENCY
             else -> throw IllegalArgumentException("Unknown widget type")
         }
     }
@@ -156,6 +160,14 @@ class HomeWidgetAdapter(
                 ),
                 onCinemaClick
             )
+            TYPE_CURRENCY -> CurrencyViewHolder(
+                ItemWidgetCurrencyBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
+                onCurrencyClick
+            )
             else -> throw IllegalArgumentException("Unknown view type")
         }
     }
@@ -173,6 +185,7 @@ class HomeWidgetAdapter(
             is HomeWidget.NotificationsWidget -> (holder as NotificationsViewHolder).bind(item)
             is HomeWidget.ChatWidget -> (holder as ChatViewHolder).bind(item)
             is HomeWidget.CinemaWidget -> (holder as CinemaViewHolder).bind(item)
+            is HomeWidget.CurrencyWidget -> (holder as CurrencyViewHolder).bind(item)
             else -> {}
         }
     }
@@ -428,6 +441,23 @@ class HomeWidgetAdapter(
                 textNowPlaying.text = item.nowPlayingCount.toString()
                 textCinemasCount.text = item.cinemasCount.toString()
                 textUpcoming.text = "Скоро: ${item.upcomingMovies.joinToString(", ")}"
+                root.setOnClickListener { onClick() }
+            }
+        }
+    }
+
+    class CurrencyViewHolder(
+        private val binding: ItemWidgetCurrencyBinding,
+        private val onClick: () -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: HomeWidget.CurrencyWidget) {
+            binding.apply {
+                textUsdRate.text = String.format("%.2f", item.usdRate)
+                textEurRate.text = String.format("%.2f", item.eurRate)
+                textCnyRate.text = String.format("%.2f", item.cnyRate)
+                textJpyRate.text = String.format("%.2f", item.jpyRate)
+                textLastUpdate.text = "Обновлено: ${item.lastUpdate.split(", ").lastOrNull() ?: item.lastUpdate}"
                 root.setOnClickListener { onClick() }
             }
         }
