@@ -3,4 +3,222 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <!-- Auth -->
+    <string name="title_login">Авторизация</string>
+    <string name="title_pin">Введите PIN</string>
+    <string name="title_register">Регистрация</string>
+    <string name="title_profile">Профиль</string>
+    <string name="title_avatar">Аватар</string>
+
+    <!-- Login -->
+    <string name="login_title">Добро пожаловать</string>
+    <string name="login_subtitle">Войдите по номеру телефона</string>
+    <string name="hint_phone">Номер телефона</string>
+    <string name="button_login">Войти</string>
+    <string name="button_register">Создать аккаунт</string>
+
+    <!-- PIN -->
+    <string name="pin_title">Введите PIN-код</string>
+
+    <!-- Register -->
+    <string name="register_title">Создание аккаунта</string>
+    <string name="register_subtitle">Заполните данные для регистрации</string>
+    <string name="hint_first_name">Имя</string>
+    <string name="hint_last_name">Фамилия</string>
+    <string name="hint_email">Email (необязательно)</string>
+    <string name="hint_pin">PIN-код (4 цифры)</string>
+    <string name="hint_pin_confirm">Подтвердите PIN-код</string>
+    <string name="button_create_account">Зарегистрироваться</string>
+    <string name="button_back_to_login">Уже есть аккаунт? Войти</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Мой профиль</string>
+    <string name="button_save">Сохранить</string>
+    <string name="button_logout">Выйти</string>
+    <string name="button_change_avatar">Изменить фото</string>
+
+    <!-- Avatar -->
+    <string name="avatar_title">Добавьте фото</string>
+    <string name="avatar_subtitle">Выберите фото для вашего профиля</string>
+    <string name="button_select_image">Выбрать изображение</string>
+    <string name="button_remove">Удалить</string>
+    <string name="button_skip">Пропустить</string>
+
+    <!-- News -->
+    <string name="title_news">Новости</string>
+    <string name="title_news_detail">Новость</string>
+    <string name="news_empty">Новостей пока нет</string>
+
+    <!-- Categories -->
+    <string name="category_all">Все</string>
+    <string name="category_city">Город</string>
+    <string name="category_events">События</string>
+    <string name="category_transport">Транспорт</string>
+    <string name="category_culture">Культура</string>
+    <string name="category_sport">Спорт</string>
+    <string name="category_society">Общество</string>
+
+    <!-- Ads -->
+    <string name="title_ads">Объявления</string>
+    <string name="title_ad_detail">Объявление</string>
+    <string name="ads_empty">Объявлений не найдено</string>
+    <string name="search_hint">Поиск объявлений</string>
+    <string name="button_sort">Сортировка</string>
+    <string name="button_filter">Фильтр</string>
+    <string name="button_favorite">В избранное</string>
+    <string name="button_share">Поделиться</string>
+    <string name="button_call">Позвонить</string>
+    <string name="button_message">Написать</string>
+    <string name="hint_min_price">Цена от</string>
+    <string name="hint_max_price">Цена до</string>
+    <string name="label_description">Описание</string>
+    <string name="label_seller">Продавец</string>
+
+    <!-- Weather -->
+    <string name="title_weather">Погода</string>
+    <string name="weather_hourly_forecast">Почасовой прогноз</string>
+    <string name="weather_daily_forecast">Прогноз на 10 дней</string>
+    <string name="weather_feels_like">Ощущается</string>
+    <string name="weather_humidity">Влажность</string>
+    <string name="weather_wind">Ветер</string>
+    <string name="weather_pressure">Давление</string>
+    <string name="weather_visibility">Видимость</string>
+    <string name="weather_uv_index">УФ-индекс</string>
+    <string name="weather_sunrise">Восход</string>
+    <string name="weather_sunset">Закат</string>
+
+    <!-- Home Widgets -->
+    <string name="widget_weather">Погода</string>
+    <string name="widget_news">Новости</string>
+    <string name="widget_ads">Объявления</string>
+    <string name="widget_profile">Профиль</string>
+
+    <!-- Ad Categories -->
+    <string name="ad_category_transport">Транспорт</string>
+    <string name="ad_category_realty">Недвижимость</string>
+    <string name="ad_category_electronics">Электроника</string>
+    <string name="ad_category_clothing">Одежда</string>
+    <string name="ad_category_home">Дом и сад</string>
+    <string name="ad_category_services">Услуги</string>
+    <string name="ad_category_animals">Животные</string>
+    <string name="ad_category_hobbies">Хобби</string>
+    <string name="ad_category_children">Детские товары</string>
+    <string name="ad_category_other">Другое</string>
+
+    <!-- Events -->
+    <string name="title_events">События</string>
+    <string name="title_event_detail">Событие</string>
+    <string name="events_empty">Событий не найдено</string>
+    <string name="search_events_hint">Поиск событий</string>
+    <string name="event_featured">Рекомендуем</string>
+    <string name="event_about">О событии</string>
+    <string name="event_organizer">Организатор</string>
+    <string name="event_website">Сайт</string>
+    <string name="event_buy_tickets">Купить билеты</string>
+
+    <!-- Delivery -->
+    <string name="title_delivery">Доставка</string>
+    <string name="title_delivery_detail">Заведение</string>
+    <string name="delivery_empty">Доставок не найдено</string>
+    <string name="search_delivery_hint">Поиск доставок</string>
+    <string name="delivery_closed">Закрыто</string>
+    <string name="delivery_min_order">Мин. заказ</string>
+    <string name="delivery_time">Время доставки</string>
+    <string name="delivery_free">Бесплатно</string>
+    <string name="delivery_add_to_cart">В корзину</string>
+    <string name="delivery_menu">Меню</string>
+    <string name="delivery_info">Информация</string>
+    <string name="delivery_reviews">Отзывы</string>
+
+    <!-- Tasks -->
+    <string name="title_tasks">Задания</string>
+    <string name="title_task_detail">Задание</string>
+    <string name="tasks_empty">Заданий не найдено</string>
+    <string name="search_tasks_hint">Поиск заданий</string>
+    <string name="task_respond">Откликнуться</string>
+    <string name="task_urgent">Срочно</string>
+    <string name="task_executor_found">Исполнитель найден</string>
+
+    <!-- Delivery Admin -->
+    <string name="title_delivery_admin">Панель управления</string>
+    <string name="admin_today_orders">Заказов сегодня</string>
+    <string name="admin_revenue">Выручка</string>
+    <string name="admin_rating">Рейтинг</string>
+    <string name="admin_categories">Категории меню</string>
+    <string name="admin_promotions">Акции</string>
+    <string name="admin_delivery_settings">Настройки доставки</string>
+    <string name="admin_delivery_zone">Зона доставки</string>
+    <string name="admin_add_category">Добавить категорию</string>
+    <string name="admin_add_promotion">Создать акцию</string>
+    <string name="admin_manage_products">Управление товарами</string>
+    <string name="admin_delivery_discount">Скидка на доставку</string>
+    <string name="admin_free_delivery_from">Бесплатная доставка от</string>
+    <string name="admin_save_settings">Сохранить настройки</string>
+
+    <!-- Emergency -->
+    <string name="emergency_title">Экстренная помощь</string>
+    <string name="emergency_widget_title">Экстренная помощь</string>
+    <string name="emergency_widget_subtitle">Важные номера вашего региона</string>
+    <string name="emergency_warning">Звоните только в экстренных ситуациях. Ложные вызовы наказываются по закону.</string>
+    <string name="emergency_main_services">Основные службы</string>
+    <string name="emergency_other_services">Другие службы</string>
+
+    <!-- Complaint -->
+    <string name="complaint_title">Обращение</string>
+    <string name="complaint_widget_title">Обращения</string>
+    <string name="complaint_widget_subtitle">Сообщите о проблеме в городе</string>
+    <string name="complaint_select_category">Выберите категорию</string>
+    <string name="complaint_hint_title">Заголовок обращения</string>
+    <string name="complaint_hint_description">Опишите проблему подробнее</string>
+    <string name="complaint_hint_address">Адрес</string>
+    <string name="complaint_add_photos">Прикрепите фото</string>
+    <string name="complaint_select_image">Добавить изображение</string>
+    <string name="complaint_contact_info">Контактные данные</string>
+    <string name="complaint_hint_name">Ваше имя (необязательно)</string>
+    <string name="complaint_hint_phone">Телефон для связи (необязательно)</string>
+    <string name="complaint_submit">Отправить обращение</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">Уведомления</string>
+    <string name="notifications_widget_title">Уведомления</string>
+    <string name="notifications_widget_subtitle">Новые события и обновления</string>
+    <string name="notifications_empty">Уведомлений пока нет</string>
+    <string name="notifications_mark_all_read">Прочитать все</string>
+    <string name="delete">Удалить</string>
+
+    <!-- Chat -->
+    <string name="chat_title">Городской чат</string>
+    <string name="chat_widget_title">Городской чат</string>
+    <string name="chat_widget_subtitle">Общайтесь с жителями города</string>
+    <string name="chat_message_hint">Сообщение…</string>
+
+    <!-- Cinema -->
+    <string name="cinema_title">Кинотеатры</string>
+    <string name="movie_detail_title">Фильм</string>
+    <string name="cinema_widget_title">Кинотеатры</string>
+    <string name="cinema_widget_subtitle">Фильмы и сеансы в вашем городе</string>
+    <string name="cinema_now_playing">В прокате</string>
+    <string name="cinema_upcoming">Скоро в кино</string>
+    <string name="cinema_showtimes">Сеансы</string>
+    <string name="cinema_buy_ticket">Купить билет</string>
+
+    <!-- Currency -->
+    <string name="currency_title">Курсы валют</string>
+    <string name="currency_widget_title">Курсы валют</string>
+    <string name="currency_widget_subtitle">Актуальные курсы валют ЦБ РФ</string>
+    <string name="currency_buy">Покупка</string>
+    <string name="currency_sell">Продажа</string>
+    <string name="currency_cb">ЦБ РФ</string>
+
+    <!-- Company -->
+    <string name="company_title">Компании</string>
+    <string name="company_detail_title">Компания</string>
+    <string name="company_widget_title">Компании</string>
+    <string name="company_widget_subtitle">Каталог компаний города</string>
+    <string name="company_all_categories">Все категории</string>
+    <string name="company_verified">Проверено</string>
+    <string name="company_services">Услуги</string>
+    <string name="company_contacts">Контакты</string>
+    <string name="company_about">О компании</string>
 </resources>

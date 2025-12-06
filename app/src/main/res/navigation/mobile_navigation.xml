@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_news_list">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -22,4 +22,187 @@
         android:name="com.gorod.moygorodok.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_news_list"
+        android:name="com.gorod.moygorodok.ui.news.NewsListFragment"
+        android:label="@string/title_news"
+        tools:layout="@layout/fragment_news_list">
+        <action
+            android:id="@+id/action_newsList_to_newsDetail"
+            app:destination="@id/navigation_news_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_news_detail"
+        android:name="com.gorod.moygorodok.ui.news.NewsDetailFragment"
+        android:label="@string/title_news_detail"
+        tools:layout="@layout/fragment_news_detail">
+        <argument
+            android:name="newsId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_ad_list"
+        android:name="com.gorod.moygorodok.ui.ads.AdListFragment"
+        android:label="@string/title_ads"
+        tools:layout="@layout/fragment_ad_list">
+        <action
+            android:id="@+id/action_adList_to_adDetail"
+            app:destination="@id/navigation_ad_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_ad_detail"
+        android:name="com.gorod.moygorodok.ui.ads.AdDetailFragment"
+        android:label="@string/title_ad_detail"
+        tools:layout="@layout/fragment_ad_detail">
+        <argument
+            android:name="adId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_weather"
+        android:name="com.gorod.moygorodok.ui.weather.WeatherFragment"
+        android:label="@string/title_weather"
+        tools:layout="@layout/fragment_weather" />
+
+    <fragment
+        android:id="@+id/navigation_event_list"
+        android:name="com.gorod.moygorodok.ui.events.EventListFragment"
+        android:label="@string/title_events"
+        tools:layout="@layout/fragment_event_list">
+        <action
+            android:id="@+id/action_eventList_to_eventDetail"
+            app:destination="@id/navigation_event_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_event_detail"
+        android:name="com.gorod.moygorodok.ui.events.EventDetailFragment"
+        android:label="@string/title_event_detail"
+        tools:layout="@layout/fragment_event_detail">
+        <argument
+            android:name="eventId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_delivery_list"
+        android:name="com.gorod.moygorodok.ui.delivery.DeliveryListFragment"
+        android:label="@string/title_delivery"
+        tools:layout="@layout/fragment_delivery_list">
+        <action
+            android:id="@+id/action_deliveryList_to_deliveryDetail"
+            app:destination="@id/navigation_delivery_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_delivery_detail"
+        android:name="com.gorod.moygorodok.ui.delivery.DeliveryDetailFragment"
+        android:label="@string/title_delivery_detail"
+        tools:layout="@layout/fragment_delivery_detail">
+        <argument
+            android:name="deliveryId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_task_list"
+        android:name="com.gorod.moygorodok.ui.tasks.TaskListFragment"
+        android:label="@string/title_tasks"
+        tools:layout="@layout/fragment_task_list">
+        <action
+            android:id="@+id/action_taskList_to_taskDetail"
+            app:destination="@id/navigation_task_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_task_detail"
+        android:name="com.gorod.moygorodok.ui.tasks.TaskDetailFragment"
+        android:label="@string/title_task_detail"
+        tools:layout="@layout/fragment_task_detail">
+        <argument
+            android:name="taskId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_delivery_admin"
+        android:name="com.gorod.moygorodok.ui.delivery_admin.DeliveryAdminFragment"
+        android:label="@string/title_delivery_admin"
+        tools:layout="@layout/fragment_delivery_admin" />
+
+    <fragment
+        android:id="@+id/navigation_emergency"
+        android:name="com.gorod.moygorodok.ui.emergency.EmergencyFragment"
+        android:label="@string/emergency_title"
+        tools:layout="@layout/fragment_emergency" />
+
+    <fragment
+        android:id="@+id/navigation_complaint"
+        android:name="com.gorod.moygorodok.ui.complaint.ComplaintFragment"
+        android:label="@string/complaint_title"
+        tools:layout="@layout/fragment_complaint" />
+
+    <fragment
+        android:id="@+id/navigation_notification_list"
+        android:name="com.gorod.moygorodok.ui.notification_list.NotificationListFragment"
+        android:label="@string/notifications_title"
+        tools:layout="@layout/fragment_notification_list" />
+
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="com.gorod.moygorodok.ui.chat.ChatFragment"
+        android:label="@string/chat_title"
+        tools:layout="@layout/fragment_chat" />
+
+    <fragment
+        android:id="@+id/navigation_cinema_list"
+        android:name="com.gorod.moygorodok.ui.cinema.CinemaListFragment"
+        android:label="@string/cinema_title"
+        tools:layout="@layout/fragment_cinema_list">
+        <action
+            android:id="@+id/action_cinemaList_to_movieDetail"
+            app:destination="@id/navigation_movie_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_movie_detail"
+        android:name="com.gorod.moygorodok.ui.cinema.MovieDetailFragment"
+        android:label="@string/movie_detail_title"
+        tools:layout="@layout/fragment_movie_detail">
+        <argument
+            android:name="movieId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_currency_list"
+        android:name="com.gorod.moygorodok.ui.currency.CurrencyListFragment"
+        android:label="@string/currency_title"
+        tools:layout="@layout/fragment_currency_list" />
+
+    <fragment
+        android:id="@+id/navigation_company_list"
+        android:name="com.gorod.moygorodok.ui.company.CompanyListFragment"
+        android:label="@string/company_title"
+        tools:layout="@layout/fragment_company_list">
+        <action
+            android:id="@+id/action_companyList_to_companyDetail"
+            app:destination="@id/navigation_company_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_company_detail"
+        android:name="com.gorod.moygorodok.ui.company.CompanyDetailFragment"
+        android:label="@string/company_detail_title"
+        tools:layout="@layout/fragment_company_detail">
+        <argument
+            android:name="companyId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
