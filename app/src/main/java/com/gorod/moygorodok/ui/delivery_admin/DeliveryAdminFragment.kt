@@ -78,8 +78,10 @@ class DeliveryAdminFragment : Fragment() {
 
     private fun setupClickListeners() {
         // Toggle delivery status
-        binding.switchDeliveryOpen.setOnCheckedChangeListener { _, _ ->
-            viewModel.toggleDeliveryOpen()
+        binding.switchDeliveryOpen.setOnCheckedChangeListener { _, isChecked ->
+            if (viewModel.isOpen.value != isChecked) {
+                viewModel.toggleDeliveryOpen()
+            }
         }
 
         // Add category button

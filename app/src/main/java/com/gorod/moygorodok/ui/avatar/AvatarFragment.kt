@@ -16,7 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.gorod.moygorodok.AuthActivity
+import com.gorod.moygorodok.R
 import com.gorod.moygorodok.databinding.FragmentAvatarBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -178,8 +178,8 @@ class AvatarFragment : Fragment() {
     }
 
     private fun navigateNext() {
-        // После регистрации переходим в главное приложение
-        (activity as? AuthActivity)?.navigateToMain()
+        // После регистрации переходим на профиль
+        findNavController().navigate(R.id.navigation_profile)
     }
 
     private fun setLoading(isLoading: Boolean) {

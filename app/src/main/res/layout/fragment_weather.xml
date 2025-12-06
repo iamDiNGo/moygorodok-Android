@@ -60,7 +60,6 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:textSize="96sp"
-                    android:textStyle="thin"
                     android:fontFamily="sans-serif-thin"
                     tools:text="-5°" />
 

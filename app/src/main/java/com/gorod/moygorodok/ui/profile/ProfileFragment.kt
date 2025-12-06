@@ -1,6 +1,5 @@
 package com.gorod.moygorodok.ui.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +8,8 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.gorod.moygorodok.AuthActivity
 import com.gorod.moygorodok.R
+import com.gorod.moygorodok.data.repository.AuthRepository
 import com.gorod.moygorodok.databinding.FragmentProfileBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -20,6 +19,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ProfileViewModel by viewModels()
+    private val authRepository = AuthRepository.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +32,11 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (!authRepository.isLoggedIn()) {
+            findNavController().navigate(R.id.navigation_login)
+            return
+        }
 
         setupViews()
         observeViewModel()
@@ -60,9 +65,7 @@ class ProfileFragment : Fragment() {
 
         binding.buttonLogout.setOnClickListener {
             viewModel.logout()
-            val intent = Intent(requireContext(), AuthActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+            findNavController().navigate(R.id.navigation_home)
         }
 
         binding.imageAvatar.setOnClickListener {

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_news_list">
+    app:startDestination="@+id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -204,5 +204,51 @@
             android:name="companyId"
             app:argType="string" />
     </fragment>
+
+    <!-- Auth -->
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.gorod.moygorodok.ui.auth.login.LoginFragment"
+        android:label="@string/title_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_pin"
+            app:destination="@id/navigation_pin" />
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/navigation_register" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_pin"
+        android:name="com.gorod.moygorodok.ui.auth.pin.PinFragment"
+        android:label="@string/title_pin"
+        tools:layout="@layout/fragment_pin" />
+
+    <fragment
+        android:id="@+id/navigation_register"
+        android:name="com.gorod.moygorodok.ui.auth.register.RegisterFragment"
+        android:label="@string/title_register"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_register_to_avatar"
+            app:destination="@id/navigation_avatar" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.gorod.moygorodok.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profile_to_avatar"
+            app:destination="@id/navigation_avatar" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_avatar"
+        android:name="com.gorod.moygorodok.ui.avatar.AvatarFragment"
+        android:label="@string/title_avatar"
+        tools:layout="@layout/fragment_avatar" />
 
 </navigation>

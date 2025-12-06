@@ -221,4 +221,7 @@
     <string name="company_services">Услуги</string>
     <string name="company_contacts">Контакты</string>
     <string name="company_about">О компании</string>
+
+    <!-- Products -->
+    <string name="product_popular">Популярное</string>
 </resources>

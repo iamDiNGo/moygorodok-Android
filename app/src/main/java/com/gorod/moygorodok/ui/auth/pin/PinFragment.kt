@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.gorod.moygorodok.AuthActivity
 import com.gorod.moygorodok.R
 import com.gorod.moygorodok.data.model.PinState
 import com.gorod.moygorodok.databinding.FragmentPinBinding
@@ -74,7 +73,7 @@ class PinFragment : Fragment() {
                 }
                 is PinState.Success -> {
                     setLoading(false)
-                    (activity as? AuthActivity)?.navigateToMain()
+                    findNavController().navigate(R.id.navigation_profile)
                     viewModel.resetState()
                 }
                 is PinState.Error -> {

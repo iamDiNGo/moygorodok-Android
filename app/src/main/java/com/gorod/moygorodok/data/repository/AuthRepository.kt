@@ -102,6 +102,8 @@ class AuthRepository {
 
     fun getCurrentUser(): User? = currentUser
 
+    fun isLoggedIn(): Boolean = currentUser != null
+
     fun logout() {
         currentUser = null
         pinAttempts = 3
