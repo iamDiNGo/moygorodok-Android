@@ -214,26 +214,23 @@
         <action
             android:id="@+id/action_login_to_pin"
             app:destination="@id/navigation_pin" />
-        <action
-            android:id="@+id/action_login_to_register"
-            app:destination="@id/navigation_register" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_pin"
         android:name="com.gorod.moygorodok.ui.auth.pin.PinFragment"
-        android:label="@string/title_pin"
-        tools:layout="@layout/fragment_pin" />
+        android:label="@string/title_code"
+        tools:layout="@layout/fragment_pin">
+        <action
+            android:id="@+id/action_pin_to_register"
+            app:destination="@id/navigation_register" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_register"
         android:name="com.gorod.moygorodok.ui.auth.register.RegisterFragment"
         android:label="@string/title_register"
-        tools:layout="@layout/fragment_register">
-        <action
-            android:id="@+id/action_register_to_avatar"
-            app:destination="@id/navigation_avatar" />
-    </fragment>
+        tools:layout="@layout/fragment_register" />
 
     <fragment
         android:id="@+id/navigation_profile"

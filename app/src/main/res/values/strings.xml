@@ -6,37 +6,46 @@
 
     <!-- Auth -->
     <string name="title_login">Авторизация</string>
-    <string name="title_pin">Введите PIN</string>
+    <string name="title_code">Ввод кода</string>
     <string name="title_register">Регистрация</string>
     <string name="title_profile">Профиль</string>
     <string name="title_avatar">Аватар</string>
 
     <!-- Login -->
     <string name="login_title">Добро пожаловать</string>
-    <string name="login_subtitle">Войдите по номеру телефона</string>
+    <string name="login_subtitle">Введите номер телефона для входа или регистрации</string>
     <string name="hint_phone">Номер телефона</string>
-    <string name="button_login">Войти</string>
-    <string name="button_register">Создать аккаунт</string>
+    <string name="button_send_code">Получить код</string>
+    <string name="terms_notice">Продолжая, вы принимаете условия использования</string>
 
-    <!-- PIN -->
-    <string name="pin_title">Введите PIN-код</string>
+    <!-- Code Verification -->
+    <string name="code_title">Введите код</string>
+    <string name="code_sent_to">Код отправлен на %s</string>
+    <string name="resend_timer">Отправить повторно через %s</string>
+    <string name="button_resend">Отправить повторно</string>
+    <string name="button_change_number">Изменить номер</string>
+    <string name="account_blocked_title">Аккаунт заблокирован</string>
+    <string name="account_blocked_message">Ваш аккаунт заблокирован. Причина: %s</string>
+    <string name="account_blocked_no_reason">Ваш аккаунт заблокирован</string>
 
     <!-- Register -->
-    <string name="register_title">Создание аккаунта</string>
-    <string name="register_subtitle">Заполните данные для регистрации</string>
-    <string name="hint_first_name">Имя</string>
-    <string name="hint_last_name">Фамилия</string>
+    <string name="register_title">Завершите регистрацию</string>
+    <string name="hint_name">Имя</string>
     <string name="hint_email">Email (необязательно)</string>
-    <string name="hint_pin">PIN-код (4 цифры)</string>
-    <string name="hint_pin_confirm">Подтвердите PIN-код</string>
+    <string name="label_gender">Пол</string>
+    <string name="gender_male">Мужской</string>
+    <string name="gender_female">Женский</string>
     <string name="button_create_account">Зарегистрироваться</string>
-    <string name="button_back_to_login">Уже есть аккаунт? Войти</string>
 
     <!-- Profile -->
     <string name="profile_title">Мой профиль</string>
     <string name="button_save">Сохранить</string>
+    <string name="button_cancel">Отмена</string>
+    <string name="button_edit_profile">Редактировать профиль</string>
     <string name="button_logout">Выйти</string>
+    <string name="button_logout_all">Выйти со всех устройств</string>
     <string name="button_change_avatar">Изменить фото</string>
+    <string name="registered_at">Зарегистрирован: %s</string>
 
     <!-- Avatar -->
     <string name="avatar_title">Добавьте фото</string>

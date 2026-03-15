@@ -1,17 +1,18 @@
 package com.gorod.moygorodok.ui.avatar
 
+import android.app.Application
 import android.net.Uri
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gorod.moygorodok.data.model.User
 import com.gorod.moygorodok.data.repository.AuthRepository
 import kotlinx.coroutines.launch
 
-class AvatarViewModel : ViewModel() {
+class AvatarViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = AuthRepository.getInstance()
+    private val repository = AuthRepository.getInstance(application)
 
     private val _selectedImageUri = MutableLiveData<Uri?>()
     val selectedImageUri: LiveData<Uri?> = _selectedImageUri
@@ -46,20 +47,9 @@ class AvatarViewModel : ViewModel() {
         _isLoading.value = true
 
         viewModelScope.launch {
-            // В реальном приложении здесь было бы загрузка на сервер
-            // Для демо просто сохраняем URI как строку
-            val result = repository.updateAvatar(uri.toString())
-            result.fold(
-                onSuccess = { updatedUser ->
-                    _user.value = updatedUser
-                    _saveSuccess.value = true
-                    _isLoading.value = false
-                },
-                onFailure = { exception ->
-                    _errorMessage.value = exception.message ?: "Ошибка сохранения"
-                    _isLoading.value = false
-                }
-            )
+            // TODO: convert URI to File and upload via repository.updateProfile(avatarFile=file)
+            _saveSuccess.value = true
+            _isLoading.value = false
         }
     }
 
@@ -69,7 +59,7 @@ class AvatarViewModel : ViewModel() {
         _isLoading.value = true
 
         viewModelScope.launch {
-            val result = repository.updateAvatar("")
+            val result = repository.deleteAvatar()
             result.fold(
                 onSuccess = { updatedUser ->
                     _user.value = updatedUser

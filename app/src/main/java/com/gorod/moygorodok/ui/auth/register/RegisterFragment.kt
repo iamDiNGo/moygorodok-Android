@@ -20,6 +20,8 @@ class RegisterFragment : Fragment() {
 
     private val viewModel: RegisterViewModel by viewModels()
 
+    private var selectedGender: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,40 +34,49 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val phone = arguments?.getString("phone") ?: ""
+        val code = arguments?.getString("code") ?: ""
+
+        if (viewModel.phone.isEmpty()) {
+            viewModel.init(phone, code)
+        }
+
+        binding.textPhone.text = formatPhoneDisplay(phone)
+
         setupViews()
         observeViewModel()
     }
 
+    private fun formatPhoneDisplay(phone: String): String {
+        val digits = phone.replace("[^0-9]".toRegex(), "")
+        return if (digits.length == 11) {
+            "+${digits[0]} (${digits.substring(1, 4)}) ${digits.substring(4, 7)}-${digits.substring(7, 9)}-${digits.substring(9, 11)}"
+        } else {
+            phone
+        }
+    }
+
     private fun setupViews() {
-        binding.editPhone.doAfterTextChanged {
-            binding.inputLayoutPhone.error = null
+        binding.editName.doAfterTextChanged {
+            binding.inputLayoutName.error = null
         }
-        binding.editFirstName.doAfterTextChanged {
-            binding.inputLayoutFirstName.error = null
-        }
-        binding.editLastName.doAfterTextChanged {
-            binding.inputLayoutLastName.error = null
-        }
-        binding.editPin.doAfterTextChanged {
-            binding.inputLayoutPin.error = null
-        }
-        binding.editPinConfirm.doAfterTextChanged {
-            binding.inputLayoutPinConfirm.error = null
+
+        binding.genderGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                selectedGender = when (checkedId) {
+                    R.id.button_male -> "male"
+                    R.id.button_female -> "female"
+                    else -> null
+                }
+                binding.textGenderError.visibility = View.GONE
+            }
         }
 
         binding.buttonRegister.setOnClickListener {
             viewModel.register(
-                phone = binding.editPhone.text.toString(),
-                firstName = binding.editFirstName.text.toString(),
-                lastName = binding.editLastName.text.toString(),
-                email = binding.editEmail.text.toString().takeIf { it.isNotBlank() },
-                pin = binding.editPin.text.toString(),
-                pinConfirm = binding.editPinConfirm.text.toString()
+                name = binding.editName.text.toString(),
+                gender = selectedGender
             )
-        }
-
-        binding.buttonBack.setOnClickListener {
-            findNavController().navigateUp()
         }
     }
 
@@ -80,7 +91,7 @@ class RegisterFragment : Fragment() {
                 }
                 is RegisterState.Success -> {
                     setLoading(false)
-                    findNavController().navigate(R.id.action_register_to_avatar)
+                    findNavController().navigate(R.id.navigation_profile)
                     viewModel.resetState()
                 }
                 is RegisterState.Error -> {
@@ -88,40 +99,34 @@ class RegisterFragment : Fragment() {
                     Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
                     viewModel.resetState()
                 }
+                is RegisterState.CodeExpired -> {
+                    setLoading(false)
+                    Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
+                    findNavController().popBackStack(R.id.navigation_login, false)
+                    viewModel.resetState()
+                }
             }
         }
 
-        viewModel.phoneError.observe(viewLifecycleOwner) { error ->
-            binding.inputLayoutPhone.error = error
+        viewModel.nameError.observe(viewLifecycleOwner) { error ->
+            binding.inputLayoutName.error = error
         }
 
-        viewModel.firstNameError.observe(viewLifecycleOwner) { error ->
-            binding.inputLayoutFirstName.error = error
-        }
-
-        viewModel.lastNameError.observe(viewLifecycleOwner) { error ->
-            binding.inputLayoutLastName.error = error
-        }
-
-        viewModel.pinError.observe(viewLifecycleOwner) { error ->
-            binding.inputLayoutPin.error = error
-        }
-
-        viewModel.pinConfirmError.observe(viewLifecycleOwner) { error ->
-            binding.inputLayoutPinConfirm.error = error
+        viewModel.genderError.observe(viewLifecycleOwner) { error ->
+            if (error != null) {
+                binding.textGenderError.text = error
+                binding.textGenderError.visibility = View.VISIBLE
+            } else {
+                binding.textGenderError.visibility = View.GONE
+            }
         }
     }
 
     private fun setLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.buttonRegister.isEnabled = !isLoading
-        binding.buttonBack.isEnabled = !isLoading
-        binding.editPhone.isEnabled = !isLoading
-        binding.editFirstName.isEnabled = !isLoading
-        binding.editLastName.isEnabled = !isLoading
-        binding.editEmail.isEnabled = !isLoading
-        binding.editPin.isEnabled = !isLoading
-        binding.editPinConfirm.isEnabled = !isLoading
+        binding.editName.isEnabled = !isLoading
+        binding.genderGroup.isEnabled = !isLoading
     }
 
     override fun onDestroyView() {

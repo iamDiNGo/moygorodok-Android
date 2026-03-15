@@ -1,113 +1,85 @@
 package com.gorod.moygorodok.ui.auth.register
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gorod.moygorodok.data.model.RegisterState
 import com.gorod.moygorodok.data.repository.AuthRepository
+import com.gorod.moygorodok.data.repository.InvalidCodeException
 import kotlinx.coroutines.launch
+import java.io.File
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = AuthRepository.getInstance()
+    private val repository = AuthRepository.getInstance(application)
 
     private val _registerState = MutableLiveData<RegisterState>(RegisterState.Idle)
     val registerState: LiveData<RegisterState> = _registerState
 
-    private val _phoneError = MutableLiveData<String?>()
-    val phoneError: LiveData<String?> = _phoneError
+    private val _nameError = MutableLiveData<String?>()
+    val nameError: LiveData<String?> = _nameError
 
-    private val _firstNameError = MutableLiveData<String?>()
-    val firstNameError: LiveData<String?> = _firstNameError
+    private val _genderError = MutableLiveData<String?>()
+    val genderError: LiveData<String?> = _genderError
 
-    private val _lastNameError = MutableLiveData<String?>()
-    val lastNameError: LiveData<String?> = _lastNameError
+    var phone: String = ""
+        private set
+    var code: String = ""
+        private set
 
-    private val _pinError = MutableLiveData<String?>()
-    val pinError: LiveData<String?> = _pinError
+    fun init(phone: String, code: String) {
+        this.phone = phone
+        this.code = code
+    }
 
-    private val _pinConfirmError = MutableLiveData<String?>()
-    val pinConfirmError: LiveData<String?> = _pinConfirmError
-
-    fun register(
-        phone: String,
-        firstName: String,
-        lastName: String,
-        email: String?,
-        pin: String,
-        pinConfirm: String
-    ) {
-        if (!validateInput(phone, firstName, lastName, pin, pinConfirm)) {
+    fun register(name: String, gender: String?, avatarFile: File? = null) {
+        if (!validateInput(name, gender)) {
             return
         }
 
         _registerState.value = RegisterState.Loading
 
         viewModelScope.launch {
-            val result = repository.register(phone, firstName, lastName, email, pin)
-            result.fold(
-                onSuccess = { user ->
-                    _registerState.value = RegisterState.Success(user)
-                },
-                onFailure = { exception ->
-                    _registerState.value = RegisterState.Error(
-                        exception.message ?: "Ошибка регистрации"
-                    )
-                }
-            )
+            try {
+                val result = repository.register(name, phone, code, gender!!, avatarFile)
+                result.fold(
+                    onSuccess = { authData ->
+                        _registerState.value = RegisterState.Success(authData.user, authData.token)
+                    },
+                    onFailure = { exception ->
+                        _registerState.value = RegisterState.Error(
+                            exception.message ?: "Ошибка регистрации"
+                        )
+                    }
+                )
+            } catch (e: InvalidCodeException) {
+                _registerState.value = RegisterState.CodeExpired(
+                    e.message ?: "Неверный или просроченный код"
+                )
+            }
         }
     }
 
-    private fun validateInput(
-        phone: String,
-        firstName: String,
-        lastName: String,
-        pin: String,
-        pinConfirm: String
-    ): Boolean {
+    private fun validateInput(name: String, gender: String?): Boolean {
         var isValid = true
 
-        val cleanPhone = phone.replace("[^0-9+]".toRegex(), "")
-        if (cleanPhone.isEmpty()) {
-            _phoneError.value = "Введите номер телефона"
+        if (name.isBlank()) {
+            _nameError.value = "Введите имя"
             isValid = false
-        } else if (cleanPhone.length < 11) {
-            _phoneError.value = "Номер телефона слишком короткий"
+        } else if (name.length > 255) {
+            _nameError.value = "Имя слишком длинное"
             isValid = false
         } else {
-            _phoneError.value = null
+            _nameError.value = null
         }
 
-        if (firstName.isBlank()) {
-            _firstNameError.value = "Введите имя"
+        if (gender.isNullOrBlank()) {
+            _genderError.value = "Выберите пол"
             isValid = false
         } else {
-            _firstNameError.value = null
-        }
-
-        if (lastName.isBlank()) {
-            _lastNameError.value = "Введите фамилию"
-            isValid = false
-        } else {
-            _lastNameError.value = null
-        }
-
-        if (pin.length != 4) {
-            _pinError.value = "PIN должен содержать 4 цифры"
-            isValid = false
-        } else if (!pin.all { it.isDigit() }) {
-            _pinError.value = "PIN должен содержать только цифры"
-            isValid = false
-        } else {
-            _pinError.value = null
-        }
-
-        if (pin != pinConfirm) {
-            _pinConfirmError.value = "PIN-коды не совпадают"
-            isValid = false
-        } else {
-            _pinConfirmError.value = null
+            _genderError.value = null
         }
 
         return isValid
@@ -115,13 +87,5 @@ class RegisterViewModel : ViewModel() {
 
     fun resetState() {
         _registerState.value = RegisterState.Idle
-    }
-
-    fun clearErrors() {
-        _phoneError.value = null
-        _firstNameError.value = null
-        _lastNameError.value = null
-        _pinError.value = null
-        _pinConfirmError.value = null
     }
 }

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.gorod.moygorodok.R
-import com.gorod.moygorodok.data.model.AuthState
+import com.gorod.moygorodok.data.model.SendCodeState
 import com.gorod.moygorodok.databinding.FragmentLoginBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -41,31 +41,32 @@ class LoginFragment : Fragment() {
             binding.inputLayoutPhone.error = null
         }
 
-        binding.buttonLogin.setOnClickListener {
+        binding.buttonSendCode.setOnClickListener {
             val phone = binding.editPhone.text.toString()
-            viewModel.login(phone)
-        }
-
-        binding.buttonRegister.setOnClickListener {
-            findNavController().navigate(R.id.action_login_to_register)
+            viewModel.sendCode(phone)
         }
     }
 
     private fun observeViewModel() {
-        viewModel.authState.observe(viewLifecycleOwner) { state ->
+        viewModel.sendCodeState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is AuthState.Idle -> {
+                is SendCodeState.Idle -> {
                     setLoading(false)
                 }
-                is AuthState.Loading -> {
+                is SendCodeState.Loading -> {
                     setLoading(true)
                 }
-                is AuthState.Success -> {
+                is SendCodeState.Success -> {
                     setLoading(false)
-                    findNavController().navigate(R.id.action_login_to_pin)
+                    val bundle = Bundle().apply {
+                        putString("phone", viewModel.phone)
+                        putBoolean("user_exists", state.userExists)
+                        putInt("retry_after", state.retryAfter)
+                    }
+                    findNavController().navigate(R.id.action_login_to_pin, bundle)
                     viewModel.resetState()
                 }
-                is AuthState.Error -> {
+                is SendCodeState.Error -> {
                     setLoading(false)
                     Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
                     viewModel.resetState()
@@ -80,8 +81,7 @@ class LoginFragment : Fragment() {
 
     private fun setLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-        binding.buttonLogin.isEnabled = !isLoading
-        binding.buttonRegister.isEnabled = !isLoading
+        binding.buttonSendCode.isEnabled = !isLoading
         binding.editPhone.isEnabled = !isLoading
     }
 

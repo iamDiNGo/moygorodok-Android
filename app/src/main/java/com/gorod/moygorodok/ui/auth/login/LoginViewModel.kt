@@ -1,53 +1,82 @@
 package com.gorod.moygorodok.ui.auth.login
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gorod.moygorodok.data.model.AuthState
+import com.gorod.moygorodok.data.model.SendCodeState
 import com.gorod.moygorodok.data.repository.AuthRepository
+import com.gorod.moygorodok.data.repository.CodeCooldownException
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = AuthRepository.getInstance()
+    private val repository = AuthRepository.getInstance(application)
 
-    private val _authState = MutableLiveData<AuthState>(AuthState.Idle)
-    val authState: LiveData<AuthState> = _authState
+    private val _sendCodeState = MutableLiveData<SendCodeState>(SendCodeState.Idle)
+    val sendCodeState: LiveData<SendCodeState> = _sendCodeState
 
     private val _phoneError = MutableLiveData<String?>()
     val phoneError: LiveData<String?> = _phoneError
 
-    fun login(phone: String) {
-        if (!validatePhone(phone)) {
+    private var _phone: String = ""
+    val phone: String get() = _phone
+
+    fun sendCode(phone: String) {
+        val cleanPhone = formatPhone(phone)
+        if (!validatePhone(cleanPhone)) {
             return
         }
 
-        _authState.value = AuthState.Loading
+        _phone = cleanPhone
+        _sendCodeState.value = SendCodeState.Loading
 
         viewModelScope.launch {
-            val result = repository.login(phone)
-            result.fold(
-                onSuccess = { user ->
-                    _authState.value = AuthState.Success(user)
-                },
-                onFailure = { exception ->
-                    _authState.value = AuthState.Error(exception.message ?: "Ошибка авторизации")
-                }
-            )
+            try {
+                val result = repository.sendCode(cleanPhone)
+                result.fold(
+                    onSuccess = { data ->
+                        _sendCodeState.value = SendCodeState.Success(
+                            userExists = data.userExists,
+                            retryAfter = data.retryAfter
+                        )
+                    },
+                    onFailure = { exception ->
+                        _sendCodeState.value = SendCodeState.Error(
+                            exception.message ?: "Ошибка отправки кода"
+                        )
+                    }
+                )
+            } catch (e: CodeCooldownException) {
+                _sendCodeState.value = SendCodeState.Error(
+                    e.message ?: "Код уже отправлен",
+                    e.retryAfter
+                )
+            }
+        }
+    }
+
+    private fun formatPhone(phone: String): String {
+        val digits = phone.replace("[^0-9]".toRegex(), "")
+        return if (digits.startsWith("7") || digits.startsWith("8")) {
+            "+7${digits.substring(1)}"
+        } else if (digits.startsWith("+")) {
+            phone.replace("[^0-9+]".toRegex(), "")
+        } else {
+            "+7$digits"
         }
     }
 
     private fun validatePhone(phone: String): Boolean {
-        val cleanPhone = phone.replace("[^0-9+]".toRegex(), "")
-
+        val regex = Regex("^[+]?[0-9\\s\\-()]{7,15}$")
         return when {
-            cleanPhone.isEmpty() -> {
+            phone.isBlank() -> {
                 _phoneError.value = "Введите номер телефона"
                 false
             }
-            cleanPhone.length < 11 -> {
-                _phoneError.value = "Номер телефона слишком короткий"
+            !regex.matches(phone) -> {
+                _phoneError.value = "Неверный формат номера"
                 false
             }
             else -> {
@@ -58,7 +87,7 @@ class LoginViewModel : ViewModel() {
     }
 
     fun resetState() {
-        _authState.value = AuthState.Idle
+        _sendCodeState.value = SendCodeState.Idle
         _phoneError.value = null
     }
 }
