@@ -1,18 +1,25 @@
 package com.gorod.moygorodok.ui.home
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.gorod.moygorodok.data.local.CityManager
 import com.gorod.moygorodok.data.model.HomeWidget
 import com.gorod.moygorodok.data.model.MockHomeWidgets
-import com.gorod.moygorodok.data.remote.model.HomeCellDto
 import com.gorod.moygorodok.data.repository.HomeRepository
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val homeRepository = HomeRepository.getInstance()
+    private val cityManager = CityManager.getInstance(application)
 
     private val _widgets = MutableLiveData<List<HomeWidget>>()
     val widgets: LiveData<List<HomeWidget>> = _widgets
@@ -20,8 +27,18 @@ class HomeViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    val cityName: LiveData<String?> = cityManager.selectedCityName.asLiveData()
+
+    private val _showCitySelector = MutableSharedFlow<Unit>(
+        replay = 0,
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val showCitySelector: SharedFlow<Unit> = _showCitySelector
+
     init {
         loadWidgets()
+        checkFirstLaunch()
     }
 
     fun loadWidgets() {
@@ -43,6 +60,13 @@ class HomeViewModel : ViewModel() {
                 }
 
             _isLoading.value = false
+        }
+    }
+
+    private fun checkFirstLaunch() {
+        viewModelScope.launch {
+            val current = cityManager.selectedCityId.first()
+            if (current == null) _showCitySelector.tryEmit(Unit)
         }
     }
 

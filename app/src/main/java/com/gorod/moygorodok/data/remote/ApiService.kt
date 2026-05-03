@@ -12,6 +12,33 @@ interface ApiService {
     @GET("api/home")
     suspend fun getHome(): HomeResponse
 
+    // Cities
+    @GET("api/cities/overview")
+    suspend fun getCitiesOverview(): CityOverviewResponse
+
+    @GET("api/cities/search/{query}")
+    suspend fun searchCities(
+        @Path("query") query: String,
+        @Query("per_page") perPage: Int = 30
+    ): CitiesResponse
+
+    @GET("api/cities/nearby")
+    suspend fun nearbyCities(
+        @Query("lat") lat: Double,
+        @Query("lng") lng: Double,
+        @Query("radius") radius: Int = 50,
+        @Query("per_page") perPage: Int = 20
+    ): CitiesResponse
+
+    @GET("api/cities/regions")
+    suspend fun getRegions(): RegionsResponse
+
+    @GET("api/cities/{id}/settlements")
+    suspend fun getSettlements(@Path("id") id: Int): CitiesResponse
+
+    @GET("api/cities/{id}/districts")
+    suspend fun getDistricts(@Path("id") id: Int): CitiesResponse
+
     // Auth
     @POST("api/auth/send-code")
     suspend fun sendCode(@Body request: SendCodeRequest): Response<ApiResponse<SendCodeData>>
@@ -39,6 +66,7 @@ interface ApiService {
         @Part("name") name: RequestBody? = null,
         @Part("email") email: RequestBody? = null,
         @Part("gender") gender: RequestBody? = null,
+        @Part("city_id") cityId: RequestBody? = null,
         @Part avatar: MultipartBody.Part? = null
     ): Response<ApiResponse<User>>
 

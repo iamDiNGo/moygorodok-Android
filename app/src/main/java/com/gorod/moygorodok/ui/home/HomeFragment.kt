@@ -6,10 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gorod.moygorodok.R
 import com.gorod.moygorodok.databinding.FragmentHomeBinding
+import com.gorod.moygorodok.ui.city.CitySelectionBottomSheet
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -33,7 +38,37 @@ class HomeFragment : Fragment() {
 
         setupAdapter()
         setupSwipeRefresh()
+        setupCityHeader()
         observeViewModel()
+        observeCityResult()
+        observeCitySelectorTrigger()
+    }
+
+    private fun setupCityHeader() {
+        binding.cityHeader.setOnClickListener { showCitySelector() }
+    }
+
+    private fun showCitySelector() {
+        val existing = parentFragmentManager.findFragmentByTag(CitySelectionBottomSheet.TAG)
+        if (existing != null) return
+        CitySelectionBottomSheet().show(parentFragmentManager, CitySelectionBottomSheet.TAG)
+    }
+
+    private fun observeCityResult() {
+        parentFragmentManager.setFragmentResultListener(
+            CitySelectionBottomSheet.RESULT_KEY,
+            viewLifecycleOwner
+        ) { _, _ ->
+            // CityManager обновлён, шапка перерисуется через LiveData
+        }
+    }
+
+    private fun observeCitySelectorTrigger() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.showCitySelector.collect { showCitySelector() }
+            }
+        }
     }
 
     private fun setupAdapter() {
@@ -98,6 +133,10 @@ class HomeFragment : Fragment() {
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.swipeRefresh.isRefreshing = isLoading
+        }
+
+        viewModel.cityName.observe(viewLifecycleOwner) { name ->
+            binding.textCity.text = name ?: "Выберите город"
         }
     }
 

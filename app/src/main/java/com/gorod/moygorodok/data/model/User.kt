@@ -1,5 +1,6 @@
 package com.gorod.moygorodok.data.model
 
+import com.gorod.moygorodok.data.remote.model.City
 import com.google.gson.annotations.SerializedName
 
 data class User(
@@ -13,6 +14,9 @@ data class User(
     val gender: String? = null,
     val role: String = "user",
     val status: String = "active",
+    @SerializedName("city_id")
+    val cityId: Int? = null,
+    val city: City? = null,
     @SerializedName("last_login_at")
     val lastLoginAt: String? = null,
     @SerializedName("email_verified_at")

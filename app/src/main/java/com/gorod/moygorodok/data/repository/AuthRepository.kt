@@ -1,6 +1,7 @@
 package com.gorod.moygorodok.data.repository
 
 import android.content.Context
+import com.gorod.moygorodok.data.local.CityManager
 import com.gorod.moygorodok.data.local.TokenManager
 import com.gorod.moygorodok.data.model.User
 import com.gorod.moygorodok.data.remote.ApiClient
@@ -16,6 +17,7 @@ class AuthRepository(context: Context) {
 
     private val api = ApiClient.apiService
     private val tokenManager = TokenManager.getInstance(context)
+    private val cityManager = CityManager.getInstance(context)
     private val gson = Gson()
 
     suspend fun sendCode(phone: String): Result<SendCodeData> {
@@ -156,6 +158,7 @@ class AuthRepository(context: Context) {
                 val body = response.body()
                 if (body?.success == true && body.data != null) {
                     tokenManager.user = body.data
+                    body.data.city?.let { cityManager.setSelectedCity(it) }
                     Result.success(body.data)
                 } else {
                     Result.failure(Exception(body?.message ?: "Ошибка загрузки профиля"))
@@ -178,6 +181,7 @@ class AuthRepository(context: Context) {
         name: String? = null,
         email: String? = null,
         gender: String? = null,
+        cityId: Int? = null,
         avatarFile: File? = null
     ): Result<User> {
         return try {
@@ -186,17 +190,19 @@ class AuthRepository(context: Context) {
             val namePart = name?.toRequestBody(textType)
             val emailPart = email?.toRequestBody(textType)
             val genderPart = gender?.toRequestBody(textType)
+            val cityIdPart = cityId?.toString()?.toRequestBody(textType)
 
             val avatarPart = avatarFile?.let {
                 val requestFile = it.asRequestBody("image/*".toMediaTypeOrNull())
                 MultipartBody.Part.createFormData("avatar", it.name, requestFile)
             }
 
-            val response = api.updateProfile(methodPart, namePart, emailPart, genderPart, avatarPart)
+            val response = api.updateProfile(methodPart, namePart, emailPart, genderPart, cityIdPart, avatarPart)
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body?.success == true && body.data != null) {
                     tokenManager.user = body.data
+                    body.data.city?.let { cityManager.setSelectedCity(it) }
                     Result.success(body.data)
                 } else {
                     Result.failure(Exception(body?.message ?: "Ошибка обновления профиля"))
@@ -266,9 +272,10 @@ class AuthRepository(context: Context) {
 
     fun getToken(): String? = tokenManager.token
 
-    private fun saveAuth(authData: AuthData) {
+    private suspend fun saveAuth(authData: AuthData) {
         tokenManager.token = authData.token
         tokenManager.user = authData.user
+        authData.user.city?.let { cityManager.setSelectedCity(it) }
     }
 
     private fun tryParseError(errorBody: String?): ApiResponse<Any>? {
