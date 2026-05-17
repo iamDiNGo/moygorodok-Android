@@ -69,12 +69,12 @@ data class WeatherCurrentDto(
     val temperature: Double? = null,
     @SerializedName("feels_like")
     val feelsLike: Double? = null,
-    val humidity: Int? = null,
+    val humidity: Double? = null,
     @SerializedName("wind_speed")
     val windSpeed: Double? = null,
     @SerializedName("wind_direction")
-    val windDirection: Int? = null,
-    val pressure: Int? = null,
+    val windDirection: Double? = null,
+    val pressure: Double? = null,
     @SerializedName("weather_code")
     val weatherCode: Int? = null,
     val icon: String? = null,
