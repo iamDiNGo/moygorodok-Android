@@ -182,6 +182,7 @@ class AuthRepository(context: Context) {
         email: String? = null,
         gender: String? = null,
         cityId: Int? = null,
+        birthday: String? = null,
         avatarFile: File? = null
     ): Result<User> {
         return try {
@@ -191,13 +192,16 @@ class AuthRepository(context: Context) {
             val emailPart = email?.toRequestBody(textType)
             val genderPart = gender?.toRequestBody(textType)
             val cityIdPart = cityId?.toString()?.toRequestBody(textType)
+            val birthdayPart = birthday?.toRequestBody(textType)
 
             val avatarPart = avatarFile?.let {
                 val requestFile = it.asRequestBody("image/*".toMediaTypeOrNull())
                 MultipartBody.Part.createFormData("avatar", it.name, requestFile)
             }
 
-            val response = api.updateProfile(methodPart, namePart, emailPart, genderPart, cityIdPart, avatarPart)
+            val response = api.updateProfile(
+                methodPart, namePart, emailPart, genderPart, cityIdPart, birthdayPart, avatarPart
+            )
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body?.success == true && body.data != null) {

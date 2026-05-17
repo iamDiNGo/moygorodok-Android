@@ -12,7 +12,7 @@ sealed class HomeWidget {
     data class NewsWidget(
         val title: String,
         val newsCount: Int,
-        val latestNews: List<News>
+        val latestNews: List<NewsPreview>
     ) : HomeWidget()
 
     data class AdsWidget(
@@ -75,10 +75,10 @@ sealed class HomeWidget {
     ) : HomeWidget()
 
     data class CurrencyWidget(
-        val usdRate: Double,
-        val eurRate: Double,
-        val cnyRate: Double,
-        val jpyRate: Double,
+        val usdRate: Double?,
+        val eurRate: Double?,
+        val cnyRate: Double?,
+        val jpyRate: Double?,
         val lastUpdate: String
     ) : HomeWidget()
 
@@ -87,6 +87,24 @@ sealed class HomeWidget {
         val verifiedCount: Int,
         val categoriesCount: Int
     ) : HomeWidget()
+
+    data class HoroscopeWidget(
+        val state: HoroscopeWidgetState
+    ) : HomeWidget()
+}
+
+sealed class HoroscopeWidgetState {
+    data class Ready(
+        val zodiacSign: String,
+        val zodiacSignLabel: String,
+        val symbol: String,
+        val date: String?,
+        val text: String
+    ) : HoroscopeWidgetState()
+
+    object Anonymous : HoroscopeWidgetState()
+    object NoBirthday : HoroscopeWidgetState()
+    object Empty : HoroscopeWidgetState()
 }
 
 data class QuickAction(
@@ -95,79 +113,58 @@ data class QuickAction(
     val icon: Int
 )
 
+data class NewsPreview(
+    val id: Int?,
+    val title: String
+)
+
 object MockHomeWidgets {
 
-    fun getWidgets(): List<HomeWidget> {
-        val weather = MockWeather.getCurrentWeather()
-        val news = MockNews.getAll()
+    fun getLocalWidgets(): Map<String, HomeWidget> {
         val ads = MockAds.getAll()
         val deliveries = MockDeliveries.getAll()
         val tasks = MockTasks.getTasks()
         val admin = MockDeliveryAdmin.getDeliveryAdmin()
 
-        return listOf(
-            HomeWidget.NotificationsWidget(
+        return mapOf(
+            "notifications" to HomeWidget.NotificationsWidget(
                 unreadCount = MockNotifications.getUnreadCount(),
                 latestTypes = listOf("⚠️", "🍕", "🎉")
             ),
-            HomeWidget.ChatWidget(
+            "chat" to HomeWidget.ChatWidget(
                 onlineCount = MockChat.getOnlineCount(),
                 membersCount = MockChat.getMembersCount()
             ),
-            HomeWidget.CinemaWidget(
+            "cinema" to HomeWidget.CinemaWidget(
                 nowPlayingCount = MockCinemas.getNowPlayingCount(),
                 cinemasCount = MockCinemas.getCinemas().size,
                 upcomingMovies = MockCinemas.getUpcomingMovies()
             ),
-            HomeWidget.CurrencyWidget(
-                usdRate = MockCurrencies.getCurrencyByCode("USD")?.cbRate ?: 92.35,
-                eurRate = MockCurrencies.getCurrencyByCode("EUR")?.cbRate ?: 100.65,
-                cnyRate = MockCurrencies.getCurrencyByCode("CNY")?.cbRate ?: 12.85,
-                jpyRate = MockCurrencies.getCurrencyByCode("JPY")?.cbRate ?: 0.625,
-                lastUpdate = MockCurrencies.getLastUpdate()
-            ),
-            HomeWidget.CompanyWidget(
-                totalCount = MockCompanies.getTotalCount(),
-                verifiedCount = MockCompanies.getVerifiedCount(),
-                categoriesCount = MockCompanies.getCategories().size
-            ),
-            HomeWidget.EmergencyWidget(
+            "emergency" to HomeWidget.EmergencyWidget(
                 title = "Экстренная помощь",
                 mainNumbers = listOf("112", "101", "102", "103")
             ),
-            HomeWidget.ComplaintWidget(
+            "complaint" to HomeWidget.ComplaintWidget(
                 title = "Обращения",
                 subtitle = "Сообщите о проблеме в городе"
             ),
-            HomeWidget.AdminWidget(
+            "admin" to HomeWidget.AdminWidget(
                 deliveryName = admin.delivery.name,
                 todayOrders = 12,
                 todayRevenue = "15 600 ₽",
                 isOpen = admin.isOpen
             ),
-            HomeWidget.WeatherWidget(
-                location = weather.location,
-                currentTemp = weather.currentTemp,
-                condition = weather.condition,
-                highTemp = weather.highTemp,
-                lowTemp = weather.lowTemp
-            ),
-            HomeWidget.TasksWidget(
+            "tasks" to HomeWidget.TasksWidget(
                 title = "Задания",
                 taskCount = tasks.size,
                 latestTasks = tasks.take(3)
             ),
-            HomeWidget.DeliveryWidget(
+            "delivery" to HomeWidget.DeliveryWidget(
                 title = "Доставка еды",
                 deliveryCount = deliveries.size,
                 latestDeliveries = deliveries.take(3)
             ),
-            HomeWidget.NewsWidget(
-                title = "Последние новости",
-                newsCount = news.size,
-                latestNews = news.take(3)
-            ),
-            HomeWidget.AdsWidget(
+            "announcements" to HomeWidget.AdsWidget(
                 title = "Новые объявления",
                 adsCount = ads.size,
                 latestAds = ads.take(3)

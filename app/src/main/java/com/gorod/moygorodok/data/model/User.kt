@@ -12,6 +12,11 @@ data class User(
     @SerializedName("avatar_url")
     val avatarUrl: String? = null,
     val gender: String? = null,
+    val birthday: String? = null,
+    @SerializedName("zodiac_sign")
+    val zodiacSign: String? = null,
+    @SerializedName("zodiac_sign_label")
+    val zodiacSignLabel: String? = null,
     val role: String = "user",
     val status: String = "active",
     @SerializedName("city_id")

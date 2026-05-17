@@ -9,10 +9,15 @@ import androidx.lifecycle.viewModelScope
 import com.gorod.moygorodok.data.local.CityManager
 import com.gorod.moygorodok.data.model.HomeWidget
 import com.gorod.moygorodok.data.model.MockHomeWidgets
+import com.gorod.moygorodok.data.repository.AuthRepository
+import com.gorod.moygorodok.data.repository.HomeMapperContext
 import com.gorod.moygorodok.data.repository.HomeRepository
+import com.gorod.moygorodok.data.repository.HomeServerWidgetMapper
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -20,6 +25,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val homeRepository = HomeRepository.getInstance()
     private val cityManager = CityManager.getInstance(application)
+    private val authRepository = AuthRepository.getInstance(application)
 
     private val _widgets = MutableLiveData<List<HomeWidget>>()
     val widgets: LiveData<List<HomeWidget>> = _widgets
@@ -37,30 +43,48 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val showCitySelector: SharedFlow<Unit> = _showCitySelector
 
     init {
-        loadWidgets()
+        observeCitySelection()
         checkFirstLaunch()
     }
 
-    fun loadWidgets() {
+    private fun observeCitySelection() {
         viewModelScope.launch {
-            _isLoading.value = true
-
-            val allWidgets = MockHomeWidgets.getWidgets()
-            val widgetsByTarget = mapWidgetsByTarget(allWidgets)
-
-            homeRepository.getHomeCells()
-                .onSuccess { cells ->
-                    val sorted = cells.mapNotNull { cell ->
-                        widgetsByTarget[cell.actionTarget]
-                    }
-                    _widgets.value = sorted
+            cityManager.selectedCityId
+                .combine(cityManager.selectedCityName) { id, name -> id to name }
+                .collectLatest { (cityId, cityName) ->
+                    loadWidgets(cityId, cityName)
                 }
-                .onFailure {
-                    _widgets.value = allWidgets
-                }
-
-            _isLoading.value = false
         }
+    }
+
+    private suspend fun loadWidgets(cityId: Int?, cityName: String?) {
+        _isLoading.value = true
+
+        val localWidgets = MockHomeWidgets.getLocalWidgets()
+        val context = currentMapperContext(cityName)
+
+        homeRepository.getHomeCells(cityId)
+            .onSuccess { cells ->
+                val widgets = cells.mapNotNull { cell ->
+                    HomeServerWidgetMapper.map(cell, context)
+                        ?: localWidgets[cell.actionTarget]
+                }
+                _widgets.value = widgets
+            }
+            .onFailure {
+                _widgets.value = localWidgets.values.toList()
+            }
+
+        _isLoading.value = false
+    }
+
+    private fun currentMapperContext(cityName: String?): HomeMapperContext {
+        val user = authRepository.getCurrentUser()
+        return HomeMapperContext(
+            cityName = cityName,
+            isAuthenticated = authRepository.isLoggedIn(),
+            hasBirthday = !user?.birthday.isNullOrBlank()
+        )
     }
 
     private fun checkFirstLaunch() {
@@ -70,32 +94,11 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun mapWidgetsByTarget(widgets: List<HomeWidget>): Map<String, HomeWidget> {
-        val map = mutableMapOf<String, HomeWidget>()
-        for (widget in widgets) {
-            val target = when (widget) {
-                is HomeWidget.WeatherWidget -> "weather"
-                is HomeWidget.NewsWidget -> "news"
-                is HomeWidget.AdsWidget -> "announcements"
-                is HomeWidget.DeliveryWidget -> "delivery"
-                is HomeWidget.TasksWidget -> "tasks"
-                is HomeWidget.AdminWidget -> "admin"
-                is HomeWidget.EmergencyWidget -> "emergency"
-                is HomeWidget.ComplaintWidget -> "complaint"
-                is HomeWidget.NotificationsWidget -> "notifications"
-                is HomeWidget.ChatWidget -> "chat"
-                is HomeWidget.CinemaWidget -> "cinema"
-                is HomeWidget.CurrencyWidget -> "currency"
-                is HomeWidget.CompanyWidget -> "company"
-                is HomeWidget.ProfileWidget -> "profile"
-                is HomeWidget.QuickActionsWidget -> "quick_actions"
-            }
-            map[target] = widget
-        }
-        return map
-    }
-
     fun refresh() {
-        loadWidgets()
+        viewModelScope.launch {
+            val cityId = cityManager.selectedCityId.first()
+            val name = cityManager.selectedCityName.first()
+            loadWidgets(cityId, name)
+        }
     }
 }

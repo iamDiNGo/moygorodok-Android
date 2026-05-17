@@ -10,7 +10,9 @@ import retrofit2.http.*
 interface ApiService {
 
     @GET("api/home")
-    suspend fun getHome(): HomeResponse
+    suspend fun getHome(
+        @Query("city_id") cityId: Int? = null
+    ): HomeResponse
 
     // Cities
     @GET("api/cities/overview")
@@ -67,6 +69,7 @@ interface ApiService {
         @Part("email") email: RequestBody? = null,
         @Part("gender") gender: RequestBody? = null,
         @Part("city_id") cityId: RequestBody? = null,
+        @Part("birthday") birthday: RequestBody? = null,
         @Part avatar: MultipartBody.Part? = null
     ): Response<ApiResponse<User>>
 
@@ -78,4 +81,13 @@ interface ApiService {
 
     @POST("api/auth/logout-all")
     suspend fun logoutAll(): Response<ApiResponse<Any>>
+
+    // Horoscope
+    @GET("api/horoscope/{sign}")
+    suspend fun getHoroscopeBySign(
+        @Path("sign") sign: String
+    ): Response<ApiResponse<HoroscopeDataDto>>
+
+    @GET("api/horoscope/me")
+    suspend fun getMyHoroscope(): Response<ApiResponse<HoroscopeDataDto>>
 }

@@ -12,7 +12,14 @@ import com.gorod.moygorodok.R
 import com.gorod.moygorodok.data.model.ProfileState
 import com.gorod.moygorodok.data.model.User
 import com.gorod.moygorodok.databinding.FragmentProfileBinding
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class ProfileFragment : Fragment() {
 
@@ -22,6 +29,14 @@ class ProfileFragment : Fragment() {
     private val viewModel: ProfileViewModel by viewModels()
 
     private var editGender: String? = null
+    private var editBirthday: String? = null
+
+    private val isoFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).apply {
+        timeZone = TimeZone.getTimeZone("UTC")
+    }
+    private val displayFormatter = SimpleDateFormat("d MMMM yyyy", Locale("ru", "RU")).apply {
+        timeZone = TimeZone.getTimeZone("UTC")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,7 +77,8 @@ class ProfileFragment : Fragment() {
             viewModel.saveProfile(
                 name = binding.editName.text.toString(),
                 email = binding.editEmail.text.toString().takeIf { it.isNotBlank() },
-                gender = editGender
+                gender = editGender,
+                birthday = editBirthday
             )
         }
 
@@ -80,6 +96,13 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        binding.editBirthday.setOnClickListener {
+            if (viewModel.isEditing.value == true) showDatePicker()
+        }
+        binding.inputLayoutBirthday.setEndIconOnClickListener {
+            if (viewModel.isEditing.value == true) showDatePicker()
+        }
+
         binding.genderGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
                 editGender = when (checkedId) {
@@ -89,6 +112,29 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showDatePicker() {
+        val initial = editBirthday?.let {
+            runCatching { isoFormatter.parse(it)?.time }.getOrNull()
+        } ?: MaterialDatePicker.todayInUtcMilliseconds()
+
+        val constraints = CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointBackward.now())
+            .build()
+
+        val picker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Дата рождения")
+            .setSelection(initial)
+            .setCalendarConstraints(constraints)
+            .build()
+
+        picker.addOnPositiveButtonClickListener { selection ->
+            val iso = isoFormatter.format(Date(selection))
+            editBirthday = iso
+            binding.editBirthday.setText(displayFormatter.format(Date(selection)))
+        }
+        picker.show(parentFragmentManager, "birthday_picker")
     }
 
     private fun observeViewModel() {
@@ -140,10 +186,46 @@ class ProfileFragment : Fragment() {
             "female" -> binding.genderGroup.check(R.id.button_female)
         }
 
+        editBirthday = user.birthday
+        binding.editBirthday.setText(formatBirthday(user.birthday))
+
+        val zodiac = user.zodiacSignLabel?.takeIf { it.isNotBlank() }
+        if (zodiac != null) {
+            binding.textZodiac.text = "${zodiacSymbol(user.zodiacSign)} $zodiac"
+            binding.textZodiac.visibility = View.VISIBLE
+        } else {
+            binding.textZodiac.visibility = View.GONE
+        }
+
         user.createdAt?.let { date ->
             binding.textCreatedAt.text = getString(R.string.registered_at, formatDate(date))
             binding.textCreatedAt.visibility = View.VISIBLE
         }
+    }
+
+    private fun formatBirthday(iso: String?): String {
+        if (iso.isNullOrBlank()) return ""
+        return try {
+            isoFormatter.parse(iso)?.let(displayFormatter::format) ?: iso
+        } catch (e: Exception) {
+            iso
+        }
+    }
+
+    private fun zodiacSymbol(sign: String?): String = when (sign) {
+        "aries" -> "♈"
+        "taurus" -> "♉"
+        "gemini" -> "♊"
+        "cancer" -> "♋"
+        "leo" -> "♌"
+        "virgo" -> "♍"
+        "libra" -> "♎"
+        "scorpio" -> "♏"
+        "sagittarius" -> "♐"
+        "capricorn" -> "♑"
+        "aquarius" -> "♒"
+        "pisces" -> "♓"
+        else -> "✨"
     }
 
     private fun formatDate(dateString: String): String {
@@ -161,6 +243,8 @@ class ProfileFragment : Fragment() {
         binding.genderGroup.isEnabled = isEditing
         binding.buttonMale.isEnabled = isEditing
         binding.buttonFemale.isEnabled = isEditing
+        binding.inputLayoutBirthday.isEnabled = isEditing
+        binding.editBirthday.isEnabled = isEditing
 
         binding.buttonEdit.visibility = if (isEditing) View.GONE else View.VISIBLE
         binding.buttonSave.visibility = if (isEditing) View.VISIBLE else View.GONE

@@ -111,6 +111,11 @@ class HomeFragment : Fragment() {
             },
             onCompanyClick = {
                 findNavController().navigate(R.id.navigation_company_list)
+            },
+            onHoroscopeClick = { widget ->
+                val sign = (widget.state as? com.gorod.moygorodok.data.model.HoroscopeWidgetState.Ready)?.zodiacSign
+                val bundle = sign?.let { Bundle().apply { putString("sign", it) } }
+                findNavController().navigate(R.id.navigation_horoscope, bundle)
             }
         )
 

@@ -75,7 +75,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         _nameError.value = null
     }
 
-    fun saveProfile(name: String, email: String?, gender: String?) {
+    fun saveProfile(name: String, email: String?, gender: String?, birthday: String?) {
         if (name.isBlank()) {
             _nameError.value = "Введите имя"
             return
@@ -93,7 +93,8 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                 val result = repository.updateProfile(
                     name = name,
                     email = email?.takeIf { it.isNotBlank() },
-                    gender = gender
+                    gender = gender,
+                    birthday = birthday?.takeIf { it.isNotBlank() }
                 )
                 result.fold(
                     onSuccess = { updatedUser ->

@@ -7,9 +7,9 @@ class HomeRepository private constructor() {
 
     private val apiService = ApiClient.apiService
 
-    suspend fun getHomeCells(): Result<List<HomeCellDto>> {
+    suspend fun getHomeCells(cityId: Int?): Result<List<HomeCellDto>> {
         return try {
-            val response = apiService.getHome()
+            val response = apiService.getHome(cityId)
             if (response.success) {
                 Result.success(response.data.sortedBy { it.sortOrder })
             } else {

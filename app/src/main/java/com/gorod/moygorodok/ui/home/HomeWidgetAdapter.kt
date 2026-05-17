@@ -16,6 +16,7 @@ import com.gorod.moygorodok.databinding.ItemWidgetCinemaBinding
 import com.gorod.moygorodok.databinding.ItemWidgetCurrencyBinding
 import com.gorod.moygorodok.databinding.ItemWidgetCompanyBinding
 import com.gorod.moygorodok.databinding.ItemWidgetEmergencyBinding
+import com.gorod.moygorodok.databinding.ItemWidgetHoroscopeBinding
 import com.gorod.moygorodok.databinding.ItemWidgetNewsBinding
 import com.gorod.moygorodok.databinding.ItemWidgetNotificationsBinding
 import com.gorod.moygorodok.databinding.ItemWidgetTasksBinding
@@ -36,7 +37,8 @@ class HomeWidgetAdapter(
     private val onChatClick: () -> Unit,
     private val onCinemaClick: () -> Unit,
     private val onCurrencyClick: () -> Unit,
-    private val onCompanyClick: () -> Unit
+    private val onCompanyClick: () -> Unit,
+    private val onHoroscopeClick: (HomeWidget.HoroscopeWidget) -> Unit
 ) : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
@@ -53,6 +55,7 @@ class HomeWidgetAdapter(
         private const val TYPE_CINEMA = 10
         private const val TYPE_CURRENCY = 11
         private const val TYPE_COMPANY = 12
+        private const val TYPE_HOROSCOPE = 13
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -70,6 +73,7 @@ class HomeWidgetAdapter(
             is HomeWidget.CinemaWidget -> TYPE_CINEMA
             is HomeWidget.CurrencyWidget -> TYPE_CURRENCY
             is HomeWidget.CompanyWidget -> TYPE_COMPANY
+            is HomeWidget.HoroscopeWidget -> TYPE_HOROSCOPE
             else -> throw IllegalArgumentException("Unknown widget type")
         }
     }
@@ -180,6 +184,14 @@ class HomeWidgetAdapter(
                 ),
                 onCompanyClick
             )
+            TYPE_HOROSCOPE -> HoroscopeViewHolder(
+                ItemWidgetHoroscopeBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
+                onHoroscopeClick
+            )
             else -> throw IllegalArgumentException("Unknown view type")
         }
     }
@@ -199,6 +211,7 @@ class HomeWidgetAdapter(
             is HomeWidget.CinemaWidget -> (holder as CinemaViewHolder).bind(item)
             is HomeWidget.CurrencyWidget -> (holder as CurrencyViewHolder).bind(item)
             is HomeWidget.CompanyWidget -> (holder as CompanyViewHolder).bind(item)
+            is HomeWidget.HoroscopeWidget -> (holder as HoroscopeViewHolder).bind(item)
             else -> {}
         }
     }
@@ -466,14 +479,21 @@ class HomeWidgetAdapter(
 
         fun bind(item: HomeWidget.CurrencyWidget) {
             binding.apply {
-                textUsdRate.text = String.format("%.2f", item.usdRate)
-                textEurRate.text = String.format("%.2f", item.eurRate)
-                textCnyRate.text = String.format("%.2f", item.cnyRate)
-                textJpyRate.text = String.format("%.2f", item.jpyRate)
-                textLastUpdate.text = "Обновлено: ${item.lastUpdate.split(", ").lastOrNull() ?: item.lastUpdate}"
+                textUsdRate.text = formatRate(item.usdRate)
+                textEurRate.text = formatRate(item.eurRate)
+                textCnyRate.text = formatRate(item.cnyRate)
+                textJpyRate.text = formatRate(item.jpyRate)
+                textLastUpdate.text = if (item.lastUpdate.isBlank()) {
+                    "Курсы валют"
+                } else {
+                    "Обновлено: ${item.lastUpdate}"
+                }
                 root.setOnClickListener { onClick() }
             }
         }
+
+        private fun formatRate(value: Double?): String =
+            value?.let { String.format(Locale.US, "%.2f", it) } ?: "—"
     }
 
     class CompanyViewHolder(
@@ -487,6 +507,53 @@ class HomeWidgetAdapter(
                 textVerified.text = item.verifiedCount.toString()
                 textCategories.text = item.categoriesCount.toString()
                 root.setOnClickListener { onClick() }
+            }
+        }
+    }
+
+    class HoroscopeViewHolder(
+        private val binding: ItemWidgetHoroscopeBinding,
+        private val onClick: (HomeWidget.HoroscopeWidget) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: HomeWidget.HoroscopeWidget) {
+            binding.apply {
+                when (val state = item.state) {
+                    is com.gorod.moygorodok.data.model.HoroscopeWidgetState.Ready -> {
+                        textHoroscopeSymbol.text = state.symbol.ifBlank { "✨" }
+                        textHoroscopeTitle.text = buildString {
+                            append(state.zodiacSignLabel)
+                            state.date?.let { append(" · ").append(formatHoroscopeDate(it)) }
+                        }
+                        textHoroscopeBody.text = state.text
+                    }
+                    com.gorod.moygorodok.data.model.HoroscopeWidgetState.Anonymous -> {
+                        textHoroscopeSymbol.text = "✨"
+                        textHoroscopeTitle.text = "Гороскоп"
+                        textHoroscopeBody.text = "Войдите, чтобы видеть персональный гороскоп"
+                    }
+                    com.gorod.moygorodok.data.model.HoroscopeWidgetState.NoBirthday -> {
+                        textHoroscopeSymbol.text = "✨"
+                        textHoroscopeTitle.text = "Гороскоп"
+                        textHoroscopeBody.text = "Укажите дату рождения в профиле"
+                    }
+                    com.gorod.moygorodok.data.model.HoroscopeWidgetState.Empty -> {
+                        textHoroscopeSymbol.text = "✨"
+                        textHoroscopeTitle.text = "Гороскоп"
+                        textHoroscopeBody.text = "Сегодня прогноза нет, загляните позже"
+                    }
+                }
+                root.setOnClickListener { onClick(item) }
+            }
+        }
+
+        private fun formatHoroscopeDate(raw: String): String {
+            return try {
+                val parser = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.ROOT)
+                val formatter = java.text.SimpleDateFormat("d MMMM", java.util.Locale("ru", "RU"))
+                parser.parse(raw)?.let(formatter::format) ?: raw
+            } catch (e: Exception) {
+                raw
             }
         }
     }
