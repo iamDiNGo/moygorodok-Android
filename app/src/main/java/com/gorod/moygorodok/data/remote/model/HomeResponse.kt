@@ -60,7 +60,19 @@ data class WeatherCellDataDto(
     val timezone: String? = null,
     val provider: String? = null,
     val current: WeatherCurrentDto? = null,
+    val hourly: List<WeatherHourlyDto>? = null,
     val daily: List<WeatherDailyDto>? = null
+)
+
+data class WeatherHourlyDto(
+    val time: String? = null,
+    val temperature: Double? = null,
+    val precipitation: Double? = null,
+    @SerializedName("wind_speed")
+    val windSpeed: Double? = null,
+    @SerializedName("weather_code")
+    val weatherCode: Int? = null,
+    val icon: String? = null
 )
 
 data class WeatherCurrentDto(
@@ -159,6 +171,40 @@ data class NewsListItemDto(
     val cityId: Int? = null,
     @SerializedName("published_at")
     val publishedAt: String? = null
+)
+
+data class NewsDetailDto(
+    val id: Int? = null,
+    val slug: String? = null,
+    val title: String? = null,
+    val summary: String? = null,
+    val content: String? = null,
+    @SerializedName("image_url")
+    val imageUrl: String? = null,
+    @SerializedName("source_type")
+    val sourceType: String? = null,
+    @SerializedName("source_url")
+    val sourceUrl: String? = null,
+    @SerializedName("city_id")
+    val cityId: Int? = null,
+    @SerializedName("published_at")
+    val publishedAt: String? = null
+)
+
+data class NewsListResponse(
+    val success: Boolean,
+    val data: List<NewsListItemDto>,
+    val meta: PaginationMeta? = null
+)
+
+data class PaginationMeta(
+    @SerializedName("current_page")
+    val currentPage: Int? = null,
+    @SerializedName("last_page")
+    val lastPage: Int? = null,
+    @SerializedName("per_page")
+    val perPage: Int? = null,
+    val total: Int? = null
 )
 
 // -- Events ----------------------------------------------------------------

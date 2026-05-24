@@ -1,5 +1,7 @@
 package com.gorod.moygorodok.data.remote
 
+import com.gorod.moygorodok.data.model.Report
+import com.gorod.moygorodok.data.model.ReportPhoto
 import com.gorod.moygorodok.data.model.User
 import com.gorod.moygorodok.data.remote.model.*
 import okhttp3.MultipartBody
@@ -82,6 +84,25 @@ interface ApiService {
     @POST("api/auth/logout-all")
     suspend fun logoutAll(): Response<ApiResponse<Any>>
 
+    // Weather
+    @GET("api/weather/city/{city}")
+    suspend fun getWeatherForCity(
+        @Path("city") cityId: Int
+    ): Response<ApiResponse<WeatherCellDataDto>>
+
+    // News
+    @GET("api/news")
+    suspend fun getNewsList(
+        @Query("city_id") cityId: Int? = null,
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 20
+    ): Response<NewsListResponse>
+
+    @GET("api/news/{id}")
+    suspend fun getNewsById(
+        @Path("id") id: Int
+    ): Response<ApiResponse<NewsDetailDto>>
+
     // Horoscope
     @GET("api/horoscope/{sign}")
     suspend fun getHoroscopeBySign(
@@ -90,4 +111,36 @@ interface ApiService {
 
     @GET("api/horoscope/me")
     suspend fun getMyHoroscope(): Response<ApiResponse<HoroscopeDataDto>>
+
+    // Emergency
+    @GET("api/emergency-contacts")
+    suspend fun getEmergencyContacts(
+        @Query("city_id") cityId: Int? = null
+    ): Response<EmergencyListResponse>
+
+    // Reports
+    @POST("api/reports")
+    suspend fun createReport(
+        @Body request: CreateReportRequest
+    ): Response<ApiResponse<Report>>
+
+    @Multipart
+    @POST("api/reports/{id}/photos")
+    suspend fun uploadReportPhoto(
+        @Path("id") id: Int,
+        @Part photo: MultipartBody.Part
+    ): Response<ApiResponse<ReportPhoto>>
+
+    @GET("api/reports/my")
+    suspend fun getMyReports(
+        @Query("status") status: String? = null,
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 20
+    ): Response<ReportListResponse>
+
+    @GET("api/reports/{id}")
+    suspend fun getReport(@Path("id") id: Int): Response<ApiResponse<Report>>
+
+    @DELETE("api/reports/{id}")
+    suspend fun deleteReport(@Path("id") id: Int): Response<ApiResponse<Any>>
 }

@@ -172,21 +172,46 @@
     <string name="emergency_warning">Звоните только в экстренных ситуациях. Ложные вызовы наказываются по закону.</string>
     <string name="emergency_main_services">Основные службы</string>
     <string name="emergency_other_services">Другие службы</string>
+    <string name="emergency_hero_title">Экстренные службы</string>
+    <string name="emergency_hero_subtitle">Важные номера телефонов вашего региона</string>
+    <string name="emergency_quick_dial_title">Быстрый вызов</string>
+    <string name="emergency_all_title">Все службы</string>
+    <string name="emergency_empty">Список служб пуст</string>
+    <string name="emergency_retry">Повторить</string>
+    <string name="emergency_badge_24h">24ч</string>
 
-    <!-- Complaint -->
-    <string name="complaint_title">Обращение</string>
-    <string name="complaint_widget_title">Обращения</string>
-    <string name="complaint_widget_subtitle">Сообщите о проблеме в городе</string>
-    <string name="complaint_select_category">Выберите категорию</string>
-    <string name="complaint_hint_title">Заголовок обращения</string>
-    <string name="complaint_hint_description">Опишите проблему подробнее</string>
-    <string name="complaint_hint_address">Адрес</string>
-    <string name="complaint_add_photos">Прикрепите фото</string>
-    <string name="complaint_select_image">Добавить изображение</string>
-    <string name="complaint_contact_info">Контактные данные</string>
-    <string name="complaint_hint_name">Ваше имя (необязательно)</string>
-    <string name="complaint_hint_phone">Телефон для связи (необязательно)</string>
-    <string name="complaint_submit">Отправить обращение</string>
+    <!-- Reports -->
+    <string name="report_sheet_title">Пожаловаться</string>
+    <string name="report_sheet_target_prefix">Жалоба на:</string>
+    <string name="report_section_reason">Причина</string>
+    <string name="report_section_comment">Комментарий</string>
+    <string name="report_comment_hint">Опишите проблему</string>
+    <string name="report_comment_required_for_other">При выборе «Другое» нужно указать комментарий</string>
+    <string name="report_section_screenshots">Скриншоты (до 3)</string>
+    <string name="report_add_screenshot">Добавить</string>
+    <string name="report_submit">Отправить</string>
+    <string name="report_submit_success">Жалоба отправлена</string>
+    <string name="report_error_duplicate">Вы уже жаловались на этот объект — ждите решения модератора</string>
+    <string name="report_error_own_content">Нельзя жаловаться на свой контент</string>
+    <string name="report_error_rate_limited">Слишком много жалоб подряд, попробуйте позже</string>
+    <string name="report_error_photos_limit">Достигнут лимит — не более 3 фото</string>
+    <string name="report_error_generic">Не удалось отправить жалобу</string>
+
+    <string name="report_list_title">Мои жалобы</string>
+    <string name="report_list_empty">У вас пока нет жалоб</string>
+    <string name="report_list_profile_link">Мои жалобы</string>
+
+    <string name="report_status_pending">На рассмотрении</string>
+    <string name="report_status_accepted">Принят</string>
+    <string name="report_status_rejected">Отклонён</string>
+
+    <string name="report_detail_title">Жалоба</string>
+    <string name="report_detail_resolution">Решение модератора</string>
+    <string name="report_detail_no_comment">Без комментария</string>
+    <string name="report_detail_delete">Удалить жалобу</string>
+    <string name="report_detail_delete_confirm_title">Удалить жалобу?</string>
+    <string name="report_detail_delete_confirm_message">Жалоба будет отозвана. Это действие нельзя отменить.</string>
+    <string name="report_detail_delete_success">Жалоба удалена</string>
 
     <!-- Notifications -->
     <string name="notifications_title">Уведомления</string>

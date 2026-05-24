@@ -58,7 +58,7 @@ class WeatherFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.weather.observe(viewLifecycleOwner) { weather ->
-            updateUI(weather)
+            weather?.let { updateUI(it) }
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -82,28 +82,32 @@ class WeatherFragment : Fragment() {
 
     private fun updateUI(weather: Weather) {
         binding.apply {
-            // Header
             textLocation.text = weather.location
             textCurrentTemp.text = "${weather.currentTemp}°"
-            textCondition.text = weather.condition.displayName
-            textHighLow.text = "Макс: ${weather.highTemp}°  Мин: ${weather.lowTemp}°"
+            textCondition.text = weather.description?.takeIf { it.isNotBlank() }
+                ?: weather.condition.displayName
+            textHighLow.text = formatHighLow(weather.highTemp, weather.lowTemp)
 
-            // Hourly forecast
             hourlyAdapter.submitList(weather.hourlyForecast)
-
-            // Daily forecast
             dailyAdapter.submitList(weather.dailyForecast)
 
-            // Weather details
-            textFeelsLike.text = "${weather.feelsLike}°"
-            textHumidity.text = "${weather.humidity}%"
-            textWind.text = "${weather.windSpeed} м/с ${weather.windDirection}"
-            textPressure.text = "${weather.pressure} мм"
-            textVisibility.text = "${weather.visibility} км"
-            textUvIndex.text = weather.uvIndex.toString()
-            textSunrise.text = weather.sunrise
-            textSunset.text = weather.sunset
+            textFeelsLike.text = weather.feelsLike?.let { "$it°" } ?: "—"
+            textHumidity.text = weather.humidity?.let { "$it%" } ?: "—"
+            textWind.text = listOfNotNull(
+                weather.windSpeed?.let { "%.1f м/с".format(it) },
+                weather.windDirection
+            ).joinToString(" ").ifBlank { "—" }
+            textPressure.text = weather.pressure?.let { "$it гПа" } ?: "—"
+            textSunrise.text = weather.sunrise ?: "—"
+            textSunset.text = weather.sunset ?: "—"
         }
+    }
+
+    private fun formatHighLow(high: Int?, low: Int?): String {
+        if (high == null && low == null) return ""
+        val hi = high?.let { "Макс: $it°" } ?: ""
+        val lo = low?.let { "Мин: $it°" } ?: ""
+        return listOf(hi, lo).filter { it.isNotEmpty() }.joinToString("  ")
     }
 
     override fun onDestroyView() {

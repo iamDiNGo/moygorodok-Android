@@ -32,29 +32,26 @@ class MainEmergencyAdapter(
 
         fun bind(contact: EmergencyContact) {
             binding.apply {
-                textIcon.text = contact.icon
-                textName.text = contact.shortName
+                imageIcon.setImageResource(EmergencyIconMapper.drawableRes(contact.iconKey))
+                textName.text = contact.name
                 textPhone.text = contact.phone
-
-                // Set card color
-                try {
-                    card.setCardBackgroundColor(Color.parseColor(contact.color))
-                } catch (e: Exception) {
-                    card.setCardBackgroundColor(Color.parseColor("#666666"))
-                }
-
+                card.setCardBackgroundColor(parseColorSafe(contact.color))
                 root.setOnClickListener { onCallClick(contact) }
             }
+        }
+
+        private fun parseColorSafe(hex: String): Int = try {
+            Color.parseColor(hex)
+        } catch (e: IllegalArgumentException) {
+            Color.parseColor("#666666")
         }
     }
 
     class DiffCallback : DiffUtil.ItemCallback<EmergencyContact>() {
-        override fun areItemsTheSame(oldItem: EmergencyContact, newItem: EmergencyContact): Boolean {
-            return oldItem.id == newItem.id
-        }
+        override fun areItemsTheSame(oldItem: EmergencyContact, newItem: EmergencyContact): Boolean =
+            oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: EmergencyContact, newItem: EmergencyContact): Boolean {
-            return oldItem == newItem
-        }
+        override fun areContentsTheSame(oldItem: EmergencyContact, newItem: EmergencyContact): Boolean =
+            oldItem == newItem
     }
 }

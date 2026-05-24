@@ -254,44 +254,6 @@
 
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Visibility -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        app:cardBackgroundColor="#2C2C2E"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="16dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/weather_visibility"
-                                android:textColor="#EBEBF5"
-                                android:textSize="12sp"
-                                android:drawableStart="@drawable/ic_visibility"
-                                android:drawablePadding="4dp"
-                                app:drawableTint="#EBEBF5" />
-
-                            <TextView
-                                android:id="@+id/text_visibility"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:textColor="@android:color/white"
-                                android:textSize="32sp"
-                                tools:text="8 км" />
-
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
                     <!-- Sunrise -->
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
@@ -411,44 +373,6 @@
                                 android:textColor="@android:color/white"
                                 android:textSize="32sp"
                                 tools:text="745 мм" />
-
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- UV Index -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        app:cardBackgroundColor="#2C2C2E"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="16dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/weather_uv_index"
-                                android:textColor="#EBEBF5"
-                                android:textSize="12sp"
-                                android:drawableStart="@drawable/ic_sun"
-                                android:drawablePadding="4dp"
-                                app:drawableTint="#EBEBF5" />
-
-                            <TextView
-                                android:id="@+id/text_uv_index"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:textColor="@android:color/white"
-                                android:textSize="32sp"
-                                tools:text="1" />
 
                         </LinearLayout>
 

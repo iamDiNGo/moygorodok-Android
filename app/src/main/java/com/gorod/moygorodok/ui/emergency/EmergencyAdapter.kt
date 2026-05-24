@@ -6,24 +6,61 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.gorod.moygorodok.data.model.EmergencyCategory
 import com.gorod.moygorodok.data.model.EmergencyContact
 import com.gorod.moygorodok.databinding.ItemEmergencyContactBinding
+import com.gorod.moygorodok.databinding.ItemEmergencySectionHeaderBinding
 
 class EmergencyAdapter(
     private val onCallClick: (EmergencyContact) -> Unit
-) : ListAdapter<EmergencyContact, EmergencyAdapter.ContactViewHolder>(DiffCallback()) {
+) : ListAdapter<EmergencyAdapter.Row, RecyclerView.ViewHolder>(DiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
-        val binding = ItemEmergencyContactBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return ContactViewHolder(binding)
+    sealed class Row {
+        data class Header(
+            val category: EmergencyCategory,
+            val color: String,
+            val iconKey: String
+        ) : Row()
+
+        data class Contact(val contact: EmergencyContact) : Row()
     }
 
-    override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun getItemViewType(position: Int): Int = when (getItem(position)) {
+        is Row.Header -> VIEW_TYPE_HEADER
+        is Row.Contact -> VIEW_TYPE_CONTACT
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            VIEW_TYPE_HEADER -> HeaderViewHolder(
+                ItemEmergencySectionHeaderBinding.inflate(inflater, parent, false)
+            )
+            VIEW_TYPE_CONTACT -> ContactViewHolder(
+                ItemEmergencyContactBinding.inflate(inflater, parent, false)
+            )
+            else -> error("Unknown viewType=$viewType")
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (val row = getItem(position)) {
+            is Row.Header -> (holder as HeaderViewHolder).bind(row)
+            is Row.Contact -> (holder as ContactViewHolder).bind(row.contact)
+        }
+    }
+
+    inner class HeaderViewHolder(
+        private val binding: ItemEmergencySectionHeaderBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(row: Row.Header) {
+            binding.apply {
+                textCategory.text = row.category.displayName
+                imageIcon.setImageResource(EmergencyIconMapper.drawableRes(row.iconKey))
+                cardIcon.setCardBackgroundColor(parseColorSafe(row.color))
+            }
+        }
     }
 
     inner class ContactViewHolder(
@@ -32,31 +69,49 @@ class EmergencyAdapter(
 
         fun bind(contact: EmergencyContact) {
             binding.apply {
-                textIcon.text = contact.icon
-                textName.text = contact.shortName
+                textName.text = contact.name
                 textPhone.text = contact.phone
-                textDescription.text = contact.description
+                imageIcon.setImageResource(EmergencyIconMapper.drawableRes(contact.iconKey))
+                cardIcon.setCardBackgroundColor(parseColorSafe(contact.color))
 
-                // Set color
-                try {
-                    cardIcon.setCardBackgroundColor(Color.parseColor(contact.color))
-                } catch (e: Exception) {
-                    cardIcon.setCardBackgroundColor(Color.parseColor("#666666"))
+                badge24h.visibility = if (contact.is24h) android.view.View.VISIBLE else android.view.View.GONE
+
+                val subtitle = when {
+                    !contact.description.isNullOrBlank() -> contact.description
+                    !contact.is24h && !contact.workingHours.isNullOrBlank() -> contact.workingHours
+                    else -> null
+                }
+                if (subtitle != null) {
+                    textSubtitle.text = subtitle
+                    textSubtitle.visibility = android.view.View.VISIBLE
+                } else {
+                    textSubtitle.visibility = android.view.View.GONE
                 }
 
                 buttonCall.setOnClickListener { onCallClick(contact) }
-                root.setOnClickListener { onCallClick(contact) }
+                cardRoot.setOnClickListener { onCallClick(contact) }
             }
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<EmergencyContact>() {
-        override fun areItemsTheSame(oldItem: EmergencyContact, newItem: EmergencyContact): Boolean {
-            return oldItem.id == newItem.id
+    class DiffCallback : DiffUtil.ItemCallback<Row>() {
+        override fun areItemsTheSame(oldItem: Row, newItem: Row): Boolean = when {
+            oldItem is Row.Header && newItem is Row.Header -> oldItem.category == newItem.category
+            oldItem is Row.Contact && newItem is Row.Contact -> oldItem.contact.id == newItem.contact.id
+            else -> false
         }
 
-        override fun areContentsTheSame(oldItem: EmergencyContact, newItem: EmergencyContact): Boolean {
-            return oldItem == newItem
+        override fun areContentsTheSame(oldItem: Row, newItem: Row): Boolean = oldItem == newItem
+    }
+
+    companion object {
+        private const val VIEW_TYPE_HEADER = 0
+        private const val VIEW_TYPE_CONTACT = 1
+
+        private fun parseColorSafe(hex: String): Int = try {
+            Color.parseColor(hex)
+        } catch (e: IllegalArgumentException) {
+            Color.parseColor("#666666")
         }
     }
 }

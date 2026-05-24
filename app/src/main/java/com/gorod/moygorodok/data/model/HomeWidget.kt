@@ -53,11 +53,6 @@ sealed class HomeWidget {
         val mainNumbers: List<String>
     ) : HomeWidget()
 
-    data class ComplaintWidget(
-        val title: String,
-        val subtitle: String
-    ) : HomeWidget()
-
     data class NotificationsWidget(
         val unreadCount: Int,
         val latestTypes: List<String>
@@ -143,10 +138,6 @@ object MockHomeWidgets {
             "emergency" to HomeWidget.EmergencyWidget(
                 title = "Экстренная помощь",
                 mainNumbers = listOf("112", "101", "102", "103")
-            ),
-            "complaint" to HomeWidget.ComplaintWidget(
-                title = "Обращения",
-                subtitle = "Сообщите о проблеме в городе"
             ),
             "admin" to HomeWidget.AdminWidget(
                 deliveryName = admin.delivery.name,

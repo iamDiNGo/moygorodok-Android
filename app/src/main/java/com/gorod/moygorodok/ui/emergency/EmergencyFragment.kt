@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gorod.moygorodok.data.model.EmergencyCategory
 import com.gorod.moygorodok.data.model.EmergencyContact
 import com.gorod.moygorodok.databinding.FragmentEmergencyBinding
 
@@ -38,6 +37,7 @@ class EmergencyFragment : Fragment() {
 
         setupToolbar()
         setupAdapters()
+        binding.buttonRetry.setOnClickListener { viewModel.refresh() }
         observeViewModel()
     }
 
@@ -48,16 +48,11 @@ class EmergencyFragment : Fragment() {
     }
 
     private fun setupAdapters() {
-        mainAdapter = MainEmergencyAdapter { contact ->
-            callNumber(contact.phone)
-        }
-
-        allAdapter = EmergencyAdapter { contact ->
-            callNumber(contact.phone)
-        }
+        mainAdapter = MainEmergencyAdapter { contact -> callNumber(contact) }
+        allAdapter = EmergencyAdapter { contact -> callNumber(contact) }
 
         binding.recyclerMainContacts.apply {
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = GridLayoutManager(context, 1)
             adapter = mainAdapter
         }
 
@@ -69,19 +64,72 @@ class EmergencyFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.mainContacts.observe(viewLifecycleOwner) { contacts ->
-            mainAdapter.submitList(contacts)
+            val hasContacts = contacts.isNotEmpty()
+            binding.textQuickDialTitle.visibility = if (hasContacts) View.VISIBLE else View.GONE
+            binding.recyclerMainContacts.visibility = if (hasContacts) View.VISIBLE else View.GONE
+
+            if (hasContacts) {
+                val spanCount = contacts.size.coerceIn(1, 4)
+                binding.recyclerMainContacts.layoutManager = GridLayoutManager(context, spanCount)
+                mainAdapter.submitList(contacts)
+            }
         }
 
-        viewModel.contacts.observe(viewLifecycleOwner) { contacts ->
-            // Filter out main contacts for the "all" list
-            val otherContacts = contacts.filter { !it.isMainNumber }
-            allAdapter.submitList(otherContacts)
+        viewModel.groupedContacts.observe(viewLifecycleOwner) { groups ->
+            val rows = buildList<EmergencyAdapter.Row> {
+                groups.forEach { (category, contacts) ->
+                    val first = contacts.first()
+                    add(EmergencyAdapter.Row.Header(category, first.color, first.iconKey))
+                    contacts.forEach { add(EmergencyAdapter.Row.Contact(it)) }
+                }
+            }
+            allAdapter.submitList(rows)
+            binding.textAllTitle.visibility = if (groups.isNotEmpty()) View.VISIBLE else View.GONE
+            binding.recyclerAllContacts.visibility = if (groups.isNotEmpty()) View.VISIBLE else View.GONE
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { loading ->
+            renderState(
+                loading = loading,
+                error = viewModel.error.value,
+                hasData = !viewModel.contacts.value.isNullOrEmpty()
+            )
+        }
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            renderState(
+                loading = viewModel.isLoading.value == true,
+                error = error,
+                hasData = !viewModel.contacts.value.isNullOrEmpty()
+            )
+        }
+        viewModel.contacts.observe(viewLifecycleOwner) { list ->
+            renderState(
+                loading = viewModel.isLoading.value == true,
+                error = viewModel.error.value,
+                hasData = list.isNotEmpty()
+            )
         }
     }
 
-    private fun callNumber(phone: String) {
+    private fun renderState(loading: Boolean, error: String?, hasData: Boolean) {
+        val showLoading = loading && !hasData
+        val showError = !loading && error != null && !hasData
+        val showEmpty = !loading && error == null && !hasData
+
+        binding.stateContainer.visibility =
+            if (showLoading || showError || showEmpty) View.VISIBLE else View.GONE
+        binding.progress.visibility = if (showLoading) View.VISIBLE else View.GONE
+        binding.errorView.visibility = if (showError) View.VISIBLE else View.GONE
+        binding.textEmpty.visibility = if (showEmpty) View.VISIBLE else View.GONE
+
+        if (showError) {
+            binding.textError.text = error
+        }
+    }
+
+    private fun callNumber(contact: EmergencyContact) {
         val intent = Intent(Intent.ACTION_DIAL).apply {
-            data = Uri.parse("tel:$phone")
+            data = Uri.parse("tel:${contact.phoneNormalized}")
         }
         startActivity(intent)
     }

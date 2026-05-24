@@ -142,12 +142,6 @@
         tools:layout="@layout/fragment_emergency" />
 
     <fragment
-        android:id="@+id/navigation_complaint"
-        android:name="com.gorod.moygorodok.ui.complaint.ComplaintFragment"
-        android:label="@string/complaint_title"
-        tools:layout="@layout/fragment_complaint" />
-
-    <fragment
         android:id="@+id/navigation_notification_list"
         android:name="com.gorod.moygorodok.ui.notification_list.NotificationListFragment"
         android:label="@string/notifications_title"
@@ -258,6 +252,27 @@
             app:argType="string"
             app:nullable="true"
             android:defaultValue="@null" />
+    </fragment>
+
+    <!-- Reports -->
+    <fragment
+        android:id="@+id/navigation_my_reports"
+        android:name="com.gorod.moygorodok.ui.report.list.ReportListFragment"
+        android:label="@string/report_list_title"
+        tools:layout="@layout/fragment_report_list">
+        <action
+            android:id="@+id/action_reportList_to_reportDetail"
+            app:destination="@id/navigation_report_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_report_detail"
+        android:name="com.gorod.moygorodok.ui.report.detail.ReportDetailFragment"
+        android:label="@string/report_detail_title"
+        tools:layout="@layout/fragment_report_detail">
+        <argument
+            android:name="reportId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

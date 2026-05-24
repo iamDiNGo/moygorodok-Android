@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
@@ -17,7 +18,7 @@
         android:padding="12dp"
         android:gravity="center_vertical">
 
-        <!-- Icon Card -->
+        <!-- Icon -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_icon"
             android:layout_width="48dp"
@@ -25,17 +26,18 @@
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp">
 
-            <TextView
-                android:id="@+id/text_icon"
+            <ImageView
+                android:id="@+id/image_icon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:textSize="24sp"
-                tools:text="🧠" />
+                android:padding="12dp"
+                app:tint="@android:color/white"
+                android:contentDescription="@null"
+                tools:src="@drawable/ic_emergency_cross" />
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Contact Info -->
+        <!-- Info -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -43,16 +45,38 @@
             android:layout_marginHorizontal="12dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text_name"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#212121"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:maxLines="1"
-                android:ellipsize="end"
-                tools:text="Психологическая помощь" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/text_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#212121"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="Психологическая помощь" />
+
+                <TextView
+                    android:id="@+id/badge_24h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:background="#4CAF50"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/emergency_badge_24h"
+                    android:textColor="@android:color/white"
+                    android:textSize="9sp"
+                    android:textStyle="bold"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/text_phone"
@@ -65,8 +89,8 @@
                 tools:text="8-800-2000-122" />
 
             <TextView
-                android:id="@+id/text_description"
-                android:layout_width="wrap_content"
+                android:id="@+id/text_subtitle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:textColor="#757575"

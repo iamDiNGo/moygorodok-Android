@@ -10,7 +10,8 @@ import java.util.concurrent.TimeUnit
 
 object ApiClient {
 
-    private const val BASE_URL = "http://10.0.2.2:8888/"
+    private const val BASE_URL = "https://moy-gorodok.ru/"
+    //private const val BASE_URL = "http://10.0.2.2:8888/"
 
     private var tokenManager: TokenManager? = null
 
@@ -22,11 +23,11 @@ object ApiClient {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-
+//new-gorod.pw:8888
         OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val requestBuilder = chain.request().newBuilder()
-                    .header("Host", "new-gorod.pw:8888")
+                    .header("Host", "moy-gorodok.ru")
                     .header("Accept", "application/json")
 
                 tokenManager?.token?.let { token ->

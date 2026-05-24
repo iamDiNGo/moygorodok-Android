@@ -9,7 +9,6 @@ import com.gorod.moygorodok.data.model.HomeWidget
 import com.gorod.moygorodok.data.model.TaskPriceType
 import com.gorod.moygorodok.databinding.ItemWidgetAdminBinding
 import com.gorod.moygorodok.databinding.ItemWidgetAdsBinding
-import com.gorod.moygorodok.databinding.ItemWidgetComplaintBinding
 import com.gorod.moygorodok.databinding.ItemWidgetDeliveryBinding
 import com.gorod.moygorodok.databinding.ItemWidgetChatBinding
 import com.gorod.moygorodok.databinding.ItemWidgetCinemaBinding
@@ -32,7 +31,6 @@ class HomeWidgetAdapter(
     private val onTasksClick: () -> Unit,
     private val onAdminClick: () -> Unit,
     private val onEmergencyClick: () -> Unit,
-    private val onComplaintClick: () -> Unit,
     private val onNotificationsClick: () -> Unit,
     private val onChatClick: () -> Unit,
     private val onCinemaClick: () -> Unit,
@@ -49,13 +47,12 @@ class HomeWidgetAdapter(
         private const val TYPE_TASKS = 4
         private const val TYPE_ADMIN = 5
         private const val TYPE_EMERGENCY = 6
-        private const val TYPE_COMPLAINT = 7
-        private const val TYPE_NOTIFICATIONS = 8
-        private const val TYPE_CHAT = 9
-        private const val TYPE_CINEMA = 10
-        private const val TYPE_CURRENCY = 11
-        private const val TYPE_COMPANY = 12
-        private const val TYPE_HOROSCOPE = 13
+        private const val TYPE_NOTIFICATIONS = 7
+        private const val TYPE_CHAT = 8
+        private const val TYPE_CINEMA = 9
+        private const val TYPE_CURRENCY = 10
+        private const val TYPE_COMPANY = 11
+        private const val TYPE_HOROSCOPE = 12
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -67,7 +64,6 @@ class HomeWidgetAdapter(
             is HomeWidget.TasksWidget -> TYPE_TASKS
             is HomeWidget.AdminWidget -> TYPE_ADMIN
             is HomeWidget.EmergencyWidget -> TYPE_EMERGENCY
-            is HomeWidget.ComplaintWidget -> TYPE_COMPLAINT
             is HomeWidget.NotificationsWidget -> TYPE_NOTIFICATIONS
             is HomeWidget.ChatWidget -> TYPE_CHAT
             is HomeWidget.CinemaWidget -> TYPE_CINEMA
@@ -136,14 +132,6 @@ class HomeWidgetAdapter(
                 ),
                 onEmergencyClick
             )
-            TYPE_COMPLAINT -> ComplaintViewHolder(
-                ItemWidgetComplaintBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                ),
-                onComplaintClick
-            )
             TYPE_NOTIFICATIONS -> NotificationsViewHolder(
                 ItemWidgetNotificationsBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -205,7 +193,6 @@ class HomeWidgetAdapter(
             is HomeWidget.TasksWidget -> (holder as TasksViewHolder).bind(item)
             is HomeWidget.AdminWidget -> (holder as AdminViewHolder).bind(item)
             is HomeWidget.EmergencyWidget -> (holder as EmergencyViewHolder).bind(item)
-            is HomeWidget.ComplaintWidget -> (holder as ComplaintViewHolder).bind(item)
             is HomeWidget.NotificationsWidget -> (holder as NotificationsViewHolder).bind(item)
             is HomeWidget.ChatWidget -> (holder as ChatViewHolder).bind(item)
             is HomeWidget.CinemaWidget -> (holder as CinemaViewHolder).bind(item)
@@ -416,16 +403,6 @@ class HomeWidgetAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: HomeWidget.EmergencyWidget) {
-            binding.root.setOnClickListener { onClick() }
-        }
-    }
-
-    class ComplaintViewHolder(
-        private val binding: ItemWidgetComplaintBinding,
-        private val onClick: () -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(item: HomeWidget.ComplaintWidget) {
             binding.root.setOnClickListener { onClick() }
         }
     }

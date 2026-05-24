@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Reports -->
+    <color name="report_pending">#FF9500</color>
+    <color name="report_accepted">#34C759</color>
+    <color name="report_rejected">#8E8E93</color>
+    <color name="report_header_bg">#FFEAEA</color>
+    <color name="report_header_accent">#E03E3E</color>
 </resources>
