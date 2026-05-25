@@ -1,11 +1,12 @@
 package com.gorod.moygorodok.ui.company
 
-import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.gorod.moygorodok.data.model.Company
 import com.gorod.moygorodok.databinding.ItemCompanyBinding
 
@@ -14,11 +15,7 @@ class CompanyAdapter(
 ) : ListAdapter<Company, CompanyAdapter.CompanyViewHolder>(CompanyDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CompanyViewHolder {
-        val binding = ItemCompanyBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+        val binding = ItemCompanyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CompanyViewHolder(binding)
     }
 
@@ -30,47 +27,66 @@ class CompanyAdapter(
         private val binding: ItemCompanyBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(company: Company) {
-            binding.apply {
-                textName.text = company.name
-                textCategory.text = "${company.category.emoji} ${company.category.displayName}"
-                textDescription.text = company.shortDescription
-                textAddress.text = company.address
-                textRating.text = company.rating.toString()
-                textReviews.text = "(${company.reviewsCount})"
-                textHours.text = company.workingHours
+        fun bind(company: Company) = with(binding) {
+            textName.text = company.name
+            textCategory.text = company.category?.name ?: company.kindLabel
+            textAddress.text = company.address?.takeIf { it.isNotBlank() } ?: "—"
 
-                // Verified badge
-                textVerified.visibility = if (company.isVerified) {
-                    android.view.View.VISIBLE
+            textRating.text = company.rating?.let { String.format("%.1f", it) } ?: "—"
+            textReviews.text = if (company.reviewsCount > 0) "(${company.reviewsCount})" else ""
+
+            textPriceRange.apply {
+                if (company.priceRange != null) {
+                    text = company.priceRange.symbol
+                    visibility = View.VISIBLE
                 } else {
-                    android.view.View.GONE
-                }
-
-                // Logo placeholder color
-                try {
-                    logoPlaceholder.setBackgroundColor(Color.parseColor(company.logoColor))
-                } catch (e: Exception) {
-                    logoPlaceholder.setBackgroundColor(Color.parseColor("#2196F3"))
-                }
-
-                // Category emoji as logo
-                textLogoEmoji.text = company.category.emoji
-
-                root.setOnClickListener {
-                    onCompanyClick(company)
+                    visibility = View.GONE
                 }
             }
+
+            textOpenNow.apply {
+                when (company.isOpenNow) {
+                    true -> {
+                        text = "Открыто"
+                        setTextColor(0xFF388E3C.toInt())
+                        visibility = View.VISIBLE
+                    }
+                    false -> {
+                        text = "Закрыто"
+                        setTextColor(0xFFD32F2F.toInt())
+                        visibility = View.VISIBLE
+                    }
+                    null -> visibility = View.GONE
+                }
+            }
+
+            imageVerified.visibility = if (company.isVerified) View.VISIBLE else View.GONE
+
+            val accentColor = CompanyCategoryIcons.resolveColor(company.category?.colorHex)
+            logoContainer.setBackgroundColor(accentColor)
+            imageCategoryIcon.setImageResource(
+                CompanyCategoryIcons.resolveIcon(company.category?.key)
+            )
+
+            val artworkUrl = company.logoUrl ?: company.coverPhotoUrl
+            if (artworkUrl != null) {
+                imageLogo.visibility = View.VISIBLE
+                imageCategoryIcon.visibility = View.GONE
+                imageLogo.load(artworkUrl)
+            } else {
+                imageLogo.visibility = View.GONE
+                imageCategoryIcon.visibility = View.VISIBLE
+            }
+
+            root.setOnClickListener { onCompanyClick(company) }
         }
     }
 
     class CompanyDiffCallback : DiffUtil.ItemCallback<Company>() {
-        override fun areItemsTheSame(oldItem: Company, newItem: Company): Boolean {
-            return oldItem.id == newItem.id
-        }
+        override fun areItemsTheSame(oldItem: Company, newItem: Company): Boolean =
+            oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: Company, newItem: Company): Boolean {
-            return oldItem == newItem
-        }
+        override fun areContentsTheSame(oldItem: Company, newItem: Company): Boolean =
+            oldItem == newItem
     }
 }

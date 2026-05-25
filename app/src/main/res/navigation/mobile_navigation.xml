@@ -44,24 +44,47 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_ad_list"
-        android:name="com.gorod.moygorodok.ui.ads.AdListFragment"
+        android:id="@+id/navigation_announcement_list"
+        android:name="com.gorod.moygorodok.ui.announcements.AnnouncementListFragment"
         android:label="@string/title_ads"
-        tools:layout="@layout/fragment_ad_list">
+        tools:layout="@layout/fragment_announcement_list">
         <action
-            android:id="@+id/action_adList_to_adDetail"
-            app:destination="@id/navigation_ad_detail" />
+            android:id="@+id/action_announcementList_to_announcementDetail"
+            app:destination="@id/navigation_announcement_detail" />
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_ad_detail"
-        android:name="com.gorod.moygorodok.ui.ads.AdDetailFragment"
+        android:id="@+id/navigation_announcement_detail"
+        android:name="com.gorod.moygorodok.ui.announcements.AnnouncementDetailFragment"
         android:label="@string/title_ad_detail"
-        tools:layout="@layout/fragment_ad_detail">
+        tools:layout="@layout/fragment_announcement_detail">
         <argument
-            android:name="adId"
-            app:argType="string" />
+            android:name="announcementId"
+            app:argType="integer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_create_announcement"
+        android:name="com.gorod.moygorodok.ui.announcements.CreateAnnouncementFragment"
+        android:label="@string/title_create_announcement"
+        tools:layout="@layout/fragment_create_announcement">
+        <argument
+            android:name="editId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_my_announcements"
+        android:name="com.gorod.moygorodok.ui.announcements.MyAnnouncementsFragment"
+        android:label="@string/title_my_announcements"
+        tools:layout="@layout/fragment_my_announcements" />
+
+    <fragment
+        android:id="@+id/navigation_favorite_announcements"
+        android:name="com.gorod.moygorodok.ui.announcements.FavoriteAnnouncementsFragment"
+        android:label="@string/title_favorite_announcements"
+        tools:layout="@layout/fragment_favorite_announcements" />
 
     <fragment
         android:id="@+id/navigation_weather"
@@ -196,7 +219,7 @@
         tools:layout="@layout/fragment_company_detail">
         <argument
             android:name="companyId"
-            app:argType="string" />
+            app:argType="integer" />
     </fragment>
 
     <!-- Auth -->

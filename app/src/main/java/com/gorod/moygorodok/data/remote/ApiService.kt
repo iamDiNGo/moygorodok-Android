@@ -143,4 +143,148 @@ interface ApiService {
 
     @DELETE("api/reports/{id}")
     suspend fun deleteReport(@Path("id") id: Int): Response<ApiResponse<Any>>
+
+    // Announcements
+    @GET("api/announcements")
+    suspend fun getAnnouncements(
+        @Query("city_id") cityId: Int? = null,
+        @Query("category") category: String? = null,
+        @Query("search") search: String? = null,
+        @Query("min_price") minPrice: Double? = null,
+        @Query("max_price") maxPrice: Double? = null,
+        @Query("sort") sort: String? = null,
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 20
+    ): Response<AnnouncementListResponse>
+
+    @GET("api/announcements/my")
+    suspend fun getMyAnnouncements(
+        @Query("status") status: String? = null,
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 20
+    ): Response<AnnouncementListResponse>
+
+    @GET("api/announcements/favorites")
+    suspend fun getFavoriteAnnouncements(
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 20
+    ): Response<AnnouncementListResponse>
+
+    @GET("api/announcements/{id}")
+    suspend fun getAnnouncement(
+        @Path("id") id: Int
+    ): Response<AnnouncementDetailResponse>
+
+    @POST("api/announcements")
+    suspend fun createAnnouncement(
+        @Body request: CreateAnnouncementRequest
+    ): Response<AnnouncementDetailResponse>
+
+    @PUT("api/announcements/{id}")
+    suspend fun updateAnnouncement(
+        @Path("id") id: Int,
+        @Body request: UpdateAnnouncementRequest
+    ): Response<AnnouncementDetailResponse>
+
+    @DELETE("api/announcements/{id}")
+    suspend fun deleteAnnouncement(
+        @Path("id") id: Int
+    ): Response<ApiResponse<Any>>
+
+    @PATCH("api/announcements/{id}/close")
+    suspend fun closeAnnouncement(
+        @Path("id") id: Int
+    ): Response<AnnouncementDetailResponse>
+
+    @PATCH("api/announcements/{id}/renew")
+    suspend fun renewAnnouncement(
+        @Path("id") id: Int
+    ): Response<AnnouncementDetailResponse>
+
+    @Multipart
+    @POST("api/announcements/{id}/photos")
+    suspend fun uploadAnnouncementPhoto(
+        @Path("id") id: Int,
+        @Part photo: MultipartBody.Part
+    ): Response<AnnouncementPhotoResponse>
+
+    @DELETE("api/announcements/{id}/photos/{photoId}")
+    suspend fun deleteAnnouncementPhoto(
+        @Path("id") id: Int,
+        @Path("photoId") photoId: Int
+    ): Response<ApiResponse<Any>>
+
+    @POST("api/announcements/{id}/favorite")
+    suspend fun addAnnouncementFavorite(
+        @Path("id") id: Int
+    ): Response<FavoriteToggleResponse>
+
+    @DELETE("api/announcements/{id}/favorite")
+    suspend fun removeAnnouncementFavorite(
+        @Path("id") id: Int
+    ): Response<ApiResponse<Any>>
+
+    // Companies
+    @GET("api/cities/{cityId}/companies")
+    suspend fun getCompanies(
+        @Path("cityId") cityId: Int,
+        @Query("search") search: String? = null,
+        @Query("kind") kind: String? = null,
+        @Query("category_id") categoryId: Int? = null,
+        @Query("open_now") openNow: Int? = null,
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 20
+    ): Response<CompanyListResponse>
+
+    @GET("api/companies/{id}")
+    suspend fun getCompany(
+        @Path("id") id: Int
+    ): Response<CompanyDetailResponse>
+
+    @GET("api/company-categories")
+    suspend fun getCompanyCategories(): Response<CompanyCategoriesResponse>
+
+    @GET("api/companies/{id}/reviews")
+    suspend fun getCompanyReviews(
+        @Path("id") id: Int,
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 20
+    ): Response<CompanyReviewListResponse>
+
+    @POST("api/companies/{id}/reviews")
+    suspend fun createCompanyReview(
+        @Path("id") id: Int,
+        @Body body: CreateReviewRequest
+    ): Response<CompanyReviewResponse>
+
+    @PUT("api/companies/{id}/reviews/me")
+    suspend fun updateMyCompanyReview(
+        @Path("id") id: Int,
+        @Body body: CreateReviewRequest
+    ): Response<CompanyReviewResponse>
+
+    @DELETE("api/companies/{id}/reviews/me")
+    suspend fun deleteMyCompanyReview(
+        @Path("id") id: Int
+    ): Response<ApiResponse<Any>>
+
+    @Multipart
+    @POST("api/companies/{id}/photos")
+    suspend fun uploadCompanyPhoto(
+        @Path("id") id: Int,
+        @Part photo: MultipartBody.Part
+    ): Response<CompanyPhotoResponse>
+
+    @Multipart
+    @POST("api/companies/{id}/reviews/me/photos")
+    suspend fun uploadCompanyReviewPhoto(
+        @Path("id") id: Int,
+        @Part photo: MultipartBody.Part
+    ): Response<ReviewPhotoResponse>
+
+    @DELETE("api/companies/{id}/reviews/me/photos/{photoId}")
+    suspend fun deleteCompanyReviewPhoto(
+        @Path("id") id: Int,
+        @Path("photoId") photoId: Int
+    ): Response<ApiResponse<Any>>
 }

@@ -51,24 +51,26 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <!-- Logo -->
                         <FrameLayout
+                            android:id="@+id/logo_container"
                             android:layout_width="80dp"
-                            android:layout_height="80dp">
+                            android:layout_height="80dp"
+                            android:background="#90A4AE">
 
-                            <View
-                                android:id="@+id/logo_placeholder"
+                            <ImageView
+                                android:id="@+id/image_logo"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="#2196F3" />
+                                android:contentDescription="@null"
+                                android:scaleType="centerCrop" />
 
-                            <TextView
-                                android:id="@+id/text_logo_emoji"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            <ImageView
+                                android:id="@+id/image_category_icon"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
                                 android:layout_gravity="center"
-                                android:text="🏢"
-                                android:textSize="32sp" />
+                                android:contentDescription="@null"
+                                app:tint="@android:color/white" />
 
                         </FrameLayout>
 
@@ -95,17 +97,15 @@
                                     android:textSize="18sp"
                                     android:textStyle="bold" />
 
-                                <TextView
-                                    android:id="@+id/text_verified"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/bg_verified"
-                                    android:paddingHorizontal="8dp"
-                                    android:paddingVertical="2dp"
-                                    android:text="✓ Проверено"
-                                    android:textColor="#4CAF50"
-                                    android:textSize="10sp"
-                                    android:visibility="gone" />
+                                <ImageView
+                                    android:id="@+id/image_verified"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginStart="6dp"
+                                    android:contentDescription="@null"
+                                    android:src="@drawable/ic_check_circle"
+                                    android:visibility="gone"
+                                    app:tint="#1976D2" />
 
                             </LinearLayout>
 
@@ -114,7 +114,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="🛒 Категория"
+                                android:text="Категория"
                                 android:textColor="#757575"
                                 android:textSize="14sp" />
 
@@ -136,7 +136,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="4dp"
-                                    android:text="4.5"
+                                    android:text="—"
                                     android:textColor="#FFC107"
                                     android:textSize="16sp"
                                     android:textStyle="bold" />
@@ -146,17 +146,39 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
-                                    android:text="123 отзывов"
+                                    android:text="0 отзывов"
                                     android:textColor="#757575"
                                     android:textSize="12sp" />
 
+                                <TextView
+                                    android:id="@+id/text_price_range"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:text=""
+                                    android:textColor="#388E3C"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:visibility="gone" />
+
                             </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/text_open_now"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="2dp"
+                                android:text=""
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
                     </LinearLayout>
 
-                    <!-- Action buttons -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -169,6 +191,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:layout_weight="1"
+                            android:enabled="false"
                             android:text="Позвонить"
                             app:icon="@drawable/ic_phone" />
 
@@ -178,6 +201,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:enabled="false"
                             android:text="Сайт"
                             app:icon="@drawable/ic_web" />
 
@@ -189,51 +213,32 @@
 
             <!-- Photos -->
             <TextView
+                android:id="@+id/label_photos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="Фото"
                 android:textColor="#212121"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_photos"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="120dp"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <View
-                    android:id="@+id/photo_1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
-                    android:background="#E0E0E0" />
-
-                <View
-                    android:id="@+id/photo_2"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_weight="1"
-                    android:background="#E0E0E0" />
-
-                <View
-                    android:id="@+id/photo_3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="4dp"
-                    android:layout_weight="1"
-                    android:background="#E0E0E0" />
-
-            </LinearLayout>
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:visibility="gone" />
 
             <!-- Description -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:visibility="gone"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
 
@@ -256,7 +261,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Описание"
+                        android:text=""
                         android:textColor="#424242"
                         android:textSize="14sp" />
 
@@ -266,13 +271,15 @@
 
             <!-- Services -->
             <TextView
+                android:id="@+id/label_services"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="Услуги"
                 android:textColor="#212121"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chip_group_services"
@@ -280,7 +287,42 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />
 
-            <!-- Contact info -->
+            <!-- Working hours -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_hours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Часы работы"
+                        android:textColor="#212121"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/hours_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Contacts -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -302,14 +344,14 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <!-- Address -->
                     <LinearLayout
                         android:id="@+id/layout_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -323,19 +365,20 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
-                            android:text="Адрес"
+                            android:text=""
                             android:textColor="#424242"
                             android:textSize="14sp" />
 
                     </LinearLayout>
 
-                    <!-- Phone -->
                     <LinearLayout
+                        android:id="@+id/layout_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -349,19 +392,20 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
-                            android:text="Телефон"
+                            android:text=""
                             android:textColor="#424242"
                             android:textSize="14sp" />
 
                     </LinearLayout>
 
-                    <!-- Email -->
                     <LinearLayout
+                        android:id="@+id/layout_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -375,19 +419,20 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
-                            android:text="Email"
+                            android:text=""
                             android:textColor="#424242"
                             android:textSize="14sp" />
 
                     </LinearLayout>
 
-                    <!-- Website -->
                     <LinearLayout
+                        android:id="@+id/layout_website"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -401,34 +446,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
-                            android:text="Сайт"
+                            android:text=""
                             android:textColor="#2196F3"
-                            android:textSize="14sp" />
-
-                    </LinearLayout>
-
-                    <!-- Hours -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🕐"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/text_hours"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_weight="1"
-                            android:text="Часы работы"
-                            android:textColor="#4CAF50"
                             android:textSize="14sp" />
 
                     </LinearLayout>
@@ -436,6 +455,25 @@
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- Recent reviews -->
+            <TextView
+                android:id="@+id/label_reviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Свежие отзывы"
+                android:textColor="#212121"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/reviews_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical" />
 
         </LinearLayout>
 

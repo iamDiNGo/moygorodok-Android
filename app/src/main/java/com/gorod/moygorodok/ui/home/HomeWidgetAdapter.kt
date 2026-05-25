@@ -9,6 +9,7 @@ import com.gorod.moygorodok.data.model.HomeWidget
 import com.gorod.moygorodok.data.model.TaskPriceType
 import com.gorod.moygorodok.databinding.ItemWidgetAdminBinding
 import com.gorod.moygorodok.databinding.ItemWidgetAdsBinding
+import android.view.View
 import com.gorod.moygorodok.databinding.ItemWidgetDeliveryBinding
 import com.gorod.moygorodok.databinding.ItemWidgetChatBinding
 import com.gorod.moygorodok.databinding.ItemWidgetCinemaBinding
@@ -20,7 +21,6 @@ import com.gorod.moygorodok.databinding.ItemWidgetNewsBinding
 import com.gorod.moygorodok.databinding.ItemWidgetNotificationsBinding
 import com.gorod.moygorodok.databinding.ItemWidgetTasksBinding
 import com.gorod.moygorodok.databinding.ItemWidgetWeatherBinding
-import java.text.NumberFormat
 import java.util.Locale
 
 class HomeWidgetAdapter(
@@ -59,7 +59,7 @@ class HomeWidgetAdapter(
         return when (getItem(position)) {
             is HomeWidget.WeatherWidget -> TYPE_WEATHER
             is HomeWidget.NewsWidget -> TYPE_NEWS
-            is HomeWidget.AdsWidget -> TYPE_ADS
+            is HomeWidget.AnnouncementsWidget -> TYPE_ADS
             is HomeWidget.DeliveryWidget -> TYPE_DELIVERY
             is HomeWidget.TasksWidget -> TYPE_TASKS
             is HomeWidget.AdminWidget -> TYPE_ADMIN
@@ -92,7 +92,7 @@ class HomeWidgetAdapter(
                 ),
                 onNewsClick
             )
-            TYPE_ADS -> AdsViewHolder(
+            TYPE_ADS -> AnnouncementsViewHolder(
                 ItemWidgetAdsBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -188,7 +188,7 @@ class HomeWidgetAdapter(
         when (val item = getItem(position)) {
             is HomeWidget.WeatherWidget -> (holder as WeatherViewHolder).bind(item)
             is HomeWidget.NewsWidget -> (holder as NewsViewHolder).bind(item)
-            is HomeWidget.AdsWidget -> (holder as AdsViewHolder).bind(item)
+            is HomeWidget.AnnouncementsWidget -> (holder as AnnouncementsViewHolder).bind(item)
             is HomeWidget.DeliveryWidget -> (holder as DeliveryViewHolder).bind(item)
             is HomeWidget.TasksWidget -> (holder as TasksViewHolder).bind(item)
             is HomeWidget.AdminWidget -> (holder as AdminViewHolder).bind(item)
@@ -250,46 +250,33 @@ class HomeWidgetAdapter(
         }
     }
 
-    class AdsViewHolder(
+    class AnnouncementsViewHolder(
         private val binding: ItemWidgetAdsBinding,
         private val onClick: () -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: HomeWidget.AdsWidget) {
+        fun bind(item: HomeWidget.AnnouncementsWidget) {
             binding.apply {
                 textTitle.text = item.title
-                textCount.text = "${item.adsCount} объявлений"
+                textCount.text = "${item.totalCount} объявлений"
 
-                // Show latest ads
-                if (item.latestAds.isNotEmpty()) {
-                    val ad1 = item.latestAds[0]
-                    textAd1Title.text = ad1.title
-                    textAd1Price.text = formatPrice(ad1.price)
-                    layoutAd1.visibility = android.view.View.VISIBLE
-                }
-                if (item.latestAds.size > 1) {
-                    val ad2 = item.latestAds[1]
-                    textAd2Title.text = ad2.title
-                    textAd2Price.text = formatPrice(ad2.price)
-                    layoutAd2.visibility = android.view.View.VISIBLE
-                }
-                if (item.latestAds.size > 2) {
-                    val ad3 = item.latestAds[2]
-                    textAd3Title.text = ad3.title
-                    textAd3Price.text = formatPrice(ad3.price)
-                    layoutAd3.visibility = android.view.View.VISIBLE
+                val rows = listOf(
+                    Triple(layoutAd1, textAd1Title, textAd1Price),
+                    Triple(layoutAd2, textAd2Title, textAd2Price),
+                    Triple(layoutAd3, textAd3Title, textAd3Price)
+                )
+                rows.forEachIndexed { index, (layout, title, price) ->
+                    val announcement = item.items.getOrNull(index)
+                    if (announcement == null) {
+                        layout.visibility = View.GONE
+                    } else {
+                        layout.visibility = View.VISIBLE
+                        title.text = announcement.title
+                        price.text = announcement.priceFormatted
+                    }
                 }
 
                 root.setOnClickListener { onClick() }
-            }
-        }
-
-        private fun formatPrice(price: Double): String {
-            return if (price > 0) {
-                val format = NumberFormat.getNumberInstance(Locale("ru", "RU"))
-                "${format.format(price)} ₽"
-            } else {
-                "Бесплатно"
             }
         }
     }

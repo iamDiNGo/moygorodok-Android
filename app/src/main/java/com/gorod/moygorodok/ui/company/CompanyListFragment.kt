@@ -8,8 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.gorod.moygorodok.R
 import com.gorod.moygorodok.databinding.FragmentCompanyListBinding
 import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
 
 class CompanyListFragment : Fragment() {
 
@@ -31,87 +34,104 @@ class CompanyListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupToolbar()
+        binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+
         setupAdapter()
         setupSwipeRefresh()
         observeViewModel()
     }
 
-    private fun setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
-    }
-
     private fun setupAdapter() {
         adapter = CompanyAdapter { company ->
-            val action = CompanyListFragmentDirections.actionCompanyListToCompanyDetail(company.id)
-            findNavController().navigate(action)
+            val bundle = Bundle().apply { putInt("companyId", company.id) }
+            findNavController().navigate(R.id.action_companyList_to_companyDetail, bundle)
         }
-
-        binding.recyclerCompanies.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = this@CompanyListFragment.adapter
-        }
+        val layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerCompanies.layoutManager = layoutManager
+        binding.recyclerCompanies.adapter = adapter
+        binding.recyclerCompanies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                val lastVisible = layoutManager.findLastVisibleItemPosition()
+                viewModel.loadMoreIfNeeded(lastVisible)
+            }
+        })
     }
 
     private fun setupSwipeRefresh() {
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refresh()
-        }
+        binding.swipeRefresh.setOnRefreshListener { viewModel.refresh() }
     }
 
     private fun observeViewModel() {
-        viewModel.companies.observe(viewLifecycleOwner) { companies ->
-            adapter.submitList(companies)
-        }
+        viewModel.items.observe(viewLifecycleOwner) { adapter.submitList(it) }
 
         viewModel.categories.observe(viewLifecycleOwner) { categories ->
-            setupCategoryChips(categories)
+            renderCategoryChips(categories)
         }
 
-        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.swipeRefresh.isRefreshing = isLoading
+        viewModel.selectedCategoryId.observe(viewLifecycleOwner) { selectedId ->
+            updateChipSelection(selectedId)
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { loading ->
+            binding.swipeRefresh.isRefreshing = loading
+        }
+
+        viewModel.isRefreshing.observe(viewLifecycleOwner) { refreshing ->
+            if (!refreshing) binding.swipeRefresh.isRefreshing = false
+        }
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) { msg ->
+            if (!msg.isNullOrBlank()) {
+                Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG).show()
+                viewModel.clearError()
+            }
         }
     }
 
-    private fun setupCategoryChips(categories: List<com.gorod.moygorodok.data.model.CompanyCategory>) {
-        binding.chipGroupCategories.removeAllViews()
+    private fun renderCategoryChips(categories: List<com.gorod.moygorodok.data.model.CompanyCategory>) {
+        val group = binding.chipGroupCategories
+        group.removeAllViews()
 
-        // Add "All" chip
         val allChip = Chip(requireContext()).apply {
             text = "Все"
             isCheckable = true
-            isChecked = true
-            setOnClickListener {
-                viewModel.filterByCategory(null)
-                updateChipSelection(null)
-            }
+            isChecked = viewModel.selectedCategoryId.value == null
+            tag = null
+            setOnClickListener { viewModel.setCategory(null) }
         }
-        binding.chipGroupCategories.addView(allChip)
+        group.addView(allChip)
 
-        // Add category chips
+        val openNowChip = Chip(requireContext()).apply {
+            text = "Открыто сейчас"
+            isCheckable = true
+            isChecked = viewModel.openNow.value == true
+            setOnClickListener { viewModel.setOpenNow(isChecked) }
+        }
+        group.addView(openNowChip)
+
         categories.forEach { category ->
             val chip = Chip(requireContext()).apply {
-                text = "${category.emoji} ${category.displayName}"
+                text = category.name
                 isCheckable = true
-                tag = category
-                setOnClickListener {
-                    viewModel.filterByCategory(category)
-                    updateChipSelection(category)
-                }
+                tag = category.id
+                isChecked = viewModel.selectedCategoryId.value == category.id
+                setOnClickListener { viewModel.setCategory(category.id) }
             }
-            binding.chipGroupCategories.addView(chip)
+            group.addView(chip)
         }
     }
 
-    private fun updateChipSelection(selectedCategory: com.gorod.moygorodok.data.model.CompanyCategory?) {
-        for (i in 0 until binding.chipGroupCategories.childCount) {
-            val chip = binding.chipGroupCategories.getChildAt(i) as? Chip
-            chip?.isChecked = if (selectedCategory == null) {
-                i == 0
-            } else {
-                chip?.tag == selectedCategory
+    private fun updateChipSelection(selectedCategoryId: Int?) {
+        val group = binding.chipGroupCategories
+        for (i in 0 until group.childCount) {
+            val chip = group.getChildAt(i) as? Chip ?: continue
+            val tag = chip.tag
+            // skip open-now chip (no tag, doesn't represent category)
+            if (chip.text == "Открыто сейчас") continue
+            chip.isChecked = when {
+                selectedCategoryId == null && tag == null -> true
+                tag is Int && tag == selectedCategoryId -> true
+                else -> false
             }
         }
     }

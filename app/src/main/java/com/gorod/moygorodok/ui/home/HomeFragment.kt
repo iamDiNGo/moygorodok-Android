@@ -80,7 +80,7 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(R.id.navigation_news_list)
             },
             onAdsClick = {
-                findNavController().navigate(R.id.navigation_ad_list)
+                findNavController().navigate(R.id.navigation_announcement_list)
             },
             onDeliveryClick = {
                 findNavController().navigate(R.id.navigation_delivery_list)

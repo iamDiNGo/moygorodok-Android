@@ -13,33 +13,36 @@
         android:orientation="horizontal"
         android:padding="12dp">
 
-        <!-- Logo placeholder -->
+        <!-- Logo -->
         <FrameLayout
+            android:id="@+id/logo_container"
             android:layout_width="60dp"
-            android:layout_height="60dp">
+            android:layout_height="60dp"
+            android:background="#90A4AE">
 
-            <View
-                android:id="@+id/logo_placeholder"
+            <ImageView
+                android:id="@+id/image_logo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#2196F3" />
+                android:contentDescription="@null"
+                android:scaleType="centerCrop" />
 
-            <TextView
-                android:id="@+id/text_logo_emoji"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/image_category_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
-                android:text="🏢"
-                android:textSize="24sp" />
+                android:contentDescription="@null"
+                app:tint="@android:color/white" />
 
         </FrameLayout>
 
-        <!-- Company info -->
+        <!-- Info -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="12dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <LinearLayout
@@ -55,20 +58,20 @@
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Название компании"
+                    android:text="Название"
                     android:textColor="#212121"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/text_verified"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:id="@+id/image_verified"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_marginStart="4dp"
-                    android:text="✓"
-                    android:textColor="#4CAF50"
-                    android:textSize="14sp"
-                    android:visibility="gone" />
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_check_circle"
+                    android:visibility="gone"
+                    app:tint="#1976D2" />
 
             </LinearLayout>
 
@@ -77,79 +80,70 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="🛒 Категория"
+                android:text="Категория"
                 android:textColor="#757575"
                 android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/text_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="Краткое описание"
-                android:textColor="#424242"
-                android:textSize="13sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!-- Rating -->
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:text="⭐"
+                    android:textSize="12sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="⭐"
-                        android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/text_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="—"
+                    android:textColor="#FFC107"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/text_rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="4.5"
-                        android:textColor="#FFC107"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/text_reviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text=""
+                    android:textColor="#757575"
+                    android:textSize="12sp" />
 
-                    <TextView
-                        android:id="@+id/text_reviews"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="(123)"
-                        android:textColor="#757575"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/text_price_range"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text=""
+                    android:textColor="#388E3C"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <!-- Hours -->
                 <TextView
-                    android:id="@+id/text_hours"
+                    android:id="@+id/text_open_now"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="09:00 - 21:00"
-                    android:textColor="#4CAF50"
-                    android:textSize="11sp" />
+                    android:text="Открыто"
+                    android:textColor="#388E3C"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
-            <!-- Address -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -171,7 +165,7 @@
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Адрес"
+                    android:text="—"
                     android:textColor="#757575"
                     android:textSize="11sp" />
 

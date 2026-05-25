@@ -9,11 +9,14 @@ import androidx.lifecycle.viewModelScope
 import com.gorod.moygorodok.data.local.CityManager
 import com.gorod.moygorodok.data.model.HomeWidget
 import com.gorod.moygorodok.data.model.MockHomeWidgets
+import com.gorod.moygorodok.data.repository.AnnouncementRepository
 import com.gorod.moygorodok.data.repository.AuthRepository
 import com.gorod.moygorodok.data.repository.HomeMapperContext
 import com.gorod.moygorodok.data.repository.HomeRepository
 import com.gorod.moygorodok.data.repository.HomeServerWidgetMapper
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -24,6 +27,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val homeRepository = HomeRepository.getInstance()
+    private val announcementRepository = AnnouncementRepository.getInstance()
     private val cityManager = CityManager.getInstance(application)
     private val authRepository = AuthRepository.getInstance(application)
 
@@ -63,17 +67,42 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         val localWidgets = MockHomeWidgets.getLocalWidgets()
         val context = currentMapperContext(cityName)
 
-        homeRepository.getHomeCells(cityId)
-            .onSuccess { cells ->
-                val widgets = cells.mapNotNull { cell ->
-                    HomeServerWidgetMapper.map(cell, context)
-                        ?: localWidgets[cell.actionTarget]
+        coroutineScope {
+            val cellsDeferred = async { homeRepository.getHomeCells(cityId) }
+            val announcementsDeferred = async {
+                announcementRepository.fetchList(cityId = cityId, perPage = 4).getOrNull()
+            }
+
+            val cellsResult = cellsDeferred.await()
+            val announcementsPage = announcementsDeferred.await()
+
+            val announcementsWidget = announcementsPage?.takeIf { it.items.isNotEmpty() }?.let { page ->
+                HomeWidget.AnnouncementsWidget(
+                    title = "Новые объявления",
+                    totalCount = page.total,
+                    items = page.items.take(3)
+                )
+            }
+
+            cellsResult
+                .onSuccess { cells ->
+                    val widgets = cells.mapNotNull { cell ->
+                        when (cell.actionTarget) {
+                            "announcements" -> announcementsWidget
+                            else -> HomeServerWidgetMapper.map(cell, context)
+                                ?: localWidgets[cell.actionTarget]
+                        }
+                    }
+                    _widgets.value = widgets
                 }
-                _widgets.value = widgets
-            }
-            .onFailure {
-                _widgets.value = localWidgets.values.toList()
-            }
+                .onFailure {
+                    val fallback = mutableListOf<HomeWidget>().apply {
+                        addAll(localWidgets.values)
+                        announcementsWidget?.let { add(it) }
+                    }
+                    _widgets.value = fallback
+                }
+        }
 
         _isLoading.value = false
     }

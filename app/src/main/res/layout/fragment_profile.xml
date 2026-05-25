@@ -228,6 +228,38 @@
             app:layout_constraintTop_toBottomOf="@id/button_edit" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_my_announcements"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start|center_vertical"
+            android:text="@string/title_my_announcements"
+            android:textSize="16sp"
+            app:icon="@drawable/ic_ads"
+            app:iconGravity="start"
+            app:iconPadding="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_my_reports" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_favorite_announcements"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start|center_vertical"
+            android:text="@string/title_favorite_announcements"
+            android:textSize="16sp"
+            app:icon="@drawable/ic_favorite_filled"
+            app:iconGravity="start"
+            app:iconPadding="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_my_announcements" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button_logout"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
@@ -237,7 +269,7 @@
             android:textColor="@android:color/holo_red_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_my_reports"
+            app:layout_constraintTop_toBottomOf="@id/button_favorite_announcements"
             app:strokeColor="@android:color/holo_red_dark" />
 
         <com.google.android.material.button.MaterialButton

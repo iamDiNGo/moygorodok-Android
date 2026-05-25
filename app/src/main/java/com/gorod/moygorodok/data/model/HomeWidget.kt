@@ -15,10 +15,10 @@ sealed class HomeWidget {
         val latestNews: List<NewsPreview>
     ) : HomeWidget()
 
-    data class AdsWidget(
+    data class AnnouncementsWidget(
         val title: String,
-        val adsCount: Int,
-        val latestAds: List<Ad>
+        val totalCount: Int,
+        val items: List<Announcement>
     ) : HomeWidget()
 
     data class ProfileWidget(
@@ -116,7 +116,6 @@ data class NewsPreview(
 object MockHomeWidgets {
 
     fun getLocalWidgets(): Map<String, HomeWidget> {
-        val ads = MockAds.getAll()
         val deliveries = MockDeliveries.getAll()
         val tasks = MockTasks.getTasks()
         val admin = MockDeliveryAdmin.getDeliveryAdmin()
@@ -154,11 +153,6 @@ object MockHomeWidgets {
                 title = "Доставка еды",
                 deliveryCount = deliveries.size,
                 latestDeliveries = deliveries.take(3)
-            ),
-            "announcements" to HomeWidget.AdsWidget(
-                title = "Новые объявления",
-                adsCount = ads.size,
-                latestAds = ads.take(3)
             )
         )
     }

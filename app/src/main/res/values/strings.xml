@@ -104,16 +104,6 @@
     <string name="widget_profile">Профиль</string>
 
     <!-- Ad Categories -->
-    <string name="ad_category_transport">Транспорт</string>
-    <string name="ad_category_realty">Недвижимость</string>
-    <string name="ad_category_electronics">Электроника</string>
-    <string name="ad_category_clothing">Одежда</string>
-    <string name="ad_category_home">Дом и сад</string>
-    <string name="ad_category_services">Услуги</string>
-    <string name="ad_category_animals">Животные</string>
-    <string name="ad_category_hobbies">Хобби</string>
-    <string name="ad_category_children">Детские товары</string>
-    <string name="ad_category_other">Другое</string>
 
     <!-- Events -->
     <string name="title_events">События</string>
@@ -258,4 +248,57 @@
 
     <!-- Products -->
     <string name="product_popular">Популярное</string>
+
+    <!-- Announcements -->
+    <string name="title_my_announcements">Мои объявления</string>
+    <string name="title_favorite_announcements">Избранные объявления</string>
+    <string name="title_create_announcement">Новое объявление</string>
+    <string name="title_edit_announcement">Редактирование</string>
+    <string name="announcement_status_expired">Срок объявления истёк</string>
+    <string name="announcement_status_closed">Объявление снято с публикации</string>
+    <string name="announcement_phone_hidden_guest">Войдите, чтобы увидеть телефон</string>
+    <string name="announcement_phone_hidden_auth">Телефон скрыт</string>
+    <string name="announcement_login_required_title">Требуется вход</string>
+    <string name="announcement_login_required_message">Чтобы опубликовать объявление, войдите в аккаунт</string>
+    <string name="announcement_call_login_required_message">Чтобы увидеть телефон продавца, войдите в аккаунт</string>
+    <string name="announcement_field_category">Категория</string>
+    <string name="announcement_field_category_hint">Выберите категорию</string>
+    <string name="announcement_field_title">Заголовок</string>
+    <string name="announcement_field_description">Описание</string>
+    <string name="announcement_field_price">Цена в рублях</string>
+    <string name="announcement_field_negotiable">Договорная</string>
+    <string name="announcement_field_address">Адрес (необязательно)</string>
+    <string name="announcement_field_photos">Фото (до %d)</string>
+    <string name="announcement_submit_create">Опубликовать</string>
+    <string name="announcement_submit_save">Сохранить</string>
+    <string name="announcement_validation_category">Выберите категорию</string>
+    <string name="announcement_validation_title">Введите заголовок</string>
+    <string name="announcement_validation_description">Заполните описание</string>
+    <string name="announcement_validation_city">Выберите город в Профиле</string>
+    <string name="announcement_action_renew">Продлить на 30 дней</string>
+    <string name="announcement_action_close">Снять с публикации</string>
+    <string name="announcement_action_close_confirm_title">Снять с публикации?</string>
+    <string name="announcement_action_close_confirm_message">Объявление пропадёт из общей выдачи, но останется в «Мои объявления».</string>
+    <string name="announcement_action_close_confirm_yes">Снять</string>
+    <string name="announcement_action_delete">Удалить</string>
+    <string name="announcement_action_delete_confirm_title">Удалить объявление?</string>
+    <string name="announcement_action_delete_confirm_message">Восстановить будет нельзя.</string>
+    <string name="announcement_action_edit">Редактировать</string>
+    <string name="announcement_action_report">Пожаловаться</string>
+    <string name="announcement_filter_all">Все</string>
+    <string name="announcement_filter_active">Активные</string>
+    <string name="announcement_filter_expired">Истёкшие</string>
+    <string name="announcement_filter_closed">Снятые</string>
+    <string name="announcement_my_empty">У вас пока нет объявлений</string>
+    <string name="announcement_favorites_empty">Пока нет избранных объявлений</string>
+    <string name="announcement_price_filter_title">Фильтр по цене</string>
+    <string name="announcement_price_filter_min">Минимальная цена</string>
+    <string name="announcement_price_filter_max">Максимальная цена</string>
+    <string name="announcement_views_count_short">%d просм.</string>
+    <string name="announcement_views_count_long">%d просмотров</string>
+    <string name="announcement_results_count">Найдено: %d</string>
+    <string name="announcement_photos_limit_reached">Достигнут лимит 8 фото</string>
+    <string name="announcement_photos_partial_failure">Часть фото не загрузилась (%1$d из %2$d)</string>
+    <string name="announcement_call_dialog_title">Позвонить</string>
+    <string name="announcement_call_dialog_yes">Позвонить</string>
 </resources>

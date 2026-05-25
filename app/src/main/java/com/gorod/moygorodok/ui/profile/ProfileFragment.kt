@@ -86,6 +86,14 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.navigation_my_reports)
         }
 
+        binding.buttonMyAnnouncements.setOnClickListener {
+            findNavController().navigate(R.id.navigation_my_announcements)
+        }
+
+        binding.buttonFavoriteAnnouncements.setOnClickListener {
+            findNavController().navigate(R.id.navigation_favorite_announcements)
+        }
+
         binding.buttonLogout.setOnClickListener {
             viewModel.logout()
         }
@@ -254,6 +262,8 @@ class ProfileFragment : Fragment() {
         binding.buttonSave.visibility = if (isEditing) View.VISIBLE else View.GONE
         binding.buttonCancel.visibility = if (isEditing) View.VISIBLE else View.GONE
         binding.buttonMyReports.visibility = if (isEditing) View.GONE else View.VISIBLE
+        binding.buttonMyAnnouncements.visibility = if (isEditing) View.GONE else View.VISIBLE
+        binding.buttonFavoriteAnnouncements.visibility = if (isEditing) View.GONE else View.VISIBLE
         binding.buttonLogout.visibility = if (isEditing) View.GONE else View.VISIBLE
         binding.buttonLogoutAll.visibility = if (isEditing) View.GONE else View.VISIBLE
     }

@@ -204,7 +204,16 @@ data class PaginationMeta(
     val lastPage: Int? = null,
     @SerializedName("per_page")
     val perPage: Int? = null,
-    val total: Int? = null
+    val total: Int? = null,
+    val from: Int? = null,
+    val to: Int? = null,
+    val city: CityMini? = null
+)
+
+data class CityMini(
+    val id: Int,
+    val name: String,
+    val type: String
 )
 
 // -- Events ----------------------------------------------------------------
