@@ -45,7 +45,7 @@
 
     <fragment
         android:id="@+id/navigation_announcement_list"
-        android:name="com.gorod.moygorodok.ui.announcements.AnnouncementListFragment"
+        android:name="com.gorod.moygorodok.ui.announcements.list.AnnouncementListFragment"
         android:label="@string/title_ads"
         tools:layout="@layout/fragment_announcement_list">
         <action
@@ -55,7 +55,7 @@
 
     <fragment
         android:id="@+id/navigation_announcement_detail"
-        android:name="com.gorod.moygorodok.ui.announcements.AnnouncementDetailFragment"
+        android:name="com.gorod.moygorodok.ui.announcements.detail.AnnouncementDetailFragment"
         android:label="@string/title_ad_detail"
         tools:layout="@layout/fragment_announcement_detail">
         <argument
@@ -65,7 +65,7 @@
 
     <fragment
         android:id="@+id/navigation_create_announcement"
-        android:name="com.gorod.moygorodok.ui.announcements.CreateAnnouncementFragment"
+        android:name="com.gorod.moygorodok.ui.announcements.create.CreateAnnouncementFragment"
         android:label="@string/title_create_announcement"
         tools:layout="@layout/fragment_create_announcement">
         <argument
@@ -76,13 +76,13 @@
 
     <fragment
         android:id="@+id/navigation_my_announcements"
-        android:name="com.gorod.moygorodok.ui.announcements.MyAnnouncementsFragment"
+        android:name="com.gorod.moygorodok.ui.announcements.my.MyAnnouncementsFragment"
         android:label="@string/title_my_announcements"
         tools:layout="@layout/fragment_my_announcements" />
 
     <fragment
         android:id="@+id/navigation_favorite_announcements"
-        android:name="com.gorod.moygorodok.ui.announcements.FavoriteAnnouncementsFragment"
+        android:name="com.gorod.moygorodok.ui.announcements.favorites.FavoriteAnnouncementsFragment"
         android:label="@string/title_favorite_announcements"
         tools:layout="@layout/fragment_favorite_announcements" />
 
