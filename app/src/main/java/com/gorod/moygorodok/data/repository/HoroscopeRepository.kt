@@ -7,17 +7,21 @@ class HoroscopeRepository private constructor() {
 
     private val api = ApiClient.apiService
 
-    suspend fun getBySign(sign: String): Result<HoroscopeDataDto> {
+    /**
+     * Гороскоп для знака. Контракт API:
+     *  - 200 + data != null  → прогноз есть (Result.success(data))
+     *  - 200 + data == null  → прогноза на дату ещё нет (Result.success(null))
+     *  - прочее (4xx/5xx/сеть) → ошибка (Result.failure)
+     */
+    suspend fun getBySign(sign: String): Result<HoroscopeDataDto?> {
         return try {
             val response = api.getHoroscopeBySign(sign)
             val body = response.body()
             when {
-                response.isSuccessful && body?.success == true && body.data != null -> Result.success(body.data)
-                response.code() == 404 -> Result.failure(HoroscopeNotFoundException(sign))
+                response.isSuccessful && body?.success == true -> Result.success(body.data)
                 else -> Result.failure(Exception(body?.message ?: "Ошибка сервера"))
             }
         } catch (e: Exception) {
-            if (e is HoroscopeNotFoundException) throw e
             Result.failure(Exception("Ошибка сети: ${e.message}"))
         }
     }
@@ -33,5 +37,3 @@ class HoroscopeRepository private constructor() {
         }
     }
 }
-
-class HoroscopeNotFoundException(val sign: String) : Exception("Гороскоп для знака $sign не найден")

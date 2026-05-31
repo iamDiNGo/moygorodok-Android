@@ -38,6 +38,8 @@ class HoroscopeFragment : Fragment() {
         setupTabs()
         observeViewModel()
 
+        binding.buttonRetry.setOnClickListener { viewModel.retry() }
+
         if (savedInstanceState == null) {
             val initial = initialSign()
             val index = signs.indexOf(initial).coerceAtLeast(0)
@@ -71,7 +73,9 @@ class HoroscopeFragment : Fragment() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {
+                viewModel.retry()
+            }
         })
     }
 
@@ -86,25 +90,27 @@ class HoroscopeFragment : Fragment() {
                 HoroscopeUiState.Loading -> {
                     binding.progress.visibility = View.VISIBLE
                     binding.cardContent.visibility = View.GONE
-                    binding.textEmpty.visibility = View.GONE
+                    binding.layoutMessage.visibility = View.GONE
                 }
                 is HoroscopeUiState.Success -> {
                     binding.progress.visibility = View.GONE
                     binding.cardContent.visibility = View.VISIBLE
-                    binding.textEmpty.visibility = View.GONE
+                    binding.layoutMessage.visibility = View.GONE
                     renderHoroscope(state.data)
                 }
                 HoroscopeUiState.NotAvailable -> {
                     binding.progress.visibility = View.GONE
                     binding.cardContent.visibility = View.GONE
-                    binding.textEmpty.visibility = View.VISIBLE
+                    binding.layoutMessage.visibility = View.VISIBLE
                     binding.textEmpty.text = "На сегодня прогноза нет, загляните позже"
+                    binding.buttonRetry.visibility = View.GONE
                 }
                 is HoroscopeUiState.Error -> {
                     binding.progress.visibility = View.GONE
                     binding.cardContent.visibility = View.GONE
-                    binding.textEmpty.visibility = View.VISIBLE
+                    binding.layoutMessage.visibility = View.VISIBLE
                     binding.textEmpty.text = state.message
+                    binding.buttonRetry.visibility = View.VISIBLE
                 }
             }
         }

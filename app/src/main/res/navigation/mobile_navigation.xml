@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/navigation_news_list"
-        android:name="com.gorod.moygorodok.ui.news.NewsListFragment"
+        android:name="com.gorod.moygorodok.ui.news.list.NewsListFragment"
         android:label="@string/title_news"
         tools:layout="@layout/fragment_news_list">
         <action
@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/navigation_news_detail"
-        android:name="com.gorod.moygorodok.ui.news.NewsDetailFragment"
+        android:name="com.gorod.moygorodok.ui.news.detail.NewsDetailFragment"
         android:label="@string/title_news_detail"
         tools:layout="@layout/fragment_news_detail">
         <argument
@@ -134,7 +134,7 @@
 
     <fragment
         android:id="@+id/navigation_task_list"
-        android:name="com.gorod.moygorodok.ui.tasks.TaskListFragment"
+        android:name="com.gorod.moygorodok.ui.tasks.list.TaskListFragment"
         android:label="@string/title_tasks"
         tools:layout="@layout/fragment_task_list">
         <action
@@ -144,7 +144,7 @@
 
     <fragment
         android:id="@+id/navigation_task_detail"
-        android:name="com.gorod.moygorodok.ui.tasks.TaskDetailFragment"
+        android:name="com.gorod.moygorodok.ui.tasks.detail.TaskDetailFragment"
         android:label="@string/title_task_detail"
         tools:layout="@layout/fragment_task_detail">
         <argument
@@ -178,7 +178,7 @@
 
     <fragment
         android:id="@+id/navigation_cinema_list"
-        android:name="com.gorod.moygorodok.ui.cinema.CinemaListFragment"
+        android:name="com.gorod.moygorodok.ui.cinema.list.CinemaListFragment"
         android:label="@string/cinema_title"
         tools:layout="@layout/fragment_cinema_list">
         <action
@@ -188,7 +188,7 @@
 
     <fragment
         android:id="@+id/navigation_movie_detail"
-        android:name="com.gorod.moygorodok.ui.cinema.MovieDetailFragment"
+        android:name="com.gorod.moygorodok.ui.cinema.detail.MovieDetailFragment"
         android:label="@string/movie_detail_title"
         tools:layout="@layout/fragment_movie_detail">
         <argument
