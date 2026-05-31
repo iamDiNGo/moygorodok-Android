@@ -21,12 +21,11 @@ class NewsDetailViewModel : ViewModel() {
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
-    fun loadNews(newsId: String) {
+    fun loadNews(newsId: Int) {
         _isLoading.value = true
 
         viewModelScope.launch {
-            val result = repository.getNewsById(newsId)
-            result.fold(
+            repository.getNewsById(newsId).fold(
                 onSuccess = { news ->
                     _news.value = news
                     _isLoading.value = false

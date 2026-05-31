@@ -1,6 +1,7 @@
 package com.gorod.moygorodok.ui.news
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -31,20 +32,34 @@ class NewsAdapter(
         private val binding: ItemNewsBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        private val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
-
         fun bind(news: News) {
             binding.textTitle.text = news.title
-            binding.textSummary.text = news.summary
-            binding.textCategory.text = news.category.displayName
-            binding.textDate.text = dateFormat.format(news.publishedAt)
-            binding.textViews.text = "${news.viewCount}"
-
-            // Если есть изображение, можно загрузить через Glide/Coil
-            // binding.imageNews.load(news.imageUrl)
+            binding.textSummary.text = news.summary.orEmpty()
+            binding.textSummary.visibility = if (news.summary.isNullOrBlank()) View.GONE else View.VISIBLE
+            binding.textDate.text = formatDate(news.publishedAt)
+            binding.textCategory.text = sourceLabel(news.sourceType)
+            binding.textCategory.visibility = if (news.sourceType.isNullOrBlank()) View.GONE else View.VISIBLE
+            binding.textViews.visibility = View.GONE
 
             binding.root.setOnClickListener {
                 onNewsClick(news)
+            }
+        }
+
+        private fun sourceLabel(source: String?): String = when (source) {
+            "manual" -> "От редакции"
+            "rss" -> "RSS"
+            else -> source.orEmpty()
+        }
+
+        private fun formatDate(iso: String?): String {
+            if (iso.isNullOrBlank()) return ""
+            return try {
+                val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ROOT)
+                val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale("ru", "RU"))
+                parser.parse(iso)?.let(formatter::format) ?: iso
+            } catch (e: Exception) {
+                iso
             }
         }
     }

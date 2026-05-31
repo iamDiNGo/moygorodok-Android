@@ -8,10 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.gorod.moygorodok.R
-import com.gorod.moygorodok.data.model.NewsCategory
 import com.gorod.moygorodok.databinding.FragmentNewsListBinding
-import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 
 class NewsListFragment : Fragment() {
@@ -35,7 +34,6 @@ class NewsListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        setupChipGroup()
         setupSwipeRefresh()
         observeViewModel()
     }
@@ -43,35 +41,26 @@ class NewsListFragment : Fragment() {
     private fun setupRecyclerView() {
         newsAdapter = NewsAdapter { news ->
             val bundle = Bundle().apply {
-                putString("newsId", news.id)
+                putString("newsId", news.id.toString())
             }
             findNavController().navigate(R.id.action_newsList_to_newsDetail, bundle)
         }
 
+        val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerNews.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            this.layoutManager = layoutManager
             adapter = newsAdapter
-        }
-    }
-
-    private fun setupChipGroup() {
-        // Добавляем чип "Все"
-        binding.chipGroupCategories.check(R.id.chip_all)
-
-        binding.chipGroupCategories.setOnCheckedStateChangeListener { group, checkedIds ->
-            val selectedChipId = checkedIds.firstOrNull()
-
-            val category = when (selectedChipId) {
-                R.id.chip_city -> NewsCategory.CITY
-                R.id.chip_events -> NewsCategory.EVENTS
-                R.id.chip_transport -> NewsCategory.TRANSPORT
-                R.id.chip_culture -> NewsCategory.CULTURE
-                R.id.chip_sport -> NewsCategory.SPORT
-                R.id.chip_society -> NewsCategory.SOCIETY
-                else -> null
-            }
-
-            viewModel.setCategory(category)
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                    if (dy <= 0) return
+                    val visible = layoutManager.childCount
+                    val total = layoutManager.itemCount
+                    val firstVisible = layoutManager.findFirstVisibleItemPosition()
+                    if (visible + firstVisible >= total - 3) {
+                        viewModel.loadMore()
+                    }
+                }
+            })
         }
     }
 
@@ -84,7 +73,11 @@ class NewsListFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.newsList.observe(viewLifecycleOwner) { news ->
             newsAdapter.submitList(news)
-            binding.textEmpty.visibility = if (news.isEmpty()) View.VISIBLE else View.GONE
+            binding.textEmpty.visibility = if (news.isEmpty() && viewModel.isLoading.value != true) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->

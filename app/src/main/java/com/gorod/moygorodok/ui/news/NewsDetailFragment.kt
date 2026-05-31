@@ -1,5 +1,7 @@
 package com.gorod.moygorodok.ui.news
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +21,8 @@ class NewsDetailFragment : Fragment() {
 
     private val viewModel: NewsDetailViewModel by viewModels()
 
-    private val dateFormat = SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale("ru"))
+    private val isoParser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ROOT)
+    private val displayFormat = SimpleDateFormat("d MMMM yyyy, HH:mm", Locale("ru", "RU"))
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +39,7 @@ class NewsDetailFragment : Fragment() {
         setupToolbar()
         observeViewModel()
 
-        val newsId = arguments?.getString("newsId")
+        val newsId = arguments?.getString("newsId")?.toIntOrNull()
         if (newsId != null) {
             viewModel.loadNews(newsId)
         } else {
@@ -53,23 +56,33 @@ class NewsDetailFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.news.observe(viewLifecycleOwner) { news ->
-            news?.let {
-                binding.textTitle.text = it.title
-                binding.textContent.text = it.content
-                binding.textCategory.text = it.category.displayName
-                binding.textDate.text = dateFormat.format(it.publishedAt)
-                binding.textAuthor.text = it.author
-                binding.textViews.text = "${it.viewCount} просмотров"
+            news ?: return@observe
+            binding.textTitle.text = news.title
+            binding.textContent.text = news.content?.takeIf { it.isNotBlank() }
+                ?: news.summary.orEmpty()
+            binding.textCategory.text = sourceLabel(news.sourceType)
+            binding.textCategory.visibility = if (news.sourceType.isNullOrBlank()) View.GONE else View.VISIBLE
+            binding.textDate.text = formatDate(news.publishedAt)
+            binding.textAuthor.visibility = View.GONE
+            binding.textViews.visibility = View.GONE
+            binding.imageNews.visibility = View.GONE
 
-                binding.toolbar.title = it.category.displayName
+            binding.toolbar.title = sourceLabel(news.sourceType).ifBlank { "Новость" }
 
-                // Если есть изображение
-                if (it.imageUrl != null) {
-                    binding.imageNews.visibility = View.VISIBLE
-                    // Загрузка изображения через Glide/Coil
-                } else {
-                    binding.imageNews.visibility = View.GONE
+            val sourceUrl = news.sourceUrl
+            if (!sourceUrl.isNullOrBlank()) {
+                binding.toolbar.menu.clear()
+                binding.toolbar.inflateMenu(com.gorod.moygorodok.R.menu.menu_news_detail)
+                binding.toolbar.setOnMenuItemClickListener { item ->
+                    if (item.itemId == com.gorod.moygorodok.R.id.action_open_source) {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sourceUrl)))
+                        true
+                    } else {
+                        false
+                    }
                 }
+            } else {
+                binding.toolbar.menu.clear()
             }
         }
 
@@ -87,6 +100,21 @@ class NewsDetailFragment : Fragment() {
                     .show()
                 viewModel.clearError()
             }
+        }
+    }
+
+    private fun sourceLabel(source: String?): String = when (source) {
+        "manual" -> "От редакции"
+        "rss" -> "RSS"
+        else -> source.orEmpty()
+    }
+
+    private fun formatDate(iso: String?): String {
+        if (iso.isNullOrBlank()) return ""
+        return try {
+            isoParser.parse(iso)?.let(displayFormat::format) ?: iso
+        } catch (e: Exception) {
+            iso
         }
     }
 

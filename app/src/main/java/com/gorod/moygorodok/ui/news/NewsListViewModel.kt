@@ -1,19 +1,23 @@
 package com.gorod.moygorodok.ui.news
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.gorod.moygorodok.data.local.CityManager
 import com.gorod.moygorodok.data.model.News
-import com.gorod.moygorodok.data.model.NewsCategory
 import com.gorod.moygorodok.data.repository.NewsRepository
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class NewsListViewModel : ViewModel() {
+class NewsListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = NewsRepository.getInstance()
+    private val cityManager = CityManager.getInstance(application)
 
-    private val _newsList = MutableLiveData<List<News>>()
+    private val _newsList = MutableLiveData<List<News>>(emptyList())
     val newsList: LiveData<List<News>> = _newsList
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -22,68 +26,82 @@ class NewsListViewModel : ViewModel() {
     private val _isRefreshing = MutableLiveData<Boolean>()
     val isRefreshing: LiveData<Boolean> = _isRefreshing
 
+    private val _isLoadingMore = MutableLiveData<Boolean>()
+    val isLoadingMore: LiveData<Boolean> = _isLoadingMore
+
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
-    private val _selectedCategory = MutableLiveData<NewsCategory?>()
-    val selectedCategory: LiveData<NewsCategory?> = _selectedCategory
+    private var currentPage = 1
+    private var lastPage = 1
+    private var currentCityId: Int? = null
 
     init {
-        loadNews()
+        observeCity()
     }
 
-    fun loadNews() {
-        _isLoading.value = true
-
+    private fun observeCity() {
         viewModelScope.launch {
-            val category = _selectedCategory.value
-            val result = if (category != null) {
-                repository.getNewsByCategory(category)
-            } else {
-                repository.getNewsList()
+            cityManager.selectedCityId.collectLatest { cityId ->
+                currentCityId = cityId
+                loadFirstPage(cityId, showSpinner = true)
             }
-
-            result.fold(
-                onSuccess = { news ->
-                    _newsList.value = news
-                    _isLoading.value = false
-                },
-                onFailure = { exception ->
-                    _errorMessage.value = exception.message ?: "Ошибка загрузки"
-                    _isLoading.value = false
-                }
-            )
         }
+    }
+
+    private suspend fun loadFirstPage(cityId: Int?, showSpinner: Boolean) {
+        if (showSpinner) _isLoading.value = true
+        repository.getNewsList(cityId, page = 1)
+            .onSuccess { page ->
+                _newsList.value = page.items
+                currentPage = page.currentPage
+                lastPage = page.lastPage
+            }
+            .onFailure {
+                _errorMessage.value = it.message ?: "Ошибка загрузки"
+            }
+        _isLoading.value = false
     }
 
     fun refreshNews() {
-        _isRefreshing.value = true
-
         viewModelScope.launch {
-            val category = _selectedCategory.value
-            val result = if (category != null) {
-                repository.getNewsByCategory(category)
-            } else {
-                repository.refreshNews()
-            }
-
-            result.fold(
-                onSuccess = { news ->
-                    _newsList.value = news
-                    _isRefreshing.value = false
-                },
-                onFailure = { exception ->
-                    _errorMessage.value = exception.message ?: "Ошибка обновления"
-                    _isRefreshing.value = false
+            _isRefreshing.value = true
+            val cityId = cityManager.selectedCityId.first()
+            currentCityId = cityId
+            repository.getNewsList(cityId, page = 1)
+                .onSuccess { page ->
+                    _newsList.value = page.items
+                    currentPage = page.currentPage
+                    lastPage = page.lastPage
                 }
-            )
+                .onFailure {
+                    _errorMessage.value = it.message ?: "Ошибка обновления"
+                }
+            _isRefreshing.value = false
         }
     }
 
-    fun setCategory(category: NewsCategory?) {
-        if (_selectedCategory.value != category) {
-            _selectedCategory.value = category
-            loadNews()
+    fun loadMore() {
+        if (_isLoadingMore.value == true || currentPage >= lastPage) return
+        viewModelScope.launch {
+            _isLoadingMore.value = true
+            repository.getNewsList(currentCityId, page = currentPage + 1)
+                .onSuccess { page ->
+                    val combined = (_newsList.value.orEmpty()) + page.items
+                    _newsList.value = combined
+                    currentPage = page.currentPage
+                    lastPage = page.lastPage
+                }
+                .onFailure {
+                    _errorMessage.value = it.message ?: "Ошибка загрузки страницы"
+                }
+            _isLoadingMore.value = false
+        }
+    }
+
+    fun loadNews() {
+        viewModelScope.launch {
+            loadFirstPage(currentCityId, showSpinner = true)
         }
     }
 
