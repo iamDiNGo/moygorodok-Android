@@ -19,7 +19,7 @@ class CompanyListFragment : Fragment() {
     private var _binding: FragmentCompanyListBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: CompanyViewModel by viewModels()
+    private val viewModel: CompanyListViewModel by viewModels()
     private lateinit var adapter: CompanyAdapter
 
     override fun onCreateView(
