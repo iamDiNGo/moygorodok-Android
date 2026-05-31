@@ -94,7 +94,7 @@
 
     <fragment
         android:id="@+id/navigation_event_list"
-        android:name="com.gorod.moygorodok.ui.events.EventListFragment"
+        android:name="com.gorod.moygorodok.ui.events.list.EventListFragment"
         android:label="@string/title_events"
         tools:layout="@layout/fragment_event_list">
         <action
@@ -104,7 +104,7 @@
 
     <fragment
         android:id="@+id/navigation_event_detail"
-        android:name="com.gorod.moygorodok.ui.events.EventDetailFragment"
+        android:name="com.gorod.moygorodok.ui.events.detail.EventDetailFragment"
         android:label="@string/title_event_detail"
         tools:layout="@layout/fragment_event_detail">
         <argument
@@ -114,7 +114,7 @@
 
     <fragment
         android:id="@+id/navigation_delivery_list"
-        android:name="com.gorod.moygorodok.ui.delivery.DeliveryListFragment"
+        android:name="com.gorod.moygorodok.ui.delivery.list.DeliveryListFragment"
         android:label="@string/title_delivery"
         tools:layout="@layout/fragment_delivery_list">
         <action
@@ -124,7 +124,7 @@
 
     <fragment
         android:id="@+id/navigation_delivery_detail"
-        android:name="com.gorod.moygorodok.ui.delivery.DeliveryDetailFragment"
+        android:name="com.gorod.moygorodok.ui.delivery.detail.DeliveryDetailFragment"
         android:label="@string/title_delivery_detail"
         tools:layout="@layout/fragment_delivery_detail">
         <argument
