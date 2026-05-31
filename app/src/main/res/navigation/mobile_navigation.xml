@@ -204,7 +204,7 @@
 
     <fragment
         android:id="@+id/navigation_company_list"
-        android:name="com.gorod.moygorodok.ui.company.CompanyListFragment"
+        android:name="com.gorod.moygorodok.ui.company.list.CompanyListFragment"
         android:label="@string/company_title"
         tools:layout="@layout/fragment_company_list">
         <action
@@ -214,7 +214,7 @@
 
     <fragment
         android:id="@+id/navigation_company_detail"
-        android:name="com.gorod.moygorodok.ui.company.CompanyDetailFragment"
+        android:name="com.gorod.moygorodok.ui.company.detail.CompanyDetailFragment"
         android:label="@string/company_detail_title"
         tools:layout="@layout/fragment_company_detail">
         <argument
