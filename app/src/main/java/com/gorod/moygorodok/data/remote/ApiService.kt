@@ -112,6 +112,12 @@ interface ApiService {
     @GET("api/horoscope/me")
     suspend fun getMyHoroscope(): Response<ApiResponse<HoroscopeDataDto>>
 
+    // Все периоды одного знака за один запрос (today/tomorrow/weekly/monthly).
+    @GET("api/horoscope/{sign}/all")
+    suspend fun getHoroscopeBundleBySign(
+        @Path("sign") sign: String
+    ): Response<ApiResponse<HoroscopeBundleDto>>
+
     // Emergency
     @GET("api/emergency-contacts")
     suspend fun getEmergencyContacts(

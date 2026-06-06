@@ -271,3 +271,19 @@ data class HoroscopeDataDto(
     val type: String? = null,
     val text: String? = null
 )
+
+/**
+ * Бандл всех периодов одного знака за один запрос (GET /api/horoscope/{sign}/all).
+ * Любой из периодов может быть null — прогноза на этот период ещё нет (пустое состояние, не ошибка).
+ */
+data class HoroscopeBundleDto(
+    @SerializedName("zodiac_sign")
+    val zodiacSign: String? = null,
+    @SerializedName("zodiac_sign_label")
+    val zodiacSignLabel: String? = null,
+    val symbol: String? = null,
+    val today: HoroscopeDataDto? = null,
+    val tomorrow: HoroscopeDataDto? = null,
+    val weekly: HoroscopeDataDto? = null,
+    val monthly: HoroscopeDataDto? = null
+)
